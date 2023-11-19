@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Everchanging</string>
+    <string name="wallpaper_label">Everchanging</string>
+    <string name="wallpaper_description">SonyEricsson "Everchanging theme" standby animation wallpaper</string>
+    <string name="activity_error"> Сan\'t open the system menu for selecting live wallpapers.\n\nTry to install via the menu \"System Settings\"-\"Themes\"-\"Wallpaper\"-\"Live Wallpaper\"\n\nIf there are no such settings, probably your device does not support standard live wallpapers.</string>
+</resources>
