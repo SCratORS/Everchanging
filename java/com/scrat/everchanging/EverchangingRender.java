@@ -112,9 +112,21 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         {10, 2, 9, 9, 8, 9, 8, 8, 9, 9, 9, 8, 8,  8, 9,  8, 8, 7, 8, 10, 3, 3, 10,  3,  3, 3, 3, 0, 0,  0,  9}
     };
 
-    Context context;
+    private static final int UPDATE_COUNT_TO_RECOMPUTE_TIME = 800;
+
+    private final Calendar calendar = Calendar.getInstance();
+
+    private final Context context;
 
     private final ArrayList<Scene> scenes = new ArrayList<>();
+
+    /**
+     * Optimization not to recompute time in Calendar on every {@link #update}.
+     * <br/><br/>
+     * As updateCounter reaches {@link #UPDATE_COUNT_TO_RECOMPUTE_TIME}, then time will be
+     * recalculated and updateCounter reset
+     */
+    private int updateCounter;
 
     public EverchangingRender(Context context) {
         this.context = context;
@@ -132,19 +144,19 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 
 
-        scenes.add(new BackgroundScene(context));
+        scenes.add(new BackgroundScene(context, calendar));
         scenes.add(new CrystalBlickScene(context));
-        scenes.add(new FireFliesScene(context));
-        scenes.add(new DandelionsScene(context));
-        scenes.add(new RainsScene(context));
+        scenes.add(new FireFliesScene(context, calendar));
+        scenes.add(new DandelionsScene(context, calendar));
+        scenes.add(new RainsScene(context, calendar));
         scenes.add(new PetalsScene(context));
-        scenes.add(new SnowsScene(context));
-        scenes.add(new LeavesScene(context));
-        scenes.add(new FireWorksScene(context));
-        scenes.add(new EyesScene(context));
-        scenes.add(new ButterFliesScene(context));
+        scenes.add(new SnowsScene(context, calendar));
+        scenes.add(new LeavesScene(context, calendar));
+        scenes.add(new FireWorksScene(context, calendar));
+        scenes.add(new EyesScene(context, calendar));
+        scenes.add(new ButterFliesScene(context, calendar));
         scenes.add(new BatsScene(context));
-        scenes.add(new HeartsScene(context));
+        scenes.add(new HeartsScene(context, calendar));
         scenes.add(new ValentinesScene(context));
         scenes.add(new FairiesScene(context));
 
@@ -185,7 +197,6 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
 
     private Scene.ShortTypes getAnim() {
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH)-1;
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -217,6 +228,12 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
                     case F: ((FairiesScene) scene).update(createObject); break;
                 }
             }
+
+        updateCounter++;
+        if (updateCounter == UPDATE_COUNT_TO_RECOMPUTE_TIME) {
+            updateCounter = 0;
+            calendar.setTimeInMillis(System.currentTimeMillis());
+        }
     }
 
     void render(){

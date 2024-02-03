@@ -2,13 +2,15 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
+import java.util.Calendar;
+
 public class FireFliesScene extends Scene {
 
     private final FireFlie fireflie;
 
-    public FireFliesScene(Context context) {
+    public FireFliesScene(final Context context, final Calendar calendar) {
         super(ShortTypes.FF);
-        fireflie = new FireFlie(context);
+        fireflie = new FireFlie(context, calendar);
     }
 
     public void update(boolean createObject) {
