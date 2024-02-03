@@ -41,7 +41,8 @@ public class Scene {
         GLES20.glVertexAttribPointer (object.mTexCordHandle, 2, GLES20.GL_FLOAT, false,	0, object.uvBuffer);
         GLES20.glEnableVertexAttribArray(object.mPositionHandle);
 
-        GLES20.glUniform1i (object.mTexture, GLES20.GL_TEXTURE0);
+        // Disabled because of SIGSEGV, https://github.com/SCratORS/Everchanging/issues/2
+        //GLES20.glUniform1i (object.mTexture, GLES20.GL_TEXTURE0);
         float[] sceneMatrix = object.calculateMatrix();
         for (Object subObject: object.objects) {
             //Биндим картинку
