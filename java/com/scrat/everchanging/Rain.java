@@ -27,6 +27,8 @@ public class Rain extends TextureObject  {
 
     static final String[][] textureList = {{"shape_22"}};
 
+    private final Calendar calendar;
+
     ArrayList<Object> removeObjects = new ArrayList<>();
 
     int frameCounter = 0;
@@ -39,8 +41,9 @@ public class Rain extends TextureObject  {
     FinishCallback finishCallback;
     int typesAnim;
 
-    Rain(Context context, int anim) {
+    Rain(final Context context, final Calendar calendar, final int anim) {
         super(context, textureList, null);
+        this.calendar = calendar;
         this.typesAnim = anim;
     }
 
@@ -73,7 +76,6 @@ public class Rain extends TextureObject  {
 
     private boolean get0403() {
         frameMoveCount = 1 + (int) (height / speed);
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==3) && (currentDay==4);
