@@ -236,7 +236,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         updateCounter++;
         if (updateCounter == UPDATE_COUNT_TO_RECOMPUTE_TIME) {
             updateCounter = 0;
-            calendar.setTimeInMillis(System.currentTimeMillis());
+            forceUpdateCalendar();
         }
     }
 
