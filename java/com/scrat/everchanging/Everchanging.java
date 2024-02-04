@@ -95,6 +95,7 @@ abstract class EverchangingWallpaperService extends WallpaperService {
             if (rendererHasBeenSet) {
                 if (visible) {
                     glSurfaceView.onResume();
+                    if (paused) mRender.forceUpdateCalendar();
                     paused = false;
                     doDrawFrame(); // запускаем рендеринг
                 } else {

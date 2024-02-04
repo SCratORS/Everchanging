@@ -240,6 +240,10 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         }
     }
 
+    void forceUpdateCalendar() {
+        calendar.setTimeInMillis(System.currentTimeMillis());
+    }
+
     void render(){
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         //todo draw
