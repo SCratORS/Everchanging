@@ -380,6 +380,8 @@ public class Leave extends TextureObject {
             {{128, 128, 128, 256},{199, 168, 39, 0}}
     };
 
+    private final Calendar calendar;
+
     ArrayList<Object> removeObjects = new ArrayList<>();
     int frameCounter = 0;
     int maxFrames = 8;
@@ -388,14 +390,14 @@ public class Leave extends TextureObject {
     boolean init = false;
     int animCount =1;
 
-    public Leave (Context context) {
+    public Leave (final Context context, final Calendar calendar) {
         super(context, textureList, null);
+        this.calendar = calendar;
     }
 
     private boolean get0703() {
         svgScale = textureManager.dipToPixels(1);
         animCount = (int)((height / 280.0f) + 0.5f);
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==3) && (currentDay==7);

@@ -33,17 +33,19 @@ public class FireWork extends TextureObject{
     int maxFrames = 5;
     ArrayList<Object> removeObjects = new ArrayList<>();
 
+    private final Calendar calendar;
+
     private boolean get010104() {
         svgScale = textureManager.dipToPixels(1);
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
         return (currentMonth==1) && (currentDay==1) && (currentYear % 4 == 0);
     }
 
-    FireWork(Context context) {
+    FireWork(final Context context, final Calendar calendar) {
         super(context, textureList, null);
+        this.calendar = calendar;
     }
 
     void resetObject(Object object) {

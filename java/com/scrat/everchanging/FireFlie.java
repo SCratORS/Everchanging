@@ -145,12 +145,15 @@ public class FireFlie extends TextureObject {
     int maxFrames = 6;
     boolean init = false;
 
+    private final Calendar calendar;
+
     static final String[][] textureList = {{"image_168","image_170"}};
     static final float[][] pivotList = {{7.5f, 7.5f},{7.5f, 7.5f}};
     ArrayList<Object> removeObjects = new ArrayList<>();
 
-    public FireFlie(Context context) {
+    public FireFlie(final Context context, final Calendar calendar) {
         super(context, textureList, pivotList);
+        this.calendar = calendar;
     }
 
     void createObject() {
@@ -198,7 +201,6 @@ public class FireFlie extends TextureObject {
     }
 
     private boolean get2501() {
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==1) && (currentDay==25);

@@ -2,13 +2,15 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
+import java.util.Calendar;
+
 public class DandelionsScene extends Scene {
 
     private final Dandelion dandelion;
 
-    public DandelionsScene(Context context) {
+    public DandelionsScene(final Context context, final Calendar calendar) {
         super(ShortTypes.D);
-        dandelion = new Dandelion(context);
+        dandelion = new Dandelion(context, calendar);
     }
 
     public void update(boolean createObject) {

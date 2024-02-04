@@ -1008,14 +1008,17 @@ public class ButterFlie extends TextureObject {
 
     private final float[] animationStartPosition = {1.0f, 1.0f, 0.0000f, 0.0000f, 3.40f, -3.60f};
 
+    private final Calendar calendar;
+
     ArrayList<Object> removeObjects = new ArrayList<>();
     boolean init = false;
     float svgScale = 1.0f;
     int frameCounter = 0;
     int maxFrames = 10;
     int numClips = minObjects;
-    ButterFlie(Context context) {
+    ButterFlie(Context context, final Calendar calendar) {
         super(context, textureList, null);
+        this.calendar = calendar;
     }
     private int ConvertRange(
             int originalStart, int originalEnd, // original range
@@ -1027,7 +1030,6 @@ public class ButterFlie extends TextureObject {
     }
     private boolean get2401() {
         svgScale = textureManager.dipToPixels(1);
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==1) && (currentDay==24);
