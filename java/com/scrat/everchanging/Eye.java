@@ -73,7 +73,9 @@ public class Eye extends TextureObject {
         init = createObject;
         if (frameCounter == 2) if (createObject) createObject();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.animCounter == 0) {
                 object.frameCounter++;
                 if (object.frameCounter < Frames.length) {
@@ -87,7 +89,11 @@ public class Eye extends TextureObject {
             }
             object.animCounter--;
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

@@ -24,7 +24,9 @@ public class Ripple extends TextureObject  {
     }
 
     public void update() {
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter > 0) {
                 if (object.frameCounter == 1) {
                     int textureIndex = textureManager.getTextureIndex(textureList[0][typesAnim]);
@@ -37,7 +39,11 @@ public class Ripple extends TextureObject  {
             object.frameCounter++;
             if (object.frameCounter > maxFrames) removeObjects.add(object);
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

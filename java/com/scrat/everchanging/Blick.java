@@ -987,14 +987,20 @@ public class Blick extends TextureObject  {
 
     public void update(boolean createObject) {
         if (createObject) createObject();
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             object.resetMatrix();
             objectAnimate(object);
             object.setTransform(matrixTransform[spriteIndex[object.index]][object.frameCounter]);
             object.frameCounter = (object.frameCounter+1) % matrixTransform[spriteIndex[object.index]].length;
             if (!createObject && (object.frameCounter == 0)) removeObjects.add(object);
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

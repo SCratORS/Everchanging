@@ -44,7 +44,10 @@ public class Scene {
         // Disabled because of SIGSEGV, https://github.com/SCratORS/Everchanging/issues/2
         //GLES20.glUniform1i (object.mTexture, GLES20.GL_TEXTURE0);
         float[] sceneMatrix = object.calculateMatrix();
-        for (Object subObject: object.objects) {
+
+        final int objectsSize = object.objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object subObject = object.objects.get(i);
             //Биндим картинку
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, subObject.texture.textureID);
             //Активируем позиционирование, что бы это нибыло

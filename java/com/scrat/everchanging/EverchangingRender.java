@@ -162,7 +162,9 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height);
         float scaleImageHeight = surfaceHeight / 320f;
         //todo setup position
-        for (Scene scene : scenes) {
+        final int scenesSize = scenes.size();
+        for (int i = 0; i < scenesSize; i++) {
+            final Scene scene = scenes.get(i);
             switch (scene.sceneType) {
                 case BG: ((BackgroundScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;    /*complete 100% 640/480+ */
                 case CB: ((CrystalBlickScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;  /*complete 100% 640/480+ */
@@ -197,7 +199,9 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     void update() {
             // todo update
             Scene.ShortTypes currentScene = getAnim();
-            for (Scene scene : scenes) {
+            final int scenesSize = scenes.size();
+            for (int i = 0; i < scenesSize; i++) {
+                final Scene scene = scenes.get(i);
                 boolean createObject = scene.sceneType == currentScene;
                 switch (scene.sceneType) {
                     case BG: ((BackgroundScene) scene).update(); break;
@@ -222,7 +226,9 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     void render(){
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         //todo draw
-        for (Scene scene : scenes) {
+        final int scenesSize = scenes.size();
+        for (int i = 0; i < scenesSize; i++) {
+            final Scene scene = scenes.get(i);
             switch (scene.sceneType) {
                 case BG: ((BackgroundScene) scene).render(); break;
                 case E: ((EyesScene) scene).render(); break;

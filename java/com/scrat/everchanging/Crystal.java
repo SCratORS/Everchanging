@@ -120,7 +120,9 @@ public class Crystal extends TextureObject {
     public void update(boolean createObject) {
         frameCounter = (frameCounter+1) % maxFrames;
         if (createObject && (frameCounter == 1)) createObject();
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform.length) {
                 object.resetMatrix();
                 object.setColorTransform(colorTransform[object.frameCounter]);
@@ -130,7 +132,11 @@ public class Crystal extends TextureObject {
                 removeObjects.add(object);
             }
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

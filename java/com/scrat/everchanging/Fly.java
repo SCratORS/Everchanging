@@ -124,7 +124,9 @@ public class Fly extends TextureObject {
         objects.add(object);
     }
     public void update() {
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform[object.index].length) {
                 creatorCallback.callingCrystallCreatorCallback(object.transformMatrix, object.ViewTranslate);
                 TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter]));
@@ -141,7 +143,11 @@ public class Fly extends TextureObject {
                 removeObjects.add(object);
             }
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 

@@ -38,7 +38,13 @@ public class Background extends TextureObject {
         int textureIndex = textureManager.getTextureIndex(textureList[0][season]);
         TextureManager.Texture texture = textureManager.getTexture(textureIndex);
 
-        if (objects.size()>0) for (Object object : objects) object.setTexture(texture, scale);
+        if (!objects.isEmpty()) {
+            final int objectsSize = objects.size();
+            for (int i = 0; i < objectsSize; i++) {
+                objects.get(i).setTexture(texture, scale);
+            }
+        }
+
         else {
             Object object = new Object(texture, scale);
             object.setObjectScale(1.0f);
@@ -53,6 +59,10 @@ public class Background extends TextureObject {
     public void update(int season, int timesOfDay) {
         int s = season == 5 ? 4:season;
         if (currentSeason != s) createObject(s);
-        for (Object object : objects) object.setColorTransform(colorTransformValues[season][timesOfDay]);
+
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            objects.get(i).setColorTransform(colorTransformValues[season][timesOfDay]);
+        }
     }
 }

@@ -434,7 +434,9 @@ public class Leave extends TextureObject {
         if (!init && createObject) numClips = get0703()?maxObjects:(minObjects + random.nextInt(maxObjects - 4));
         init = createObject;
         if (createObject && (frameCounter == 2)) createObject();
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             object.resetMatrix();
 
             if (object.remove) {
@@ -457,10 +459,11 @@ public class Leave extends TextureObject {
                 else removeObjects.add(object);
             }
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
-
-
     }
-
 }

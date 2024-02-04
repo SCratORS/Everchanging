@@ -194,7 +194,9 @@ public class Snow extends TextureObject{
 
         if (createObject && (frameCounter == 2)) createObject();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             object.resetMatrix();
             object.setTransform(AnimatedTextureMatrix[object.animCounter]);
             if (object.frameCounter < heightMax - colorTransform.length ) {
@@ -213,7 +215,11 @@ public class Snow extends TextureObject{
             }
 
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

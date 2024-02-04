@@ -290,13 +290,19 @@ public class Fairy extends TextureObject {
     }
 
     private void updateCreator() {
-        for (Creator creator : creatorObjects) {
+        final int objectsSize = creatorObjects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Creator creator = creatorObjects.get(i);
             if (creator.frame == 0) createObject(creator.animIndex);
             if (creator.maxFrame == 0) removeCreatorObjects.add(creator);
             creator.frame --;
             creator.maxFrame --;
         }
-        for (Creator creator : removeCreatorObjects) creatorObjects.remove(creator);
+
+        final int removeCreatorObjectsSize = removeCreatorObjects.size();
+        for (int i = 0; i < removeCreatorObjectsSize; i++) {
+            creatorObjects.remove(removeCreatorObjects.get(i));
+        }
         removeCreatorObjects.clear();
     }
 
@@ -308,7 +314,9 @@ public class Fairy extends TextureObject {
 
         updateCreator();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
                 object.setTransform(matrixTransform[object.index][object.frameCounter][object.animCounter]);
@@ -324,10 +332,12 @@ public class Fairy extends TextureObject {
                 object.frameCounter++;
             } else removeObjects.add(object);
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
-
-
     }
 
     private static class Creator {

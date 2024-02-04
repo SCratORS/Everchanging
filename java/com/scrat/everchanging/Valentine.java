@@ -82,7 +82,9 @@ public class Valentine extends TextureObject {
     public void update(boolean createObject) {
 
         if (createObject) createObject();
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform.length) {
                 object.resetMatrix();
                 object.setColorTransform(colorTransform[object.frameCounter]);
@@ -92,7 +94,11 @@ public class Valentine extends TextureObject {
                 removeObjects.add(object);
             }
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

@@ -92,7 +92,9 @@ public class FireWork extends TextureObject{
 
         if ((createObject) && (frameCounter==2) && (random.nextInt(3) == 0)) createObject();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < spriteTable.length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][spriteTable[object.frameCounter]])), 1.0f);
@@ -102,7 +104,11 @@ public class FireWork extends TextureObject{
                 else removeObjects.add(object);
             }
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

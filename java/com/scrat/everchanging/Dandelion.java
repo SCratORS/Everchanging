@@ -279,7 +279,9 @@ public class Dandelion extends TextureObject {
         init = createObject;
         if (createObject && frameCounter==2) createObject();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             object.resetMatrix();
             object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter])), 1.0f);
             object.setTransform(animationStartPosition);
@@ -288,7 +290,11 @@ public class Dandelion extends TextureObject {
             object.animCounter = (object.animCounter+1) % textureList[0].length;
             if (!createObject && (object.frameCounter == 0)) removeObjects.add(object);
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 }

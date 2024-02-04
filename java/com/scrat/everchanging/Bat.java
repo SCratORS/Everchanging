@@ -163,7 +163,9 @@ public class Bat extends TextureObject {
         frameCounter = (frameCounter+1) % maxFrames;
         if (createObject && (frameCounter==2)) createObject();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform.length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][spriteTable[object.animCounter]])), 1.0f);
@@ -176,7 +178,11 @@ public class Bat extends TextureObject {
                else removeObjects.add(object);
             }
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 
