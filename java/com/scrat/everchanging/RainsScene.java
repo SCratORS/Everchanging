@@ -2,16 +2,14 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.Calendar;
-
-public class RainsScene extends Scene implements Rain.FinishCallback {
+public class RainsScene extends Scene implements Rain.FinishCallback  {
 
     private final Rain rain;
     private final Ripple ripple;
 
-    public RainsScene(final Context context, final Calendar calendar) {
+    public RainsScene(Context context) {
         super(ShortTypes.R);
-        rain = new Rain(context, calendar, 0);
+        rain = new Rain(context, 0);
         ripple = new Ripple(context, 0);
         rain.registerCallBack(this);
     }

@@ -140,7 +140,6 @@ public class Snow extends TextureObject{
             {{256, 256, 256, 0}, {0, 0, 0, 0}}
     };
 
-    private final Calendar calendar;
 
     ArrayList<Object> removeObjects = new ArrayList<>();
     int frameCounter = 0;
@@ -149,13 +148,13 @@ public class Snow extends TextureObject{
     boolean init = false;
     int heightMax = 0;
 
-    public Snow (final Context context, final Calendar calendar) {
+    public Snow (Context context) {
         super(context, textureList,null);
-        this.calendar = calendar;
     }
 
     private boolean get0404() {
         heightMax = (int) (height * 0.5f) + colorTransform.length + 10;
+        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==4) && (currentDay==4);

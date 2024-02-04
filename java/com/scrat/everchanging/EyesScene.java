@@ -2,14 +2,12 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.Calendar;
-
 public class EyesScene extends Scene {
 
     private final Eye eye;
-    public EyesScene(final Context context, final Calendar calendar) {
+    public EyesScene(Context context) {
         super(ShortTypes.E);
-        eye = new Eye(context, calendar);
+        eye = new Eye(context);
     }
 
     public void update(boolean createObject) {

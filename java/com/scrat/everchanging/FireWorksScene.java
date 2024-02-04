@@ -1,14 +1,11 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
-
-import java.util.Calendar;
-
 public class FireWorksScene extends Scene{
     private final FireWork firework;
-    FireWorksScene(final Context context, final Calendar calendar) {
+    FireWorksScene(Context context) {
         super(ShortTypes.FW);
-        firework = new FireWork(context, calendar);
+        firework = new FireWork(context);
     }
     public void setupPosition(int width, int height, float ratio, int displayRotation) {
         super.createProjectMatrix(width, height, displayRotation);
