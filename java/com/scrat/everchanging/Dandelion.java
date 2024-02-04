@@ -234,6 +234,8 @@ public class Dandelion extends TextureObject {
     };
     private final float[] animationStartPosition = {0.15f, 0.15f, 0.0000f, 0.0000f, 38.55f, 24.85f};
 
+    private final Calendar calendar;
+
     ArrayList<Object> removeObjects = new ArrayList<>();
 
     int frameCounter = 0;
@@ -241,8 +243,9 @@ public class Dandelion extends TextureObject {
     int numClips = minObjects;
     boolean init = false;
     float svgScale = 1.0f;
-    public Dandelion(Context context) {
+    public Dandelion(Context context, final Calendar calendar) {
         super(context, textureList, pivotList);
+        this.calendar = calendar;
     }
 
     void createObject() {
@@ -267,7 +270,6 @@ public class Dandelion extends TextureObject {
 
     private boolean get1902() {
         svgScale = textureManager.dipToPixels(1);
-        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==2) && (currentDay==19);

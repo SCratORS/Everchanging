@@ -2,11 +2,13 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
+import java.util.Calendar;
+
 public class ButterFliesScene extends Scene {
     private final ButterFlie butterflie;
-    public ButterFliesScene(Context context) {
+    public ButterFliesScene(final Context context, final Calendar calendar) {
         super(ShortTypes.B);
-        butterflie = new ButterFlie(context);
+        butterflie = new ButterFlie(context, calendar);
     }
 
     public void update(boolean createObject) {
