@@ -34,17 +34,39 @@ public class TextureManager {
     TextureManager(Context context, String[][] TexturesNameList, float[][] PivotList){
         this.context = context;
         int texturesCount = 0;
-        for (String[] textures: TexturesNameList) texturesCount+=textures.length;
+
+        final int texturesNameListLength = TexturesNameList.length;
+        // Optimization to avoid creating Iterator
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < texturesNameListLength; i++) {
+            final String[] textures = TexturesNameList[i];
+            texturesCount += textures.length;
+        }
         String[] bothTextureNameList = new String[texturesCount];
         int c = 0;
-        for (String[] strings : TexturesNameList)
-            for (String string : strings) bothTextureNameList[c++] = string;
+
+        // Optimization to avoid creating Iterator
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < texturesNameListLength; i++) {
+            final String[] strings = TexturesNameList[i];
+            final int stringsLength = strings.length;
+            // Optimization to avoid creating Iterator
+            //noinspection ForLoopReplaceableByForEach
+            for (int s = 0; s < stringsLength; s++) {
+                bothTextureNameList[c++] = strings[s];
+            }
+        }
 
         texturesIDs = new int[texturesCount];
         textures = new Texture[texturesCount];
         GLES20.glGenTextures(texturesCount, texturesIDs, 0);
         int counter = 0;
-        for (int textureID: texturesIDs) {
+
+        final int texturesIDsLength = texturesIDs.length;
+        // Optimization to avoid creating Iterator
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < texturesIDsLength; i++) {
+            final int textureID = texturesIDs[i];
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
             textures[counter] = new Texture();
             textures[counter].textureID = textureID;
@@ -90,7 +112,8 @@ public class TextureManager {
     }
 
     int getTextureIndex(String name){
-        for (int i = 0; i < textures.length; i++) {
+        final int texturesLength = textures.length;
+        for (int i = 0; i < texturesLength; i++) {
             if (textures[i].textureName.equals(name)) return i;
         }
         return -1;

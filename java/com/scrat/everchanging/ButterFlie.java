@@ -1061,7 +1061,9 @@ public class ButterFlie extends TextureObject {
 
         if (frameCounter == 2) if (createObject) createObject();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter++ % textureList[0].length])), 1.0f);
@@ -1070,7 +1072,11 @@ public class ButterFlie extends TextureObject {
                 object.frameCounter++;
             } else removeObjects.add(object);
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 

@@ -56,12 +56,17 @@ public class Foreground extends TextureObject{
             resetMatrix();
             createObjects();
         }
-        for (Object object : objects) object.setColorTransform(colorTransformValues[current][timesOfDay]);
+
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            objects.get(i).setColorTransform(colorTransformValues[current][timesOfDay]);
+        }
     }
 
     private void createObjects() {
-        for (String texture : textureList[current]) {
-            int textureIndex = textureManager.getTextureIndex(texture);
+        final int textureListCurrentLength = textureList[current].length;
+        for (int i = 0; i < textureListCurrentLength; i++) {
+            int textureIndex = textureManager.getTextureIndex(textureList[current][i]);
             Object object = new Object(textureManager.getTexture(textureIndex), scale);
             object.resetViewMatrix();
             object.setObjectScale(1.0f);
@@ -73,7 +78,10 @@ public class Foreground extends TextureObject{
     private void setObjectsPosition() {
         float deltaHeight = height;
         int index = 0;
-        for (Object object: objects) {
+
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             float spriteWidth = object.texture.width * scale;
             float spriteHeight = object.texture.height * scale;
             float y = deltaHeight - spriteHeight + offsetValues[current][index][0];

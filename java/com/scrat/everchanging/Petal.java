@@ -338,7 +338,8 @@ public class Petal extends TextureObject{
     }
 
     private void creatorObjects() {
-        for (int i = creatingFramesCounter.size()-1; i>=0; i--) {
+        final int creatingFramesCounterSize = creatingFramesCounter.size();
+        for (int i = creatingFramesCounterSize-1; i>=0; i--) {
             Creator creator = creatingFramesCounter.get(i);
             creator._C++;
             switch (creator._C) {
@@ -372,7 +373,9 @@ public class Petal extends TextureObject{
         if (createObject && (frameCounter==2)) addCreator();
         creatorObjects();
 
-        for (Object object : objects) {
+        final int objectsSize = objects.size();
+        for (int i = 0; i < objectsSize; i++) {
+            final Object object = objects.get(i);
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(spritesAnimation[object.index][object.frameCounter])), 1.0f);
@@ -381,7 +384,11 @@ public class Petal extends TextureObject{
                 object.frameCounter++;
             } else removeObjects.add(object);
         }
-        for (Object object : removeObjects) objects.remove(object);
+
+        final int removeObjectsSize = removeObjects.size();
+        for (int i = 0; i < removeObjectsSize; i++) {
+            objects.remove(removeObjects.get(i));
+        }
         removeObjects.clear();
     }
 
