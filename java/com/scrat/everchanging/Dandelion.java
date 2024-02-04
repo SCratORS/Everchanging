@@ -2,7 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class Dandelion extends TextureObject {
@@ -236,8 +237,6 @@ public class Dandelion extends TextureObject {
 
     private final Calendar calendar;
 
-    ArrayList<Object> removeObjects = new ArrayList<>();
-
     int frameCounter = 0;
     int maxFrames = 7;
     int numClips = minObjects;
@@ -249,9 +248,9 @@ public class Dandelion extends TextureObject {
     }
 
     void createObject() {
-        if (objects.size() >= numClips) return;
+        if (objects.objectsInUseCount() >= numClips) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         object.setObjectScale(1.0f/svgScale);
         int _x = 0;
         int _y = random.nextInt(height);
@@ -265,7 +264,6 @@ public class Dandelion extends TextureObject {
         object.setColorTransform(animationStartColor[object.index]);
         object.animCounter = 0;
         object.frameCounter = 0;
-        objects.add(object);
      }
 
     private boolean get1902() {
@@ -281,22 +279,20 @@ public class Dandelion extends TextureObject {
         init = createObject;
         if (createObject && frameCounter==2) createObject();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             object.resetMatrix();
             object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter])), 1.0f);
             object.setTransform(animationStartPosition);
             object.setTransform(matrixTransform[object.frameCounter]);
             object.frameCounter = (object.frameCounter+1) % matrixTransform.length;
             object.animCounter = (object.animCounter+1) % textureList[0].length;
-            if (!createObject && (object.frameCounter == 0)) removeObjects.add(object);
+            if (!createObject && (object.frameCounter == 0)) iterator.remove();
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

@@ -1,6 +1,9 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
+
+import com.scrat.everchanging.util.ReusableIterator;
+
 public class Foreground extends TextureObject{
     final float[][][][] colorTransformValues = {
 /*1 season */
@@ -52,25 +55,28 @@ public class Foreground extends TextureObject{
     public void update(int foregroundIndex, int timesOfDay) {
         if (current != foregroundIndex) {
             current = foregroundIndex;
-            objects.clear();
+            objects.markAllAsUnused();
             resetMatrix();
             createObjects();
         }
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            objects.get(i).setColorTransform(colorTransformValues[current][timesOfDay]);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            iterator.next().setColorTransform(colorTransformValues[current][timesOfDay]);
         }
+
+        iterator.release();
     }
 
     private void createObjects() {
         final int textureListCurrentLength = textureList[current].length;
         for (int i = 0; i < textureListCurrentLength; i++) {
             int textureIndex = textureManager.getTextureIndex(textureList[current][i]);
-            Object object = new Object(textureManager.getTexture(textureIndex), scale);
+            Object object = objects.obtain(textureManager.getTexture(textureIndex), scale);
             object.resetViewMatrix();
             object.setObjectScale(1.0f);
-            objects.add(object);
         }
         setObjectsPosition();
     }
@@ -79,9 +85,11 @@ public class Foreground extends TextureObject{
         float deltaHeight = height;
         int index = 0;
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             float spriteWidth = object.texture.width * scale;
             float spriteHeight = object.texture.height * scale;
             float y = deltaHeight - spriteHeight + offsetValues[current][index][0];
@@ -90,5 +98,7 @@ public class Foreground extends TextureObject{
             object.setTranslate(offsetValues[current][index][1] + spriteWidth * 0.5f, y + spriteHeight * 0.5f);
             index++;
         }
+
+        iterator.release();
     }
 }

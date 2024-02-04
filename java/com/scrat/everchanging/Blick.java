@@ -1,7 +1,7 @@
 package com.scrat.everchanging;
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
 
 public class Blick extends TextureObject  {
     private final float[][] spritesStartTransform = {
@@ -951,16 +951,15 @@ public class Blick extends TextureObject  {
     static final String[][] textureList = {{"shape_3","shape_6"}};
 
     int index = 0;
-    ArrayList<Object> removeObjects = new ArrayList<>();
 
     Blick(Context context) {
         super(context, textureList, null);
     }
 
     public void createObject() {
-        if (objects.size() > spritesStartTransform.length) return;
+        if (objects.objectsInUseCount() > spritesStartTransform.length) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         float svgScale = textureManager.dipToPixels(1);
         object.setObjectScale(1.0f/svgScale/ratio);
 
@@ -973,7 +972,6 @@ public class Blick extends TextureObject  {
         object.animCounter = 0;
         object.frameCounter = 0;
         object.index = index;
-        objects.add(object);
         index = (index+1) % spriteIndex.length;
     }
 
@@ -987,20 +985,19 @@ public class Blick extends TextureObject  {
 
     public void update(boolean createObject) {
         if (createObject) createObject();
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             object.resetMatrix();
             objectAnimate(object);
             object.setTransform(matrixTransform[spriteIndex[object.index]][object.frameCounter]);
             object.frameCounter = (object.frameCounter+1) % matrixTransform[spriteIndex[object.index]].length;
-            if (!createObject && (object.frameCounter == 0)) removeObjects.add(object);
+            if (!createObject && (object.frameCounter == 0)) iterator.remove();
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

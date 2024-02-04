@@ -1,11 +1,11 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
-import java.util.ArrayList;
+
+import com.scrat.everchanging.util.ReusableIterator;
 
 public class Ripple extends TextureObject  {
     static final String[][] textureList = {{"shape_23","shape_262"}};
-    ArrayList<Object> removeObjects = new ArrayList<>();
     float speedScaleX = 1.3f;
     float speedScaleY = 1.05f;
     int startAplpha = 80;
@@ -17,16 +17,20 @@ public class Ripple extends TextureObject  {
         this.typesAnim = anim;
     }
 
-    public void createObject(Object object) {
-        object.frameCounter = 0;
-        object.setAplpha(startAplpha);
-        objects.add(object);
+    public void createObjectCopy(final Object object) {
+        final Object newObject = objects.obtain();
+        newObject.copyFrom(object);
+
+        newObject.setAplpha(0);
+        newObject.frameCounter = 0;
     }
 
     public void update() {
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter > 0) {
                 if (object.frameCounter == 1) {
                     int textureIndex = textureManager.getTextureIndex(textureList[0][typesAnim]);
@@ -37,13 +41,9 @@ public class Ripple extends TextureObject  {
                 object.setAplpha(Math.max((startAplpha - (int) (deltaAplpha * object.frameCounter)), 0));
             }
             object.frameCounter++;
-            if (object.frameCounter > maxFrames) removeObjects.add(object);
+            if (object.frameCounter > maxFrames) iterator.remove();
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

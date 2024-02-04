@@ -34,6 +34,6 @@ public class RainsScene extends Scene implements Rain.FinishCallback {
 
     @Override
     public void callingFinishCallback(Object object) {
-        ripple.createObject(object);
+        ripple.createObjectCopy(object);
     }
 }

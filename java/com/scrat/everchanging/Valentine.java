@@ -2,7 +2,7 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
 
 public class Valentine extends TextureObject {
     static final String[][] textureList = {{"image_13","image_15","shape_278","shape_279"}};
@@ -46,7 +46,6 @@ public class Valentine extends TextureObject {
             {30.0f, 31.5f},
             {20.0f, 21.0f}
     };
-    ArrayList<Object> removeObjects = new ArrayList<>();
     float svgScale = 1.0f;
     public Valentine(Context context) {
         super(context, textureList, null);
@@ -60,10 +59,10 @@ public class Valentine extends TextureObject {
             texture.width = sizeTexture[index][0];
             texture.height = sizeTexture[index][1];
             svgScale = 1.0f;
-            object = new Object(texture, svgScale);
+            object = objects.obtain(texture, svgScale);
         } else {
             svgScale = 1.0f / textureManager.dipToPixels(1);
-            object = new Object(texture, 1.0f);
+            object = objects.obtain(texture, 1.0f);
             object.setObjectScale(svgScale);
         }
         float _x = random.nextInt(width);
@@ -75,30 +74,27 @@ public class Valentine extends TextureObject {
         object.setViewRotate(_rotation);
         object.setViewPosition(_x,  _y);
         object.frameCounter = 0;
-        objects.add(object);
-
     }
 
     public void update(boolean createObject) {
 
         if (createObject) createObject();
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform.length) {
                 object.resetMatrix();
                 object.setColorTransform(colorTransform[object.frameCounter]);
                 object.setTransform(matrixTransform[object.frameCounter]);
                 object.frameCounter++;
             } else {
-                removeObjects.add(object);
+                iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

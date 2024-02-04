@@ -36,7 +36,8 @@ public class TextureObject {
                     "  gl_FragColor = textureColor;" +
                     "}";
 
-    public final ArrayList<Object> objects = new ArrayList<>();
+    public final ObjectPool objects = new ObjectPool();
+
     public int width;
     public int height;
     public float ratio;

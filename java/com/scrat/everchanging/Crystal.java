@@ -2,7 +2,7 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
 
 public class Crystal extends TextureObject {
     private final float[][] matrixTransform = {
@@ -52,7 +52,7 @@ public class Crystal extends TextureObject {
     static final String[][] textureList = {{"image_13","image_15"}};
     int frameCounter = 0;
     int maxFrames = 2;
-    ArrayList<Object> removeObjects = new ArrayList<>();
+
     public Crystal(Context context) {
         super(context, textureList, null);
     }
@@ -62,8 +62,7 @@ public class Crystal extends TextureObject {
             TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][i]));
             texture.width = sizeTexture[i][0];
             texture.height = sizeTexture[i][1];
-            Object crystalsEnd = new Object(null, 1.0f);
-            crystalsEnd.setTexture(texture, 1.0f);
+            Object crystalsEnd = objects.obtain(texture, 1.0f);
             crystalsEnd.setObjectScale(1.0f);
             float _x = endPosition[n][0];
             float _y = endPosition[n][1];
@@ -74,13 +73,12 @@ public class Crystal extends TextureObject {
             crystalsEnd.setViewTransform(transform);
             crystalsEnd.setViewRotate(_rotation);
             crystalsEnd.setViewTranslate(translate[0]+_x,  translate[1]+_y);
-            objects.add(crystalsEnd);
         }
     }
     void createObject() {
         int i = random.nextInt(2);
         TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][i]));
-        Object object = new Object(texture, 1.0f);
+        final Object object = objects.obtain(texture, 1.0f);
         object.setObjectScale(2.0f);
         float _x = random.nextInt(width);
         float _y = random.nextInt(height);
@@ -93,7 +91,6 @@ public class Crystal extends TextureObject {
         object.setViewRotate(_rotation);
         object.setViewPosition(_x,  _y);
         object.setAplpha(_alpha);
-        objects.add(object);
     }
 
     public void createObject(float[] transform, float[] translate) {
@@ -102,8 +99,7 @@ public class Crystal extends TextureObject {
         TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][i]));
         texture.width = sizeTexture[i][0];
         texture.height = sizeTexture[i][1];
-        Object crystal = new Object(texture, 1.0f);
-        crystal.setTexture(texture, 1.0f);
+        final Object crystal = objects.obtain(texture, 1.0f);
         crystal.setObjectScale(1.0f);
         crystal.resetViewMatrix();
         float _x = random.nextInt(20)-10;
@@ -115,28 +111,26 @@ public class Crystal extends TextureObject {
         crystal.setViewScale(_scale, _scale);
         crystal.setViewRotate(_rotation);
         crystal.setViewTranslate(translate[0]+_x,  translate[1]+_y);
-        objects.add(crystal);
     }
     public void update(boolean createObject) {
         frameCounter = (frameCounter+1) % maxFrames;
         if (createObject && (frameCounter == 1)) createObject();
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform.length) {
                 object.resetMatrix();
                 object.setColorTransform(colorTransform[object.frameCounter]);
                 object.setTransform(matrixTransform[object.frameCounter]);
                 object.frameCounter++;
             } else {
-                removeObjects.add(object);
+                iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

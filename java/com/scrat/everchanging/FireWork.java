@@ -2,7 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class FireWork extends TextureObject{
@@ -31,7 +32,6 @@ public class FireWork extends TextureObject{
     int frameCounter = 0;
     boolean init = false;
     int maxFrames = 5;
-    ArrayList<Object> removeObjects = new ArrayList<>();
 
     private final Calendar calendar;
 
@@ -63,9 +63,9 @@ public class FireWork extends TextureObject{
     }
 
     void createObject() {
-        if (objects.size() >= numClips) return;
+        if (objects.objectsInUseCount() >= numClips) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
 
         object.setObjectScale(1.0f/svgScale);
         int _x = random.nextInt(240);
@@ -84,7 +84,6 @@ public class FireWork extends TextureObject{
         object.setColorTransform(colorTransform[random.nextInt(5)]);
         object.frameCounter = 0;
         object.index = random.nextInt(5);
-        objects.add(object);
     }
 
     public void update(boolean createObject) {
@@ -94,23 +93,21 @@ public class FireWork extends TextureObject{
 
         if ((createObject) && (frameCounter==2) && (random.nextInt(3) == 0)) createObject();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < spriteTable.length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][spriteTable[object.frameCounter]])), 1.0f);
                 object.frameCounter++;
             } else {
                 if ((createObject) && (object.index>0)) resetObject(object);
-                else removeObjects.add(object);
+                else iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

@@ -1,7 +1,8 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.scrat.everchanging.util.ReusableIterator;
 
 public class Background extends TextureObject {
     final float[][][][] colorTransformValues = {
@@ -38,21 +39,22 @@ public class Background extends TextureObject {
         int textureIndex = textureManager.getTextureIndex(textureList[0][season]);
         TextureManager.Texture texture = textureManager.getTexture(textureIndex);
 
-        if (!objects.isEmpty()) {
-            final int objectsSize = objects.size();
-            for (int i = 0; i < objectsSize; i++) {
-                objects.get(i).setTexture(texture, scale);
-            }
-        }
+        if (objects.objectsInUseCount() != 0) {
+            final ReusableIterator<Object> iterator = objects.iterator();
+            iterator.acquire();
 
-        else {
-            Object object = new Object(texture, scale);
+            while (iterator.hasNext()) {
+                iterator.next().setTexture(texture, scale);
+            }
+
+            iterator.release();
+        } else {
+            final Object object = objects.obtain(texture, scale);
             object.setObjectScale(1.0f);
             object.resetMatrix();
             object.resetViewMatrix();
             object.setScale(ratio, ratio); //Масштабируем по высоте, иначе не красиво.
             object.setTranslate(width - (object.texture.width) * scale * 0.5f * ratio, (object.texture.height)  * scale* 0.5f * ratio);
-            objects.add(object);
         }
     }
 
@@ -60,9 +62,13 @@ public class Background extends TextureObject {
         int s = season == 5 ? 4:season;
         if (currentSeason != s) createObject(s);
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            objects.get(i).setColorTransform(colorTransformValues[season][timesOfDay]);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            iterator.next().setColorTransform(colorTransformValues[season][timesOfDay]);
         }
+
+        iterator.release();
     }
 }

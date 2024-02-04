@@ -1,7 +1,8 @@
 package com.scrat.everchanging;
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class Rain extends TextureObject  {
@@ -29,8 +30,6 @@ public class Rain extends TextureObject  {
 
     private final Calendar calendar;
 
-    ArrayList<Object> removeObjects = new ArrayList<>();
-
     int frameCounter = 0;
     int maxFrames = 2;
     int frameMoveCount = 0;
@@ -52,9 +51,9 @@ public class Rain extends TextureObject  {
     }
 
     void createObject() {
-        if (objects.size() >= numClips) return;
+        if (objects.objectsInUseCount() >= numClips) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         float svgScale = textureManager.dipToPixels(1);
         object.setObjectScale(0.5f / svgScale);
         float _scale = (random.nextInt(20) + 80);
@@ -70,7 +69,6 @@ public class Rain extends TextureObject  {
         float frameScale = (random.nextInt(15) + 115) / 100.0f;
         object.setScale(frameScale,frameScale);
         object.frameCounter = 0;
-        objects.add(object);
     }
 
 
@@ -87,30 +85,18 @@ public class Rain extends TextureObject  {
         init = createObject;
         if (createObject && frameCounter == 1) createObject();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             object.setTranslate(-speed, speed);
             if (++object.frameCounter == frameMoveCount) {
                 finishCallback.callingFinishCallback(object);
-                removeObjects.add(object);
+                iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        /*
-         |  По идее надо делать через resetObject, но тогда ripple не отображаются,
-         |  поэтому просто пересоздаем все удаленные объекты.
-         */
-        if (createObject) {
-            for (int i = 0; i < removeObjectsSize; i++) {
-                createObject();
-            }
-        }
-
-        removeObjects.clear();
+        iterator.release();
     }
 }
