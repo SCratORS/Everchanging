@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 
 public class Object {
@@ -22,6 +23,8 @@ public class Object {
     private final float[] translateViewMatrix = new float[16];      //Матрица увеличения вида
     private final float[] scaleViewMatrix = new float[16];      //Матрица увеличения вида
     private final float[] rotateViewMatrix = new float[16];     //Матрица поворота вида
+
+    private final float[] tmpTransformMatrix = new float[16];
 
     public boolean remove = false;
 
@@ -140,12 +143,12 @@ public class Object {
 */
     void setTransform(float[] transform) {
         transformMatrix = transform;
-        float[] matrix = new float[16];
-        Matrix.setIdentityM(matrix, 0);
-        matrix[0] = transform[0];matrix[1] = transform[2];
-        matrix[4] = transform[3];matrix[5] = transform[1];
-        matrix[12] = transform[4];matrix[13] = transform[5];
-        Matrix.multiplyMM(rotateSkewMatrix, 0, matrix, 0, rotateSkewMatrix, 0);
+        Arrays.fill(tmpTransformMatrix,0);
+        Matrix.setIdentityM(tmpTransformMatrix, 0);
+        tmpTransformMatrix[0] = transform[0];tmpTransformMatrix[1] = transform[2];
+        tmpTransformMatrix[4] = transform[3];tmpTransformMatrix[5] = transform[1];
+        tmpTransformMatrix[12] = transform[4];tmpTransformMatrix[13] = transform[5];
+        Matrix.multiplyMM(rotateSkewMatrix, 0, tmpTransformMatrix, 0, rotateSkewMatrix, 0);
     }
 
     void setRotate(float angle) {
