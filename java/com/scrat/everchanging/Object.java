@@ -49,25 +49,44 @@ public class Object {
     public float[] ViewTranslate = {0.0f, 0.0f};
     public float[] viewTransformMatrix = {1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f};
     public float[] transformMatrix = {1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+
     Object(TextureManager.Texture texture, float scale) {
+        final ByteBuffer objectVerticesBuffer = ByteBuffer.allocateDirect(12 * 4);
+        objectVerticesBuffer.order(ByteOrder.nativeOrder());
+
+        vertexBuffer = objectVerticesBuffer.asFloatBuffer();
+
         if (texture != null) setTexture(texture, scale);
         resetMatrix();
     }
 
     void setTexture(TextureManager.Texture texture, float scale) {
-        this.texture = texture;
-        float x_width = texture.width * scale;
-        float y_height = texture.height * scale;
-        float x_begin = (0 - texture.pivot[0]) * scale;
-        float y_begin = (0 - texture.pivot[1]) * scale;
-        float x_end = x_begin + x_width;
-        float y_end = y_begin + y_height;
-        float[] objectVertices = new float[]{x_begin, y_begin, 0f, x_begin, y_end, 0f, x_end, y_end, 0f, x_end, y_begin, 0f};
-        ByteBuffer bb = ByteBuffer.allocateDirect(objectVertices.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(objectVertices);
-        vertexBuffer.position(0);
+        if (this.texture != texture) {
+            this.texture = texture;
+            final float x_width = texture.width * scale;
+            final float y_height = texture.height * scale;
+            final float x_begin = (0 - texture.pivot[0]) * scale;
+            final float y_begin = (0 - texture.pivot[1]) * scale;
+            final float x_end = x_begin + x_width;
+            final float y_end = y_begin + y_height;
+
+            vertexBuffer.position(0);
+
+            vertexBuffer.put(x_begin);
+            vertexBuffer.put(y_begin);
+            vertexBuffer.put(0f);
+            vertexBuffer.put(x_begin);
+            vertexBuffer.put(y_end);
+            vertexBuffer.put(0f);
+            vertexBuffer.put(x_end);
+            vertexBuffer.put(y_end);
+            vertexBuffer.put(0f);
+            vertexBuffer.put(x_end);
+            vertexBuffer.put(y_begin);
+            vertexBuffer.put(0f);
+            
+            vertexBuffer.position(0);
+        }
     }
 
     void setObjectScale(float scale) {
