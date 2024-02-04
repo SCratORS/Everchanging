@@ -21,16 +21,14 @@ public class Eye extends TextureObject {
     boolean init = false;
     static final String[][] textureList = {{"image_1","image_2","image_3","image_4","image_5","image_6","image_7","image_8","image_9","image_10","image_11","image_12"}};
 
-    private final Calendar calendar;
-
     boolean[] positions = {false,false,false,false,false};
     ArrayList<Object> removeObjects = new ArrayList<>();
-    public Eye(final Context context, final Calendar calendar) {
+    public Eye(Context context) {
         super(context, textureList, null);
-        this.calendar = calendar;
     }
 
     private boolean get0601() {
+        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         return (currentMonth==1) && (currentDay==6);

@@ -2,15 +2,13 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.Calendar;
-
 public class SnowsScene extends Scene{
 
     private final Snow show;
 
-    SnowsScene(final Context context, final Calendar calendar) {
+    SnowsScene(Context context) {
         super(ShortTypes.S);
-        show = new Snow(context, calendar);
+        show = new Snow(context);
     }
 
     public void setupPosition(int width, int height, float ratio, int displayRotation) {

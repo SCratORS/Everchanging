@@ -1,14 +1,11 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
-
-import java.util.Calendar;
-
 public class LeavesScene extends Scene {
     private final Leave leave;
-    LeavesScene(final Context context, final Calendar calendar) {
+    LeavesScene(Context context) {
         super(ShortTypes.L);
-        leave = new Leave(context, calendar);
+        leave = new Leave(context);
     }
 
     public void setupPosition(int width, int height, float ratio, int displayRotation) {

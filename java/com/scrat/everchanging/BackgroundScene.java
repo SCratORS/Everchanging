@@ -5,8 +5,6 @@ import java.util.Calendar;
 
 public class BackgroundScene extends Scene {
 
-    private final Calendar calendar;
-
     private final Background background;
     private final Foreground foreground;
 
@@ -14,14 +12,14 @@ public class BackgroundScene extends Scene {
     private int currentForeground;
     private int currentTimesOfDay;
 
-    BackgroundScene (final Context context, final Calendar calendar) {
+    BackgroundScene (Context context) {
         super(ShortTypes.BG);
-        this.calendar = calendar;
         background = new Background(context);
         foreground = new Foreground(context);
     }
 
     private void GetDateTime(){
+        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
