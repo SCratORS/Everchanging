@@ -18,6 +18,7 @@ import static com.scrat.everchanging.Scene.ShortTypes.V;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.os.SystemClock;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         {10, 2, 9, 9, 8, 9, 8, 8, 9, 9, 9, 8, 8,  8, 9,  8, 8, 7, 8, 10, 3, 3, 10,  3,  3, 3, 3, 0, 0,  0,  9}
     };
 
-    private static final int UPDATE_COUNT_TO_RECOMPUTE_TIME = 800;
+    private static final int UPDATE_CALENDAR_DELAY_MILLIS = 40000;
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -123,10 +124,9 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     /**
      * Optimization not to recompute time in Calendar on every {@link #update}.
      * <br/><br/>
-     * As updateCounter reaches {@link #UPDATE_COUNT_TO_RECOMPUTE_TIME}, then time will be
-     * recalculated and updateCounter reset
+     * A timestamp at which the last calendar update happened.
      */
-    private int updateCounter;
+    private long lastCalendarUpdateTimeMillis = SystemClock.uptimeMillis();
 
     public EverchangingRender(Context context) {
         this.context = context;
@@ -233,9 +233,9 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
                 }
             }
 
-        updateCounter++;
-        if (updateCounter == UPDATE_COUNT_TO_RECOMPUTE_TIME) {
-            updateCounter = 0;
+        if (SystemClock.uptimeMillis() >=
+                lastCalendarUpdateTimeMillis + UPDATE_CALENDAR_DELAY_MILLIS) {
+            lastCalendarUpdateTimeMillis = SystemClock.uptimeMillis();
             forceUpdateCalendar();
         }
     }
