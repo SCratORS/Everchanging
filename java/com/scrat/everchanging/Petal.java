@@ -2,6 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.ArrayList;
 
 public class Petal extends TextureObject{
@@ -306,7 +308,6 @@ public class Petal extends TextureObject{
             {{256, 256, 256, 35}, {0, 0, 0, 0}},{{256, 256, 256, 24}, {0, 0, 0, 0}},{{256, 256, 256, 12}, {0, 0, 0, 0}},{{256, 256, 256, 0}, {0, 0, 0, 0}}}
     };
 
-    ArrayList<Object> removeObjects = new ArrayList<>();
     ArrayList<Creator> creatingFramesCounter = new ArrayList<>();
 
     int frameCounter = 0;
@@ -354,7 +355,7 @@ public class Petal extends TextureObject{
     }
     private void createObject(Creator creator, int index) {
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         float svgScale = textureManager.dipToPixels(1);
         object.setObjectScale(1.0f/svgScale);
         object.resetViewMatrix();
@@ -365,7 +366,6 @@ public class Petal extends TextureObject{
         object.setViewPosition(creator._X,  creator._Y);
         object.frameCounter = 0;
         object.index = index<2?0:1;
-        objects.add(object);
     }
 
     public void update(boolean createObject) {
@@ -373,23 +373,21 @@ public class Petal extends TextureObject{
         if (createObject && (frameCounter==2)) addCreator();
         creatorObjects();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(spritesAnimation[object.index][object.frameCounter])), 1.0f);
                 object.setTransform(matrixTransform[object.index][object.frameCounter]);
                 object.setColorTransform(colorTransform[object.index][object.frameCounter]);
                 object.frameCounter++;
-            } else removeObjects.add(object);
+            } else iterator.remove();
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 
     private static class Creator {

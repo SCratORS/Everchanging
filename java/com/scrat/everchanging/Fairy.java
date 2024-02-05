@@ -2,6 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.ArrayList;
 
 public class Fairy extends TextureObject {
@@ -10,7 +12,6 @@ public class Fairy extends TextureObject {
     }
 
     static final String[][] textureList = {{"image_15"}};
-    ArrayList<Object> removeObjects = new ArrayList<>();
     ArrayList<Creator> creatorObjects = new ArrayList<>();
     ArrayList<Creator> removeCreatorObjects = new ArrayList<>();
     private final int[][] periodAnim = {
@@ -278,14 +279,13 @@ public class Fairy extends TextureObject {
         int _x = random.nextInt(120) + 70;
         int _y = random.nextInt(160) + 70;
         for (int i = 0; i < 7; i++) {
-            Object object = new Object(texture, 1.0f);
+            final Object object = objects.obtain(texture, 1.0f);
             object.resetMatrix();
             object.resetViewMatrix();
             object.setViewTranslate(_x, height - _y);
             object.index = index;
             object.frameCounter = 0;
             object.animCounter = i;
-            objects.add(object);
         }
     }
 
@@ -314,9 +314,11 @@ public class Fairy extends TextureObject {
 
         updateCreator();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
                 object.setTransform(matrixTransform[object.index][object.frameCounter][object.animCounter]);
@@ -330,14 +332,10 @@ public class Fairy extends TextureObject {
                     }
                 }
                 object.frameCounter++;
-            } else removeObjects.add(object);
+            } else iterator.remove();
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 
     private static class Creator {

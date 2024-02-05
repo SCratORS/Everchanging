@@ -2,7 +2,7 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
 
 public class Fly extends TextureObject {
 
@@ -105,14 +105,13 @@ public class Fly extends TextureObject {
     private final float[][] colorTransform = {{256,256,256,256},{0,0,0,0}};
 
     static final String[][] textureList = {{"image_271","image_273"}};
-    ArrayList<Object> removeObjects = new ArrayList<>();
     public Fly(Context context) {
         super(context, textureList, null);
     }
 
     public void createObject(float[] transform, float[] translate, int xscale, int index) {
         TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][0]));
-        Object object = new Object(texture, 0.25f);
+        final Object object = objects.obtain(texture, 0.25f);
         object.resetMatrix();
         object.resetViewMatrix();
         object.setViewTransform(transform);
@@ -121,12 +120,13 @@ public class Fly extends TextureObject {
         object.animCounter = 0;
         object.index = index;
         object.setScale(xscale==0?1:-1, 1);
-        objects.add(object);
     }
     public void update() {
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform[object.index].length) {
                 creatorCallback.callingCrystallCreatorCallback(object.transformMatrix, object.ViewTranslate);
                 TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter]));
@@ -140,15 +140,11 @@ public class Fly extends TextureObject {
                 object.frameCounter++;
             } else {
                 creatorCallback.callingCrystallEndCallback(object.transformMatrix, object.ViewTranslate);
-                removeObjects.add(object);
+                iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 
     public void registerCallBack(CrystalCreatorCallback callback){

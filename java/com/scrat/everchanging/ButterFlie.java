@@ -2,7 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class ButterFlie extends TextureObject {
@@ -1010,7 +1011,6 @@ public class ButterFlie extends TextureObject {
 
     private final Calendar calendar;
 
-    ArrayList<Object> removeObjects = new ArrayList<>();
     boolean init = false;
     float svgScale = 1.0f;
     int frameCounter = 0;
@@ -1036,9 +1036,9 @@ public class ButterFlie extends TextureObject {
     }
 
     void createObject() {
-        if (objects.size() > numClips) return;
+        if (objects.objectsInUseCount() > numClips) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         object.index = (random.nextInt(5) == 0)?0:1;
         object.resetViewMatrix();
         object.resetMatrix();
@@ -1052,8 +1052,6 @@ public class ButterFlie extends TextureObject {
         object.setObjectScale(_yscale/svgScale);
         object.animCounter = 0;
         object.frameCounter = 0;
-        objects.add(object);
-
     }
 
     public void update(boolean createObject) {
@@ -1063,23 +1061,21 @@ public class ButterFlie extends TextureObject {
 
         if (frameCounter == 2) if (createObject) createObject();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter++ % textureList[0].length])), 1.0f);
                 object.setTransform(animationStartPosition);
                 object.setTransform(matrixTransform[object.index][object.frameCounter]);
                 object.frameCounter++;
-            } else removeObjects.add(object);
+            } else iterator.remove();
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 
 }

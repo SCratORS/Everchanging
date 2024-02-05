@@ -2,7 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class FireFlie extends TextureObject {
@@ -149,7 +150,6 @@ public class FireFlie extends TextureObject {
 
     static final String[][] textureList = {{"image_168","image_170"}};
     static final float[][] pivotList = {{7.5f, 7.5f},{7.5f, 7.5f}};
-    ArrayList<Object> removeObjects = new ArrayList<>();
 
     public FireFlie(final Context context, final Calendar calendar) {
         super(context, textureList, pivotList);
@@ -157,13 +157,12 @@ public class FireFlie extends TextureObject {
     }
 
     void createObject() {
-        if (objects.size() >= numClips) return;
+        if (objects.objectsInUseCount() >= numClips) return;
 
         TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][random.nextInt(2)]));
-        Object object = new Object(null, 1.0f);
+        Object object = objects.obtain(texture, 1.0f);
         texture.width = 15.0f;
         texture.height = 15.0f;
-        object.setTexture(texture, 1.0f);
 
         float _x = random.nextInt(width);
         float _y = random.nextInt(100) + 150;
@@ -177,7 +176,6 @@ public class FireFlie extends TextureObject {
         object.setViewPosition(_x, height - 320 + _y);
         object.setColorTransform(colorTransform[0]);
         object.frameCounter = 0;
-        objects.add(object);
     }
 
     void resetObject(Object object) {
@@ -212,9 +210,11 @@ public class FireFlie extends TextureObject {
         init = createObject;
         if (createObject && frameCounter==2) createObject();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.frameCounter < matrixTransform.length) {
                 object.resetMatrix();
                 object.setColorTransform(colorTransform[object.frameCounter]);
@@ -222,14 +222,10 @@ public class FireFlie extends TextureObject {
                 object.frameCounter++;
             } else {
                 if (createObject) resetObject(object);
-                else removeObjects.add(object);
+                else iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

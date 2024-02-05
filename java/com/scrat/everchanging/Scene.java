@@ -2,6 +2,9 @@ package com.scrat.everchanging;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+
+import com.scrat.everchanging.util.ReusableIterator;
+
 public class Scene {
 
     //    public enum Types       {DEFAULT, BACKGROUND, CRYSTALBLICK, FIREFLIES, DANDELIONS, RAIN, BUTTERFLIES, BATS, EYES, FAIRIES, FIREWORKS, HEARTS, LEAVES, PETALS, SNOW, VALENTINES};
@@ -33,7 +36,7 @@ public class Scene {
     }
 
     public void render(TextureObject object) {
-        if (object.objects.size() == 0) return;
+        if (object.objects.objectsInUseCount() == 0) return;
         //Выбираем номер текстуру (почему-то только с 0 работает)
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 
@@ -45,9 +48,11 @@ public class Scene {
         //GLES20.glUniform1i (object.mTexture, GLES20.GL_TEXTURE0);
         float[] sceneMatrix = object.calculateMatrix();
 
-        final int objectsSize = object.objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object subObject = object.objects.get(i);
+        final ReusableIterator<Object> iterator = object.objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object subObject = iterator.next();
             //Биндим картинку
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, subObject.texture.textureID);
             //Активируем позиционирование, что бы это нибыло
@@ -84,6 +89,9 @@ public class Scene {
             //Выключаем позиционирование, что бы это нибыло
 
         }
+
+        iterator.release();
+
         GLES20.glDisableVertexAttribArray(object.mPositionHandle);
         GLES20.glDisableVertexAttribArray(object.mTexCordHandle);
     }

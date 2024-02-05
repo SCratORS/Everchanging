@@ -2,7 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class Leave extends TextureObject {
@@ -382,7 +383,6 @@ public class Leave extends TextureObject {
 
     private final Calendar calendar;
 
-    ArrayList<Object> removeObjects = new ArrayList<>();
     int frameCounter = 0;
     int maxFrames = 8;
     int numClips = minObjects;
@@ -404,13 +404,12 @@ public class Leave extends TextureObject {
     }
 
     private void createObject() {
-        if (objects.size() >= numClips) return;
+        if (objects.objectsInUseCount() >= numClips) return;
         if (random.nextInt(5) > 0) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), 1.0f);
+        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         object.setObjectScale(1.0f/svgScale);
         resetObject(object);
-        objects.add(object);
     }
 
     private void resetObject(Object object) {
@@ -436,9 +435,12 @@ public class Leave extends TextureObject {
         if (!init && createObject) numClips = get0703()?maxObjects:(minObjects + random.nextInt(maxObjects - 4));
         init = createObject;
         if (createObject && (frameCounter == 2)) createObject();
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             object.resetMatrix();
 
             if (object.remove) {
@@ -458,14 +460,10 @@ public class Leave extends TextureObject {
             }
             if (object.index < 0) {
                 if (createObject) resetObject(object);
-                else removeObjects.add(object);
+                else iterator.remove();
             }
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }

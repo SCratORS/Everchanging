@@ -2,7 +2,8 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.scrat.everchanging.util.ReusableIterator;
+
 import java.util.Calendar;
 
 public class Eye extends TextureObject {
@@ -24,7 +25,6 @@ public class Eye extends TextureObject {
     private final Calendar calendar;
 
     boolean[] positions = {false,false,false,false,false};
-    ArrayList<Object> removeObjects = new ArrayList<>();
     public Eye(final Context context, final Calendar calendar) {
         super(context, textureList, null);
         this.calendar = calendar;
@@ -36,12 +36,12 @@ public class Eye extends TextureObject {
         return (currentMonth==1) && (currentDay==6);
     }
     void createObject() {
-        if (objects.size() > numClips) return;
+        if (objects.objectsInUseCount() > numClips) return;
         int _x,_y,_r;
         _r = random.nextInt(5);
         if (positions[_r]) return;
         int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = new Object(textureManager.getTexture(textureIndex), scale);
+        Object object = objects.obtain(textureManager.getTexture(textureIndex), scale);
 
         switch (random.nextInt(5)) {
             default: object.frameCounter = -1;break;
@@ -66,7 +66,6 @@ public class Eye extends TextureObject {
         object.resetViewMatrix();
         object.setViewScale(_xscale, _yscale);
         object.setViewPosition(_x,  height - 320 + _y);
-        objects.add(object);
     }
 
     public void update(boolean createObject) {
@@ -75,9 +74,11 @@ public class Eye extends TextureObject {
         init = createObject;
         if (frameCounter == 2) if (createObject) createObject();
 
-        final int objectsSize = objects.size();
-        for (int i = 0; i < objectsSize; i++) {
-            final Object object = objects.get(i);
+        final ReusableIterator<Object> iterator = objects.iterator();
+        iterator.acquire();
+
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
             if (object.animCounter == 0) {
                 object.frameCounter++;
                 if (object.frameCounter < Frames.length) {
@@ -85,17 +86,13 @@ public class Eye extends TextureObject {
                     object.resetMatrix();
                     object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][Frames[object.frameCounter][0]])), scale);
                 } else {
-                    removeObjects.add(object);
+                    iterator.remove();
                     positions[object.index] = false;
                 }
             }
             object.animCounter--;
         }
 
-        final int removeObjectsSize = removeObjects.size();
-        for (int i = 0; i < removeObjectsSize; i++) {
-            objects.remove(removeObjects.get(i));
-        }
-        removeObjects.clear();
+        iterator.release();
     }
 }
