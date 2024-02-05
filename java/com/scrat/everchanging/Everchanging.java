@@ -79,7 +79,7 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         boolean paused = false;
         private final Handler handler = new Handler();
         private final Runnable mDrawRender = this::doDrawFrame;
-        private final int FPS = 24;  // кадров в секунду
+        private final int FPS = 20;  // кадров в секунду
 
         @Override
         public void onSurfaceCreated(SurfaceHolder surfaceHolder) {
