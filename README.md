@@ -1,5 +1,5 @@
 # SonyEricsson S500i "Everchanging"
-![](res/mipmap/home_wallpaper.jpg)
+![](root_dir/preview.jpg)
 
 Анимированные обои из темы оформления "Everchanging" телефона Sony Ericsson S500i переписанные на Android Live Wallpapers. 
 
