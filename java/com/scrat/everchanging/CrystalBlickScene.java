@@ -13,6 +13,11 @@ final class CrystalBlickScene extends Scene {
         blick = new Blick(context);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return crystal.objects.objectsInUseCount() != 0 || blick.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         blick.update(createObject);
         crystal.update(createObject);

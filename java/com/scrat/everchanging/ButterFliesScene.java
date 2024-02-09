@@ -13,6 +13,11 @@ final class ButterFliesScene extends Scene {
         butterflie = new ButterFlie(context, calendar);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return butterflie.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         butterflie.update(createObject);
     }

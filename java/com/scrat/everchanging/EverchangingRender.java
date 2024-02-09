@@ -2,6 +2,7 @@ package com.scrat.everchanging;
 
 import static com.scrat.everchanging.Scene.ShortTypes.B;
 import static com.scrat.everchanging.Scene.ShortTypes.BA;
+import static com.scrat.everchanging.Scene.ShortTypes.BG;
 import static com.scrat.everchanging.Scene.ShortTypes.CB;
 import static com.scrat.everchanging.Scene.ShortTypes.D;
 import static com.scrat.everchanging.Scene.ShortTypes.E;
@@ -30,7 +31,7 @@ import java.util.Calendar;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class EverchangingRender implements GLSurfaceView.Renderer {
+final class EverchangingRender implements GLSurfaceView.Renderer {
 
     // @formatter:off
 
@@ -120,8 +121,6 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
     // @formatter:on
 
-    private static final int FPS = 20;
-
     private static final int UPDATE_CALENDAR_DELAY_MILLIS = 40000;
 
     private final Calendar calendar = Calendar.getInstance();
@@ -146,6 +145,8 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
      */
     private long lastCalendarUpdateTimeMillis = SystemClock.uptimeMillis();
 
+    private int lastSceneMaxFps = Scene.MINIMUM_FPS;
+
     EverchangingRender(final Context context, final FrameScheduler frameScheduler) {
         this.context = context;
         this.frameScheduler = frameScheduler;
@@ -155,7 +156,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         scenes.clear();
     }
 
-    void onTouchEvent(MotionEvent motionEvent) {
+    void onTouchEvent(final MotionEvent motionEvent) {
         final int pointerCount = motionEvent.getPointerCount() - 1;
         posX = motionEvent.getX(pointerCount);
         posY = motionEvent.getY(pointerCount);
@@ -208,11 +209,15 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
         final float scaleImageHeight = surfaceHeight / 320f;
         final float scaleImageWidth = 240f / width;
-        //todo setup position
+
         final int scenesSize = scenes.size();
         for (int i = 0; i < scenesSize; i++) {
-            scenes.get(i)
-                    .setupPosition(surfaceWidth, surfaceHeight, (i<scenesSize-1)?scaleImageHeight:scaleImageWidth, displayRotation);
+            scenes.get(i).setupPosition(
+                    surfaceWidth,
+                    surfaceHeight,
+                    (i < scenesSize - 1) ? scaleImageHeight : scaleImageWidth,
+                    displayRotation
+            );
         }
     }
 
@@ -225,11 +230,17 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     }
 
     void update() {
-        // todo update
+        // Reset last scene FPS. New scene FPS will be recalculated below
+        lastSceneMaxFps = Scene.MINIMUM_FPS;
+
         final Scene.ShortTypes currentScene = getAnim();
         final int scenesSize = scenes.size();
         for (int i = 0; i < scenesSize; i++) {
             final Scene scene = scenes.get(i);
+            if (scene.hasObjectsInUse()) {
+                lastSceneMaxFps = Math.max(lastSceneMaxFps, scene.getFps());
+            }
+
             final boolean createObject = scene.sceneType == currentScene;
             switch (scene.sceneType) {
                 case BG:
@@ -347,7 +358,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     private void scheduleNextFrame(final long previousFrameRenderTime) {
         final long scheduledDelay;
         if (visible) {
-            scheduledDelay = 1000 / FPS - previousFrameRenderTime;
+            scheduledDelay = 1000 / lastSceneMaxFps - previousFrameRenderTime;
         } else {
             // 1 FPS when not visible
             scheduledDelay = 1000;

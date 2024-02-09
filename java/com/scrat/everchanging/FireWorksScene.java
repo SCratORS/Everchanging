@@ -14,6 +14,11 @@ final class FireWorksScene extends Scene {
     }
 
     @Override
+    public boolean hasObjectsInUse() {
+        return firework.objects.objectsInUseCount() != 0;
+    }
+
+    @Override
     public void setupPosition(
             final int width,
             final int height,

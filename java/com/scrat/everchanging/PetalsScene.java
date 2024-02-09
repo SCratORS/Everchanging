@@ -11,6 +11,11 @@ class PetalsScene extends Scene {
         petal = new Petal(context);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return petal.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         petal.update(createObject);
     }

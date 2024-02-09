@@ -17,6 +17,13 @@ final class FairiesScene extends Scene implements Fairy.CreatorCallback, Fly.Cry
         fly.registerCallBack(this);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return crystal.objects.objectsInUseCount() != 0 ||
+                fairy.objects.objectsInUseCount() != 0 ||
+                fly.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         fairy.update(createObject);
         fly.update();

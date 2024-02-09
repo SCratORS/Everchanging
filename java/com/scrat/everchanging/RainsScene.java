@@ -16,6 +16,11 @@ final class RainsScene extends Scene implements Rain.FinishCallback {
         rain.registerCallBack(this);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return rain.objects.objectsInUseCount() != 0 || ripple.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         rain.update(createObject);
         ripple.update();

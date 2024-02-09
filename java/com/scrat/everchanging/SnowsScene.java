@@ -14,6 +14,11 @@ final class SnowsScene extends Scene {
     }
 
     @Override
+    public boolean hasObjectsInUse() {
+        return show.objects.objectsInUseCount() != 0;
+    }
+
+    @Override
     public void setupPosition(
             final int width,
             final int height,

@@ -7,6 +7,8 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 public abstract class Scene {
 
+    public static final int MINIMUM_FPS = 20;
+
     //    public enum Types       {DEFAULT, BACKGROUND, CRYSTALBLICK, FIREFLIES, DANDELIONS, RAIN, BUTTERFLIES, BATS, EYES, FAIRIES, FIREWORKS, HEARTS, LEAVES, PETALS, SNOW, VALENTINES};
     public enum ShortTypes {DF, BG, CB, FF, D, R, B, BA, E, F, FW, H, L, P, S, V, TB}
 
@@ -18,6 +20,12 @@ public abstract class Scene {
     Scene(final ShortTypes type) {
         sceneType = type;
     }
+
+    public int getFps() {
+        return MINIMUM_FPS;
+    }
+
+    public abstract boolean hasObjectsInUse();
 
     public abstract void setupPosition(int width, int height, float ratio, int displayRotation);
 
