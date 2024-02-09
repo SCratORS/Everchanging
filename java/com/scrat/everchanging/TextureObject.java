@@ -1,15 +1,17 @@
 package com.scrat.everchanging;
+
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.Random;
 
-public class TextureObject {
-    String vs_Image =
+class TextureObject {
+    private static final String vs_Image =
             "uniform mat4 uMVPMatrix;" +
                     "attribute vec4 vPosition;" +
                     "attribute vec2 a_texCord;" +
@@ -19,7 +21,7 @@ public class TextureObject {
                     "  gl_Position = uMVPMatrix * vPosition;" +
                     "}";
 
-    String fs_Image =
+    private static final String fs_Image =
             "precision mediump float;" +
                     "varying vec2 v_texCord;" +
                     "uniform sampler2D s_texture;" +
@@ -31,7 +33,7 @@ public class TextureObject {
                     "void main() {" +
                     "  vec4 textureColor = texture2D(s_texture, v_texCord);" +
                     "  textureColor = clamp(((((textureColor * MultiTerm + AddTerm) / 256.0) * ViewMultiTerm + ViewAddTerm) / 256.0) , 0.0, 1.0);" +
-                    "  textureColor.a = textureColor.a * alpha;"+
+                    "  textureColor.a = textureColor.a * alpha;" +
                     "  gl_FragColor = textureColor;" +
                     "}";
 
@@ -59,40 +61,41 @@ public class TextureObject {
     public final int mTexCordHandle;
     public final short[] indices = new short[]{0, 1, 2, 0, 2, 3}; //Описание вершин 2-х треугольников для построения прямоугольника
     public final ShortBuffer drawListBuffer; // Буффер описания вершин для рендера прямоугольника
-    public final  FloatBuffer uvBuffer;
+    public final FloatBuffer uvBuffer;
     public final TextureManager textureManager;
-    Random random = new Random();
-    TextureObject(Context context, String[][] textureList, float[][] pivotList) {
+    final Random random = new Random();
+
+    TextureObject(final Context context, final String[][] textureList, final float[][] pivotList) {
         textureManager = new TextureManager(context, textureList, pivotList);
-        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vs_Image);
-        int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fs_Image);
+        final int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vs_Image);
+        final int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fs_Image);
         mProgramHandle = GLES20.glCreateProgram();
         GLES20.glAttachShader(mProgramHandle, vertexShader);
         GLES20.glAttachShader(mProgramHandle, fragmentShader);
         GLES20.glLinkProgram(mProgramHandle);
         GLES20.glUseProgram(mProgramHandle);
 
-        mMultiTermHandle = GLES20.glGetUniformLocation (mProgramHandle, "MultiTerm" );
-        mAddTermHandle = GLES20.glGetUniformLocation (mProgramHandle, "AddTerm" );
-        mViewMultiTermHandle = GLES20.glGetUniformLocation (mProgramHandle, "ViewMultiTerm" );
-        mViewAddTermHandle = GLES20.glGetUniformLocation (mProgramHandle, "ViewAddTerm" );
-        mAlpha = GLES20.glGetUniformLocation (mProgramHandle, "alpha" );
+        mMultiTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "MultiTerm");
+        mAddTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "AddTerm");
+        mViewMultiTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "ViewMultiTerm");
+        mViewAddTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "ViewAddTerm");
+        mAlpha = GLES20.glGetUniformLocation(mProgramHandle, "alpha");
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramHandle, "uMVPMatrix");
-        mTexture = GLES20.glGetUniformLocation (mProgramHandle, "s_texture" );
+        mTexture = GLES20.glGetUniformLocation(mProgramHandle, "s_texture");
         mPositionHandle = GLES20.glGetAttribLocation(mProgramHandle, "vPosition");
-        mTexCordHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_texCord" );
+        mTexCordHandle = GLES20.glGetAttribLocation(mProgramHandle, "a_texCord");
 
-        ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
+        final ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
         dlb.order(ByteOrder.nativeOrder());
         drawListBuffer = dlb.asShortBuffer();
         drawListBuffer.put(indices);
         drawListBuffer.position(0);
 
-        ByteBuffer bbb = ByteBuffer.allocateDirect(32);
+        final ByteBuffer bbb = ByteBuffer.allocateDirect(32);
         bbb.order(ByteOrder.nativeOrder());
 
         uvBuffer = bbb.asFloatBuffer();
-        float[] uvs_0   = new float[]{0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f};
+        final float[] uvs_0 = new float[]{0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f};
         uvBuffer.put(uvs_0);
         uvBuffer.position(0);
 
@@ -100,7 +103,7 @@ public class TextureObject {
         resetMatrix();
     }
 
-    void resetMatrix(){
+    void resetMatrix() {
         Matrix.setIdentityM(rotateMatrix, 0);
         Matrix.setIdentityM(scaleMatrix, 0);
         Matrix.setIdentityM(translateMatrix, 0);
@@ -113,8 +116,8 @@ public class TextureObject {
         //Сначала берем видовую матрицу поворота  и умножаем её на видовую матрицу увеличения
         //Затем получившийся результат умножаем на видовую матрицу перемещения.
         //                Результат         На что умножаем         Что умножаем
-        Matrix.multiplyMM(sceneMatrix, 0, scaleMatrix, 0,rotateMatrix, 0);
-        Matrix.multiplyMM(sceneMatrix, 0, translateMatrix, 0,sceneMatrix, 0);
+        Matrix.multiplyMM(sceneMatrix, 0, scaleMatrix, 0, rotateMatrix, 0);
+        Matrix.multiplyMM(sceneMatrix, 0, translateMatrix, 0, sceneMatrix, 0);
         //Сначала берется матрица поворота, что бы указать угол поворота сцены
         //Затем умножаем на матрицу увеличения, тут в принципе не важно какая первая какая вторая.
         //И только после этого, умножаем на матрицу положения. Тогда объект всегда будет появляться
@@ -123,14 +126,14 @@ public class TextureObject {
     }
 
 
-    private int loadShader(int type, String shaderCode){
-        int shader = GLES20.glCreateShader(type);
+    private int loadShader(final int type, final String shaderCode) {
+        final int shader = GLES20.glCreateShader(type);
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
         return shader;
     }
 
-    protected void setupPosition(int width, int height, float ratio) {
+    void setupPosition(final int width, final int height, final float ratio) {
         this.width = width;
         this.height = height;
         this.ratio = ratio;

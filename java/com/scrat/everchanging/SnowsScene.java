@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.Calendar;
 
-public class SnowsScene extends Scene{
+final class SnowsScene extends Scene {
 
     private final Snow show;
 
@@ -13,7 +13,13 @@ public class SnowsScene extends Scene{
         show = new Snow(context, calendar);
     }
 
-    public void setupPosition(int width, int height, float ratio, int displayRotation) {
+    @Override
+    public void setupPosition(
+            final int width,
+            final int height,
+            final float ratio,
+            final int displayRotation
+    ) {
         super.createProjectMatrix(width, height, displayRotation);
         show.setupPosition(width, height, ratio);
     }
@@ -22,6 +28,7 @@ public class SnowsScene extends Scene{
         show.update(createObject);
     }
 
+    @Override
     public void render() {
         super.render(show);
     }

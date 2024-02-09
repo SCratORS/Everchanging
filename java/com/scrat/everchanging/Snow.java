@@ -6,17 +6,22 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 import java.util.Calendar;
 
-public class Snow extends TextureObject{
+final class Snow extends TextureObject {
 
-    static private final String[][] textureList = {{"shape_29", "shape_30", "shape_31", "shape_32", "shape_33", "shape_34",
-            "shape_35", "shape_36", "shape_37", "shape_38", "shape_7", "shape_39", "shape_40", "shape_41",
-            "shape_42", "shape_43", "shape_44", "shape_5"}};
+    private static final String[][] textureList = {
+            {
+                    "shape_29", "shape_30", "shape_31", "shape_32", "shape_33", "shape_34",
+                    "shape_35", "shape_36", "shape_37", "shape_38", "shape_7", "shape_39",
+                    "shape_40", "shape_41", "shape_42", "shape_43", "shape_44", "shape_5"
+            }
+    };
 
     private final String[] AnimateTextureFrames = {
             "shape_29", "shape_29", "shape_29", "shape_29", "shape_29", "shape_29", "shape_30", "shape_31",
             "shape_32", "shape_33", "shape_34", "shape_35", "shape_36", "shape_37", "shape_38", "shape_7",
             "shape_39", "shape_40", "shape_41", "shape_42", "shape_43", "shape_44", "shape_5"
     };
+
     private final float[][] AnimatedTextureMatrix = {
             {1.0000f, 1.0000f, 0.0000f, 0.0000f, 180f, 0f},
             {1.0000f, 1.0000f, 0.0000f, 0.0000f, 179.5f, 0f},
@@ -99,9 +104,11 @@ public class Snow extends TextureObject{
             {1.0000f, 1.0000f, 0.0000f, 0.0000f, 179.6f, 0f},
             {1.0000f, 1.0000f, 0.0000f, 0.0000f, 180.0f, 0f}
     };
-    private final float translate_x = 7.35f;
-    private final float translate_y = 12.65f;
-    private final float[][][] colorTransform = {
+
+    private static final float translate_x = 7.35f;
+    private static final float translate_y = 12.65f;
+
+    private static final float[][][] colorTransform = {
             //{redMultiTerm, greenMultiTerm, blueMultiTerm, alphaMultiTerm},{redAddTerm, greenAddTerm, blueAddTerm, alphaAddTerm}
             {{256, 256, 256, 256}, {0, 0, 0, 0}},
             {{256, 256, 256, 255}, {0, 0, 0, 0}},
@@ -141,60 +148,65 @@ public class Snow extends TextureObject{
             {{256, 256, 256, 0}, {0, 0, 0, 0}}
     };
 
+    private static final int MAX_FRAMES = 8;
+
     private final Calendar calendar;
 
-    int frameCounter = 0;
-    int maxFrames = 8;
-    int numClips = minObjects;
-    boolean init = false;
-    int heightMax = 0;
+    private int frameCounter = 0;
+    private int numClips = minObjects;
+    private boolean init = false;
+    private int heightMax = 0;
 
-    public Snow (final Context context, final Calendar calendar) {
-        super(context, textureList,null);
+    Snow(final Context context, final Calendar calendar) {
+        super(context, textureList, null);
         this.calendar = calendar;
     }
 
     private boolean get0404() {
         heightMax = (int) (height * 0.5f) + colorTransform.length + 10;
-        int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        return (currentMonth==4) && (currentDay==4);
+        final int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        final int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        return (currentMonth == 4) && (currentDay == 4);
     }
 
 
     private void createObject() {
         if (objects.objectsInUseCount() >= numClips) return;
 
-        int _yscale = random.nextInt(10) + 12;
-        int indexTexture = (int) (_yscale + 0.5f);
-        int texture = textureManager.getTextureIndex(AnimateTextureFrames[indexTexture]);
+        final int _yscale = random.nextInt(10) + 12;
+        final int indexTexture = (int) (_yscale + 0.5f);
+        final int texture = textureManager.getTextureIndex(AnimateTextureFrames[indexTexture]);
 
         final Object object = objects.obtain(textureManager.getTexture(texture), 1.0f);
-        object.setObjectScale(1.0f/textureManager.dipToPixels(1));
+        object.setObjectScale(1.0f / textureManager.dipToPixels(1));
         resetObject(object);
     }
 
-    private void resetObject(Object object) {
-        int _x = random.nextInt(width + height) - height;
+    private void resetObject(final Object object) {
+        final int _x = random.nextInt(width + height) - height;
         float _y = (height - 140) - ((heightMax - colorTransform.length) * translate_y * 0.12f /* умножить на минимальный sale*/);
         _y -= (random.nextInt(10) - 30);
-        int _yscale = random.nextInt(10) + 12;
-        int indexTexture = (int) (_yscale + 0.5f);
-        int texture = textureManager.getTextureIndex(AnimateTextureFrames[indexTexture]);
+
+        final int _yscale = random.nextInt(10) + 12;
+        final int indexTexture = (int) (_yscale + 0.5f);
+        final int texture = textureManager.getTextureIndex(AnimateTextureFrames[indexTexture]);
+
         object.setTexture(textureManager.getTexture(texture), 1.0f);
         object.resetMatrix();
         object.resetViewMatrix();
         object.setViewScale(_yscale, _yscale);
+
         if (indexTexture == 17) object.setScale(0.754f, 0.754f);
-        object.setViewPosition(_x,  _y);
-        object.setAplpha((int) (_yscale*4.5f));
+        object.setViewPosition(_x, _y);
+        object.setAplpha((int) (_yscale * 4.5f));
         object.frameCounter = 0;
         object.animCounter = 0;
     }
 
-    public void update(boolean createObject) {
-        frameCounter = (frameCounter+1) % maxFrames;
-        if (!init && createObject) numClips = (int) (ratio * 2 * (get0404()?maxObjects:(minObjects + random.nextInt(maxObjects - 4))));
+    void update(final boolean createObject) {
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
+        if (!init && createObject)
+            numClips = (int) (ratio * 2 * (get0404() ? maxObjects : (minObjects + random.nextInt(maxObjects - 4))));
         init = createObject;
 
         if (createObject && (frameCounter == 2)) createObject();
@@ -206,15 +218,15 @@ public class Snow extends TextureObject{
             final Object object = iterator.next();
             object.resetMatrix();
             object.setTransform(AnimatedTextureMatrix[object.animCounter]);
-            if (object.frameCounter < heightMax - colorTransform.length ) {
+            if (object.frameCounter < heightMax - colorTransform.length) {
                 object.setColorTransform(colorTransform[0]);
                 object.setTranslate(translate_x * object.frameCounter, translate_y * object.frameCounter);
-                object.animCounter = (object.animCounter+1) % AnimatedTextureMatrix.length;
+                object.animCounter = (object.animCounter + 1) % AnimatedTextureMatrix.length;
             } else {
                 object.setTranslate(translate_x * (heightMax - colorTransform.length), translate_y * (heightMax - colorTransform.length));
                 object.setColorTransform(colorTransform[object.frameCounter - (heightMax - colorTransform.length)]);
             }
-            object.frameCounter = (object.frameCounter+1 ) % heightMax;
+            object.frameCounter = (object.frameCounter + 1) % heightMax;
 
             if (object.frameCounter == 0) {
                 if (createObject) resetObject(object);
