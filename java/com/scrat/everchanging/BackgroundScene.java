@@ -22,6 +22,11 @@ final class BackgroundScene extends Scene {
         foreground = new Foreground(context);
     }
 
+    @Override
+    public int getFps() {
+        return 1;
+    }
+
     private void GetDateTime() {
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);

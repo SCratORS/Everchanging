@@ -19,6 +19,10 @@ public abstract class Scene {
         sceneType = type;
     }
 
+    public int getFps() {
+        return 20;
+    }
+
     public abstract void setupPosition(int width, int height, float ratio, int displayRotation);
 
     public abstract void render();
