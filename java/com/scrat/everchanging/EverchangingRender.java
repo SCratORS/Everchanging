@@ -19,6 +19,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
@@ -121,7 +122,11 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
     private boolean pause;
 
+    private boolean downTap;
+
     private final ArrayList<Scene> scenes = new ArrayList<>();
+
+    private float posX, posY;
 
     /**
      * Optimization not to recompute time in Calendar on every {@link #update}.
@@ -136,6 +141,19 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
     void onDestroy() {
         scenes.clear();
+    }
+
+    void onTouchEvent(MotionEvent motionEvent) {
+        final int pointerCount = motionEvent.getPointerCount()-1;
+        posX = motionEvent.getX(pointerCount);
+        posY = motionEvent.getY(pointerCount);
+
+        if(motionEvent.getAction() == 0){
+            downTap = true;
+        }
+        else if (motionEvent.getAction() == 1) {
+            downTap = false;
+        }
     }
 
     @Override
@@ -161,6 +179,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         scenes.add(new HeartsScene(context, calendar));
         scenes.add(new ValentinesScene(context));
         scenes.add(new FairiesScene(context));
+        scenes.add(new TouchBlickScene(context));
 
         GLES20.glReleaseShaderCompiler();
     }
@@ -195,10 +214,10 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
                 case H: ((HeartsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;         /*complete 100% 640/480+ */
                 case V: ((ValentinesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;     /*complete 100% 640/480+ */
                 case F: ((FairiesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;        /*complete 99% 640/480+ надо добавить учитывание позиции генерации в зависимости от выбора анимации*/
+                case TB: ((TouchBlickScene) scene).setupPosition(surfaceWidth, surfaceHeight, 240.0f/width, displayRotation); break;
             }
         }
     }
-
 
     private Scene.ShortTypes getAnim() {
         int currentMonth = calendar.get(Calendar.MONTH);
@@ -232,6 +251,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
                     case H: ((HeartsScene) scene).update(createObject); break;
                     case V: ((ValentinesScene) scene).update(createObject); break;
                     case F: ((FairiesScene) scene).update(createObject); break;
+                    case TB: ((TouchBlickScene) scene).update(downTap, posX, posY); break;
                 }
             }
 
@@ -272,6 +292,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
                 case H: ((HeartsScene) scene).render(); break;
                 case V: ((ValentinesScene) scene).render(); break;
                 case F: ((FairiesScene) scene).render(); break;
+                case TB: ((TouchBlickScene) scene).render(); break;
             }
         }
         GLES20.glFinish();

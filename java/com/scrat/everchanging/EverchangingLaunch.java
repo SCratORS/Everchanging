@@ -1,6 +1,5 @@
 package com.scrat.everchanging;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ComponentName;

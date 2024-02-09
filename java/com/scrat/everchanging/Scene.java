@@ -8,7 +8,7 @@ import com.scrat.everchanging.util.ReusableIterator;
 public class Scene {
 
     //    public enum Types       {DEFAULT, BACKGROUND, CRYSTALBLICK, FIREFLIES, DANDELIONS, RAIN, BUTTERFLIES, BATS, EYES, FAIRIES, FIREWORKS, HEARTS, LEAVES, PETALS, SNOW, VALENTINES};
-    public enum ShortTypes  {DF, BG, CB, FF, D, R, B, BA, E, F, FW, H, L, P, S, V}
+    public enum ShortTypes  {DF, BG, CB, FF, D, R, B, BA, E, F, FW, H, L, P, S, V, TB}
     public ShortTypes sceneType;
     int width;
     int height;
