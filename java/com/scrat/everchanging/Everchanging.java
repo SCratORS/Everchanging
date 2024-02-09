@@ -102,6 +102,7 @@ abstract class EverchangingWallpaperService extends WallpaperService {
                     glSurfaceView.onPause();
                     paused = true;
                 }
+                mRender.setPause(paused);
             }
         }
 
@@ -132,10 +133,8 @@ abstract class EverchangingWallpaperService extends WallpaperService {
 
         void doDrawFrame(){
             handler.removeCallbacks(mDrawRender);
-            if(!paused){
-                handler.postDelayed(mDrawRender, 1000 / FPS);
-                glSurfaceView.requestRender();
-            }
+            handler.postDelayed(mDrawRender, 1000 / (paused?1:FPS));
+            glSurfaceView.requestRender();
         }
     }
 }
