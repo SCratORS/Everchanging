@@ -7,6 +7,8 @@ import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
 
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 public class Everchanging extends OpenGLES2WallpaperService{
@@ -38,21 +40,18 @@ abstract class OpenGLES2WallpaperService extends EverchangingWallpaperService {
                 setRenderer(getNewRenderer(getContext()));
             }
         }
-
-
     }
     abstract GLSurfaceView.Renderer getNewRenderer(Context context);
 }
 
 abstract class EverchangingWallpaperService extends WallpaperService {
-
+    private GestureDetector gestureDetector;
     @Override
     public Engine onCreateEngine() {
         return new GLEngine();
     }
 
-    public class GLEngine extends Engine {
-
+    public class GLEngine extends Engine{
         class WallpaperGLSurfaceView extends GLSurfaceView {
             WallpaperGLSurfaceView(Context context) {
                 super(context);
@@ -87,19 +86,19 @@ abstract class EverchangingWallpaperService extends WallpaperService {
             glSurfaceView = new WallpaperGLSurfaceView(getContext());
         }
 
-
-
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (rendererHasBeenSet) {
                 if (visible) {
                     glSurfaceView.onResume();
+                    gestureDetector = new GestureDetector(getContext(), new GestureListener());
                     if (paused) mRender.forceUpdateCalendar();
                     paused = false;
                     doDrawFrame(); // запускаем рендеринг
                 } else {
                     glSurfaceView.onPause();
+                    gestureDetector = null;
                     paused = true;
                 }
                 mRender.setPause(paused);
@@ -130,6 +129,15 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         void setEGLContextClientVersion() {
             glSurfaceView.setEGLContextClientVersion(2);
         }
+
+        @Override
+        public void onTouchEvent(MotionEvent event) {
+            super.onTouchEvent(event);
+            if (gestureDetector != null) gestureDetector.onTouchEvent(event);
+            mRender.onTouchEvent(event);
+        }
+
+        private class GestureListener extends GestureDetector.SimpleOnGestureListener {}
 
         void doDrawFrame(){
             handler.removeCallbacks(mDrawRender);

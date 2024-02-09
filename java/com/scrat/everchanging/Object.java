@@ -200,11 +200,6 @@ public class Object {
 
     }
 
-/*
-    void setRotateSkew(float angleX, float angleY) {
-        Matrix.setRotateM(rotateSkewMatrix, 0, 45, 0f, 0f, 1f);
-    }
-*/
     void setTransform(float[] transform) {
         transformMatrix = transform;
         Arrays.fill(tmpTransformMatrix,0);
@@ -235,7 +230,6 @@ public class Object {
 
     public void setupPosition() {
     }
-
     public float[] calculateMatrix() {
         //!!!Важна последовательность умножения!!!!
         //т.е. для примера 0 * 1 = 0, но 1 * 0 = 1
