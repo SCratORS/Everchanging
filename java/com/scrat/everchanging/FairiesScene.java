@@ -18,6 +18,11 @@ final class FairiesScene extends Scene implements Fairy.CreatorCallback, Fly.Cry
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         return crystal.objects.objectsInUseCount() != 0 ||
                 fairy.objects.objectsInUseCount() != 0 ||
