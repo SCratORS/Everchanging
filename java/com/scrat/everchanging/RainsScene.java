@@ -17,6 +17,11 @@ final class RainsScene extends Scene implements Rain.FinishCallback {
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         return rain.objects.objectsInUseCount() != 0 || ripple.objects.objectsInUseCount() != 0;
     }
