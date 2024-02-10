@@ -22,6 +22,8 @@ import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
+import com.scrat.everchanging.scheduler.FrameScheduler;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -118,13 +120,18 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
     // @formatter:on
 
+    private static final int FPS = 20;
+
     private static final int UPDATE_CALENDAR_DELAY_MILLIS = 40000;
 
     private final Calendar calendar = Calendar.getInstance();
 
     private final Context context;
 
-    private boolean pause;
+    private final FrameScheduler frameScheduler;
+
+    // Volatile because can be set from both render thread or main thread (Service onDestroy)
+    private volatile boolean visible;
 
     private boolean downTap;
 
@@ -139,8 +146,9 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
      */
     private long lastCalendarUpdateTimeMillis = SystemClock.uptimeMillis();
 
-    EverchangingRender(Context context) {
+    EverchangingRender(final Context context, final FrameScheduler frameScheduler) {
         this.context = context;
+        this.frameScheduler = frameScheduler;
     }
 
     void onDestroy() {
@@ -301,24 +309,54 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         calendar.setTimeInMillis(System.currentTimeMillis());
     }
 
-    void setPause(boolean p) {
-        pause = p;
+    void setVisible(final boolean visible) {
+        this.visible = visible;
     }
 
     void render() {
-        if (pause) return;
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-        //todo draw
-        final int scenesSize = scenes.size();
-        for (int i = 0; i < scenesSize; i++) {
-            scenes.get(i).render();
+        if (visible) {
+            GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+            final int scenesSize = scenes.size();
+            for (int i = 0; i < scenesSize; i++) {
+                scenes.get(i).render();
+            }
+            GLES20.glFinish();
         }
-        GLES20.glFinish();
     }
 
     @Override
     public void onDrawFrame(final GL10 gl) {
+        final long startTime = SystemClock.uptimeMillis();
+
         update();
         render();
+
+        scheduleNextFrame(SystemClock.uptimeMillis() - startTime);
+    }
+
+    /**
+     * To avoid race conditions we must schedule next frame only after previous frame has finished
+     * rendering. Otherwise, if you try to schedule faster then it can draw you will get render
+     * freezes. This happened when I tried to schedule butterflies at 60 FPS on Emulator. The
+     * service was requesting render sooner than old renderings could finish and there was a visible
+     * delay of a  few seconds for render thread to catch up.
+     * <br/><br/>
+     * The other problem this solves is inconsistent FPS. If any frame took longer to render it will
+     * be accounted for when scheduling next frame.
+     */
+    private void scheduleNextFrame(final long previousFrameRenderTime) {
+        final long scheduledDelay;
+        if (visible) {
+            scheduledDelay = 1000 / FPS - previousFrameRenderTime;
+        } else {
+            // 1 FPS when not visible
+            scheduledDelay = 1000;
+        }
+
+        if (scheduledDelay < 0) {
+            frameScheduler.scheduleNextFrame(0);
+        } else {
+            frameScheduler.scheduleNextFrame(scheduledDelay);
+        }
     }
 }
