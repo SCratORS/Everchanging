@@ -12,6 +12,11 @@ final class TouchBlickScene extends Scene {
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         // Always return false so that TouchBlick visibility does not affect other scenes FPS
         return false;
