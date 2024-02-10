@@ -124,8 +124,6 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
 
     private final Context context;
 
-    private boolean pause;
-
     private boolean downTap;
 
     private final ArrayList<Scene> scenes = new ArrayList<>();
@@ -293,20 +291,11 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         if (SystemClock.uptimeMillis() >=
                 lastCalendarUpdateTimeMillis + UPDATE_CALENDAR_DELAY_MILLIS) {
             lastCalendarUpdateTimeMillis = SystemClock.uptimeMillis();
-            forceUpdateCalendar();
+            calendar.setTimeInMillis(System.currentTimeMillis());
         }
     }
 
-    void forceUpdateCalendar() {
-        calendar.setTimeInMillis(System.currentTimeMillis());
-    }
-
-    void setPause(boolean p) {
-        pause = p;
-    }
-
     void render() {
-        if (pause) return;
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         //todo draw
         final int scenesSize = scenes.size();

@@ -79,7 +79,7 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         private WallpaperGLSurfaceView glSurfaceView;
         private boolean rendererHasBeenSet;
         private EverchangingRender mRender;
-        boolean paused = false;
+
         private final Handler handler = new Handler();
         private final Runnable mDrawRender = this::doDrawFrame;
 
@@ -98,15 +98,12 @@ abstract class EverchangingWallpaperService extends WallpaperService {
                 if (visible) {
                     glSurfaceView.onResume();
                     gestureDetector = new GestureDetector(getContext(), new GestureListener());
-                    if (paused) mRender.forceUpdateCalendar();
-                    paused = false;
                     doDrawFrame(); // запускаем рендеринг
                 } else {
+                    handler.removeCallbacks(mDrawRender);
                     glSurfaceView.onPause();
                     gestureDetector = null;
-                    paused = true;
                 }
-                mRender.setPause(paused);
             }
         }
 
@@ -114,7 +111,7 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         public void onDestroy() {
             try {
                 super.onDestroy(); //NullPointerException
-                paused = true;
+                handler.removeCallbacks(mDrawRender);
                 glSurfaceView.onDestroy();
                 mRender.onDestroy();
             } catch (Exception ignore) {
@@ -148,7 +145,7 @@ abstract class EverchangingWallpaperService extends WallpaperService {
 
         void doDrawFrame() {
             handler.removeCallbacks(mDrawRender);
-            handler.postDelayed(mDrawRender, 1000 / (paused ? 1 : FPS));
+            handler.postDelayed(mDrawRender, 1000 / FPS);
             glSurfaceView.requestRender();
         }
     }
