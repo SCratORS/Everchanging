@@ -10,51 +10,32 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-public final class Everchanging extends OpenGLES2WallpaperService {
+import com.scrat.everchanging.scheduler.FrameScheduler;
 
-    @Override
-    GLSurfaceView.Renderer getNewRenderer(final Context context) {
-        return new EverchangingRender(context);
-    }
-}
-
-abstract class OpenGLES2WallpaperService extends EverchangingWallpaperService {
-
-    @Override
-    public Engine onCreateEngine() {
-        return new OpenGLES2Engine();
-    }
-
-    class OpenGLES2Engine extends Everchanging.GLEngine {
-
-        @Override
-        public void onSurfaceCreated(SurfaceHolder surfaceHolder) {
-            super.onSurfaceCreated(surfaceHolder);
-            final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            assert activityManager != null;
-            final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
-            final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
-            if (supportsEs2) {
-                setEGLContextClientVersion();
-                setPreserveEGLContextOnPause();
-                setRenderer(getNewRenderer(getContext()));
-            }
-        }
-    }
-
-    abstract GLSurfaceView.Renderer getNewRenderer(Context context);
-}
-
-abstract class EverchangingWallpaperService extends WallpaperService {
-
-    private GestureDetector gestureDetector;
+public final class Everchanging extends WallpaperService {
 
     @Override
     public Engine onCreateEngine() {
         return new GLEngine();
     }
 
-    public class GLEngine extends Engine {
+    private class GLEngine extends Engine {
+
+        private final FrameScheduler frameScheduler = new FrameScheduler() {
+
+            @Override
+            public void scheduleNextFrame(final long delayMillis) {
+                if (visible) {
+                    handler.removeCallbacks(mDrawRender);
+                    handler.postDelayed(mDrawRender, delayMillis);
+                }
+            }
+        };
+
+        private final EverchangingRender renderer = new EverchangingRender(
+                getContext(),
+                frameScheduler
+        );
 
         final class WallpaperGLSurfaceView extends GLSurfaceView {
 
@@ -73,48 +54,69 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         }
 
         Context getContext() {
-            return EverchangingWallpaperService.this;
+            return Everchanging.this;
         }
 
+        private GestureDetector gestureDetector;
         private WallpaperGLSurfaceView glSurfaceView;
         private boolean rendererHasBeenSet;
         private EverchangingRender mRender;
-        boolean paused = false;
-        private final Handler handler = new Handler();
-        private final Runnable mDrawRender = this::doDrawFrame;
 
-        private static final int FPS = 20;  // кадров в секунду
+        // Volatile because can be set from both render thread or main thread (Service onDestroy)
+        private volatile boolean visible;
+
+        private final Handler handler = new Handler();
+        private final Runnable mDrawRender = new Runnable() {
+            @Override
+            public void run() {
+                glSurfaceView.requestRender();
+            }
+        };
 
         @Override
         public void onSurfaceCreated(final SurfaceHolder surfaceHolder) {
             super.onSurfaceCreated(surfaceHolder);
             glSurfaceView = new WallpaperGLSurfaceView(getContext());
+
+            final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            assert activityManager != null;
+            final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
+            final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
+            if (supportsEs2) {
+                setEGLContextClientVersion();
+                setPreserveEGLContextOnPause();
+                setRenderer(renderer);
+            }
         }
 
         @Override
         public void onVisibilityChanged(final boolean visible) {
             super.onVisibilityChanged(visible);
             if (rendererHasBeenSet) {
+                this.visible = visible;
                 if (visible) {
                     glSurfaceView.onResume();
                     gestureDetector = new GestureDetector(getContext(), new GestureListener());
-                    if (paused) mRender.forceUpdateCalendar();
-                    paused = false;
-                    doDrawFrame(); // запускаем рендеринг
+                    frameScheduler.scheduleNextFrame(0); // запускаем рендеринг
                 } else {
                     glSurfaceView.onPause();
                     gestureDetector = null;
-                    paused = true;
                 }
-                mRender.setPause(paused);
+                mRender.setVisible(visible);
             }
         }
 
         @Override
+        public void onSurfaceDestroyed(final SurfaceHolder holder) {
+            super.onSurfaceDestroyed(holder);
+            visible = false;
+        }
+
+        @Override
         public void onDestroy() {
+            visible = false;
             try {
                 super.onDestroy(); //NullPointerException
-                paused = true;
                 glSurfaceView.onDestroy();
                 mRender.onDestroy();
             } catch (Exception ignore) {
@@ -144,12 +146,6 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         }
 
         private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
-        }
-
-        void doDrawFrame() {
-            handler.removeCallbacks(mDrawRender);
-            handler.postDelayed(mDrawRender, 1000 / (paused ? 1 : FPS));
-            glSurfaceView.requestRender();
         }
     }
 }
