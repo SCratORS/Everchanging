@@ -6,7 +6,7 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 import java.util.Calendar;
 
-public class Dandelion extends TextureObject {
+final class Dandelion extends TextureObject {
 
     private final float[][] matrixTransform = {
             // scaleX, scaleY, rotateSkew0, rotateSkew1,translateX, translateY
@@ -210,17 +210,30 @@ public class Dandelion extends TextureObject {
             {0.15f, 0.15f, 0.0000f, 0.0000f, 968.85f, -513.55f}
     };
 
-    static private final String[][] textureList = {{"shape_107", "shape_108", "shape_109", "shape_110", "shape_111", "shape_112",
-            "shape_113", "shape_114", "shape_115", "shape_116", "shape_117", "shape_118", "shape_119", "shape_120",
-            "shape_121", "shape_122", "shape_123", "shape_124", "shape_125", "shape_126", "shape_127", "shape_128",
-            "shape_129", "shape_130", "shape_131", "shape_132", "shape_133", "shape_134", "shape_135", "shape_136",
-            "shape_137", "shape_138", "shape_139", "shape_140", "shape_141", "shape_142"}};
-    static private final float[][] pivotList = {{259.15f, 167.95f}, {257.1f, 171.25f}, {255.1f, 174.35f}, {254.0f, 177.35f}, {253.8f, 180.2f}, {253.65f, 182.95f},
-            {257.0f, 185.5f}, {262.35f, 187.95f}, {267.75f, 190.25f}, {262.7f, 189.55f}, {257.7f, 188.9f}, {249.4f, 188.2f}, {248.15f, 187.55f}, {246.9f, 186.85f},
-            {245.65f, 186.2f}, {245.7f, 185.5f}, {245.8f, 184.85f}, {245.9f, 184.15f}, {243.7f, 182.35f}, {241.55f, 185.2f}, {239.35f, 188.1f}, {237.2f, 190.95f},
-            {235.0f, 193.8f}, {232.85f, 190.05f}, {234.25f, 186.3f}, {237.25f, 188.75f}, {240.3f, 192.65f}, {243.3f, 196.6f}, {244.5f, 191.2f}, {245.7f, 185.75f},
-            {246.9f, 180.2f}, {248.15f, 174.55f}, {249.4f, 168.8f}, {250.7f, 167.25f}, {252.0f, 165.9f}, {256.2f, 164.5f}};
-    private final float[][][] animationStartColor = {
+    static private final String[][] textureList = {
+            {
+                    "shape_107", "shape_108", "shape_109", "shape_110", "shape_111", "shape_112",
+                    "shape_113", "shape_114", "shape_115", "shape_116", "shape_117", "shape_118",
+                    "shape_119", "shape_120", "shape_121", "shape_122", "shape_123", "shape_124",
+                    "shape_125", "shape_126", "shape_127", "shape_128", "shape_129", "shape_130",
+                    "shape_131", "shape_132", "shape_133", "shape_134", "shape_135", "shape_136",
+                    "shape_137", "shape_138", "shape_139", "shape_140", "shape_141", "shape_142"
+            }
+    };
+
+    private static final float[][] pivotList = {
+            {259.15f, 167.95f}, {257.1f, 171.25f}, {255.1f, 174.35f}, {254.0f, 177.35f},
+            {253.8f, 180.2f}, {253.65f, 182.95f}, {257.0f, 185.5f}, {262.35f, 187.95f},
+            {267.75f, 190.25f}, {262.7f, 189.55f}, {257.7f, 188.9f}, {249.4f, 188.2f},
+            {248.15f, 187.55f}, {246.9f, 186.85f}, {245.65f, 186.2f}, {245.7f, 185.5f},
+            {245.8f, 184.85f}, {245.9f, 184.15f}, {243.7f, 182.35f}, {241.55f, 185.2f},
+            {239.35f, 188.1f}, {237.2f, 190.95f}, {235.0f, 193.8f}, {232.85f, 190.05f},
+            {234.25f, 186.3f}, {237.25f, 188.75f}, {240.3f, 192.65f}, {243.3f, 196.6f},
+            {244.5f, 191.2f}, {245.7f, 185.75f}, {246.9f, 180.2f}, {248.15f, 174.55f},
+            {249.4f, 168.8f}, {250.7f, 167.25f}, {252.0f, 165.9f}, {256.2f, 164.5f}
+    };
+
+    private static final float[][][] animationStartColor = {
             //{redMultiTerm, greenMultiTerm, blueMultiTerm, alphaMultiTerm},{redAddTerm, greenAddTerm, blueAddTerm, alphaAddTerm}
             {{0, 0, 0, 256}, {0, 0, 0, 0}},
             {{28, 28, 28, 256}, {0, 0, 0, 0}},
@@ -233,51 +246,59 @@ public class Dandelion extends TextureObject {
             {{228, 228, 228, 256}, {0, 0, 0, 0}},
             {{256, 256, 256, 256}, {0, 0, 0, 0}}
     };
+
+    private static final int MAX_FRAMES = 7;
+
     private final float[] animationStartPosition = {0.15f, 0.15f, 0.0000f, 0.0000f, 38.55f, 24.85f};
 
     private final Calendar calendar;
 
-    int frameCounter = 0;
-    int maxFrames = 7;
-    int numClips = minObjects;
-    boolean init = false;
-    float svgScale = 1.0f;
-    public Dandelion(Context context, final Calendar calendar) {
+    private int frameCounter = 0;
+    private int numClips = minObjects;
+    private boolean init = false;
+    private float svgScale = 1.0f;
+
+    Dandelion(final Context context, final Calendar calendar) {
         super(context, textureList, pivotList);
         this.calendar = calendar;
     }
 
     void createObject() {
         if (objects.objectsInUseCount() >= numClips) return;
-        int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
+
+        final int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
         final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
-        object.setObjectScale(1.0f/svgScale);
-        int _x = 0;
-        int _y = random.nextInt(height);
-        int _rotation = random.nextInt(30) - 15;
-        int _yscale = random.nextInt(90);
+        object.setObjectScale(1.0f / svgScale);
+
+        final int _x = 0;
+        final int _y = random.nextInt(height);
+        final int _rotation = random.nextInt(30) - 15;
+        final int _yscale = random.nextInt(90);
+
         object.index = (int) (_yscale / 10 + 0.5f);
         object.resetViewMatrix();
         object.setViewScale(_yscale, _yscale);
         object.setViewRotate(_rotation);
-        object.setViewPosition(_x,  _y);
+        object.setViewPosition(_x, _y);
         object.setColorTransform(animationStartColor[object.index]);
         object.animCounter = 0;
         object.frameCounter = 0;
-     }
+    }
 
     private boolean get1902() {
         svgScale = textureManager.dipToPixels(1);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        return (currentMonth==2) && (currentDay==19);
+        return (currentMonth == 2) && (currentDay == 19);
     }
 
-    public void update(boolean createObject) {
-        frameCounter = (frameCounter+1) % maxFrames;
-        if (!init && createObject)  numClips = get1902()?maxObjects:(minObjects + random.nextInt(maxObjects - 4));
+    void update(final boolean createObject) {
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
+        if (!init && createObject)
+            numClips = get1902() ? maxObjects : (minObjects + random.nextInt(maxObjects - 4));
         init = createObject;
-        if (createObject && frameCounter==2) createObject();
+
+        if (createObject && frameCounter == 2) createObject();
 
         final ReusableIterator<Object> iterator = objects.iterator();
         iterator.acquire();
@@ -288,8 +309,8 @@ public class Dandelion extends TextureObject {
             object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter])), 1.0f);
             object.setTransform(animationStartPosition);
             object.setTransform(matrixTransform[object.frameCounter]);
-            object.frameCounter = (object.frameCounter+1) % matrixTransform.length;
-            object.animCounter = (object.animCounter+1) % textureList[0].length;
+            object.frameCounter = (object.frameCounter + 1) % matrixTransform.length;
+            object.animCounter = (object.animCounter + 1) % textureList[0].length;
             if (!createObject && (object.frameCounter == 0)) iterator.remove();
         }
 

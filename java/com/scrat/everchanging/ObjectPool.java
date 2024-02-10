@@ -5,7 +5,7 @@ import com.scrat.everchanging.util.ReusableIterator;
 import java.util.ArrayList;
 import java.util.List;
 
-class ObjectPool {
+final class ObjectPool {
 
     private final UsedObjectsIterator usedObjectsIterator = new UsedObjectsIterator();
 

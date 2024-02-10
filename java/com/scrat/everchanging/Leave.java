@@ -6,22 +6,26 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 import java.util.Calendar;
 
-public class Leave extends TextureObject {
-    static private final String[][] textureList = {{
-            "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64", "shape_65", "shape_66",
-            "shape_67", "shape_68", "shape_69", "shape_70", "shape_71", "shape_72", "shape_73", "shape_74",
-            "shape_75", "shape_76", "shape_77", "shape_78", "shape_79", "shape_80", "shape_81", "shape_82",
-            "shape_83", "shape_84", "shape_85", "shape_86", "shape_87", "shape_88", "shape_89", "shape_90",
-            "shape_91", "shape_92", "shape_93", "shape_94", "shape_95", "shape_96", "shape_97",
-            "shape_99", "shape_100", "shape_101", "shape_102", "shape_103",
-            "shape_280", "shape_281", "shape_282", "shape_283", "shape_284", "shape_285", "shape_286", "shape_287",
-            "shape_288", "shape_289", "shape_290", "shape_291", "shape_292", "shape_293", "shape_294", "shape_295",
+final class Leave extends TextureObject {
+
+    private static final String[][] textureList = {{
+            "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64", "shape_65",
+            "shape_66", "shape_67", "shape_68", "shape_69", "shape_70", "shape_71", "shape_72",
+            "shape_73", "shape_74", "shape_75", "shape_76", "shape_77", "shape_78", "shape_79",
+            "shape_80", "shape_81", "shape_82", "shape_83", "shape_84", "shape_85", "shape_86",
+            "shape_87", "shape_88", "shape_89", "shape_90", "shape_91", "shape_92", "shape_93",
+            "shape_94", "shape_95", "shape_96", "shape_97", "shape_99", "shape_100", "shape_101",
+            "shape_102", "shape_103", "shape_280", "shape_281", "shape_282", "shape_283",
+            "shape_284", "shape_285", "shape_286", "shape_287", "shape_288", "shape_289",
+            "shape_290", "shape_291", "shape_292", "shape_293", "shape_294", "shape_295",
             "shape_296"}};
-    private final String[][] AnimateTextureList = {
+
+    private static final String[][] AnimateTextureList = {
             {
-                    "shape_280", "shape_281", "shape_282", "shape_283", "shape_284", "shape_285", "shape_286", "shape_287",
-                    "shape_288", "shape_289", "shape_290", "shape_291", "shape_292", "shape_293", "shape_294", "shape_295",
-                    "shape_296", "shape_99", "shape_100", "shape_101", "shape_102", "shape_103"
+                    "shape_280", "shape_281", "shape_282", "shape_283", "shape_284", "shape_285",
+                    "shape_286", "shape_287", "shape_288", "shape_289", "shape_290", "shape_291",
+                    "shape_292", "shape_293", "shape_294", "shape_295", "shape_296", "shape_99",
+                    "shape_100", "shape_101", "shape_102", "shape_103"
             },
             {
                     "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64", "shape_65", "shape_66",
@@ -40,7 +44,8 @@ public class Leave extends TextureObject {
                     "shape_65", "shape_66", "shape_67", "shape_68", "shape_69", "shape_70"
             }
     };
-    private final float[][][] AnimatedTextureMatrix = {
+
+    private static final float[][][] AnimatedTextureMatrix = {
             {
                     {1.0000f, 1.0000f, 0.0000f, 0.0000f, -5.05f, 6.05f},
                     {1.0000f, 1.0000f, 0.0000f, 0.0000f, -5.05f, 6.05f},
@@ -98,7 +103,8 @@ public class Leave extends TextureObject {
                     {0.0000f, 0.0000f, 0.0000f, 0.0000f, 0f, 0f}, {0.0000f, 0.0000f, 0.0000f, 0.0000f, 0f, 0f},
                     {0.0000f, 0.0000f, 0.0000f, 0.0000f, 0f, 0f}, {0.0000f, 0.0000f, 0.0000f, 0.0000f, 0f, 0f},
                     {0.0000f, 0.0000f, 0.0000f, 0.0000f, 0f, 0f}, {0.0000f, 0.0000f, 0.0000f, 0.0000f, 0f, 0f}
-            }, {
+            },
+            {
                     {0.09616f, 0.04999f, 0.0000f, 0.0000f, 21.75f, -140.05f},
                     {0.1034f, 0.0594f, 0.0000f, 0.0000f, 19.75f, -136.8f},
                     {0.1114f, 0.06982f, 0.0000f, 0.0000f, 17.35f, -133.35f},
@@ -209,7 +215,8 @@ public class Leave extends TextureObject {
                     {0.355f, 0.355f, 0.0000f, 0.0000f, 15.7f, 131.8f},
                     {0.3525f, 0.3525f, 0.0000f, 0.0000f, 10.4f, 135.55f},
                     {0.35f, 0.35f, 0.0000f, 0.0000f, 5.05f, 139.4f} //Frame 110
-            },{
+            },
+            {
                     {0.35f, 0.35f, 0.0000f, 0.0000f, 5.05f, -139.4f}, //Frame 110
                     {0.3525f, 0.3525f, 0.0000f, 0.0000f, 10.4f, -135.55f},
                     {0.355f, 0.355f, 0.0000f, 0.0000f, 15.7f, -131.8f},
@@ -322,107 +329,113 @@ public class Leave extends TextureObject {
                     {0.09616f, 0.04999f, 0.0000f, 0.0000f, 21.75f, 140.05f},
             }
     };
-    private final float[][] AnimatedColorTransform = {
+
+    private static final float[][] AnimatedColorTransform = {
             {512, 512, 512, 256}, {-200, -200, -200, 0}
     };
-    private final float[] matrixTransform = {1.0000f, 1.0000f, 0.0000f, 0.0000f, -21.6f, 139.3f};
 
-    private final float[][][] colorTransform = {
-            {{179, 179, 179, 256},{182, 77, 0, 0}},
-            {{178, 178, 178, 256},{182, 79, 1, 0}},
-            {{177, 177, 177, 256},{183, 81, 2, 0}},
-            {{176, 176, 176, 256},{183, 82, 2, 0}},
-            {{175, 175, 175, 256},{183, 84, 3, 0}},
-            {{174, 174, 174, 256},{184, 86, 4, 0}},
-            {{173, 173, 173, 256},{184, 88, 5, 0}},
-            {{172, 172, 172, 256},{184, 90, 5, 0}},
-            {{171, 171, 171, 256},{185, 92, 6, 0}},
-            {{170, 170, 170, 256},{185, 93, 7, 0}},
-            {{169, 169, 169, 256},{185, 95, 8, 0}},
-            {{168, 168, 168, 256},{186, 97, 9, 0}},
-            {{167, 167, 167, 256},{186, 99, 9, 0}},
-            {{166, 166, 166, 256},{186, 101, 10, 0}},
-            {{165, 165, 165, 256},{187, 102, 11, 0}},
-            {{164, 164, 164, 256},{187, 104, 12, 0}},
-            {{163, 163, 163, 256},{187, 106, 12, 0}},
-            {{162, 162, 162, 256},{188, 108, 13, 0}},
-            {{161, 161, 161, 256},{188, 110, 14, 0}},
-            {{160, 160, 160, 256},{188, 112, 15, 0}},
-            {{159, 159, 159, 256},{189, 113, 16, 0}},
-            {{158, 158, 158, 256},{189, 115, 16, 0}},
-            {{157, 157, 157, 256},{189, 117, 17, 0}},
-            {{156, 156, 156, 256},{190, 119, 18, 0}},
-            {{155, 155, 155, 256},{190, 121, 19, 0}},
-            {{154, 154, 154, 256},{191, 123, 20, 0}},
-            {{152, 152, 152, 256},{191, 124, 20, 0}},
-            {{151, 151, 151, 256},{191, 126, 21, 0}},
-            {{150, 150, 150, 256},{192, 128, 22, 0}},
-            {{149, 149, 149, 256},{192, 130, 23, 0}},
-            {{148, 148, 148, 256},{192, 132, 23, 0}},
-            {{147, 147, 147, 256},{193, 133, 24, 0}},
-            {{146, 146, 146, 256},{193, 135, 25, 0}},
-            {{145, 145, 145, 256},{193, 137, 26, 0}},
-            {{144, 144, 144, 256},{194, 139, 27, 0}},
-            {{143, 143, 143, 256},{194, 141, 27, 0}},
-            {{142, 142, 142, 256},{194, 143, 28, 0}},
-            {{141, 141, 141, 256},{195, 144, 29, 0}},
-            {{140, 140, 140, 256},{195, 146, 30, 0}},
-            {{139, 139, 139, 256},{195, 148, 30, 0}},
-            {{138, 138, 138, 256},{196, 150, 31, 0}},
-            {{137, 137, 137, 256},{196, 152, 32, 0}},
-            {{136, 136, 136, 256},{196, 153, 33, 0}},
-            {{135, 135, 135, 256},{197, 155, 34, 0}},
-            {{134, 134, 134, 256},{197, 157, 34, 0}},
-            {{133, 133, 133, 256},{197, 159, 35, 0}},
-            {{132, 132, 132, 256},{198, 161, 36, 0}},
-            {{131, 131, 131, 256},{198, 163, 37, 0}},
-            {{130, 130, 130, 256},{198, 164, 37, 0}},
-            {{129, 129, 129, 256},{199, 166, 38, 0}},
-            {{128, 128, 128, 256},{199, 168, 39, 0}}
+    private static final float[] matrixTransform = {1.0000f, 1.0000f, 0.0000f, 0.0000f, -21.6f, 139.3f};
+
+    private static final float[][][] colorTransform = {
+            {{179, 179, 179, 256}, {182, 77, 0, 0}},
+            {{178, 178, 178, 256}, {182, 79, 1, 0}},
+            {{177, 177, 177, 256}, {183, 81, 2, 0}},
+            {{176, 176, 176, 256}, {183, 82, 2, 0}},
+            {{175, 175, 175, 256}, {183, 84, 3, 0}},
+            {{174, 174, 174, 256}, {184, 86, 4, 0}},
+            {{173, 173, 173, 256}, {184, 88, 5, 0}},
+            {{172, 172, 172, 256}, {184, 90, 5, 0}},
+            {{171, 171, 171, 256}, {185, 92, 6, 0}},
+            {{170, 170, 170, 256}, {185, 93, 7, 0}},
+            {{169, 169, 169, 256}, {185, 95, 8, 0}},
+            {{168, 168, 168, 256}, {186, 97, 9, 0}},
+            {{167, 167, 167, 256}, {186, 99, 9, 0}},
+            {{166, 166, 166, 256}, {186, 101, 10, 0}},
+            {{165, 165, 165, 256}, {187, 102, 11, 0}},
+            {{164, 164, 164, 256}, {187, 104, 12, 0}},
+            {{163, 163, 163, 256}, {187, 106, 12, 0}},
+            {{162, 162, 162, 256}, {188, 108, 13, 0}},
+            {{161, 161, 161, 256}, {188, 110, 14, 0}},
+            {{160, 160, 160, 256}, {188, 112, 15, 0}},
+            {{159, 159, 159, 256}, {189, 113, 16, 0}},
+            {{158, 158, 158, 256}, {189, 115, 16, 0}},
+            {{157, 157, 157, 256}, {189, 117, 17, 0}},
+            {{156, 156, 156, 256}, {190, 119, 18, 0}},
+            {{155, 155, 155, 256}, {190, 121, 19, 0}},
+            {{154, 154, 154, 256}, {191, 123, 20, 0}},
+            {{152, 152, 152, 256}, {191, 124, 20, 0}},
+            {{151, 151, 151, 256}, {191, 126, 21, 0}},
+            {{150, 150, 150, 256}, {192, 128, 22, 0}},
+            {{149, 149, 149, 256}, {192, 130, 23, 0}},
+            {{148, 148, 148, 256}, {192, 132, 23, 0}},
+            {{147, 147, 147, 256}, {193, 133, 24, 0}},
+            {{146, 146, 146, 256}, {193, 135, 25, 0}},
+            {{145, 145, 145, 256}, {193, 137, 26, 0}},
+            {{144, 144, 144, 256}, {194, 139, 27, 0}},
+            {{143, 143, 143, 256}, {194, 141, 27, 0}},
+            {{142, 142, 142, 256}, {194, 143, 28, 0}},
+            {{141, 141, 141, 256}, {195, 144, 29, 0}},
+            {{140, 140, 140, 256}, {195, 146, 30, 0}},
+            {{139, 139, 139, 256}, {195, 148, 30, 0}},
+            {{138, 138, 138, 256}, {196, 150, 31, 0}},
+            {{137, 137, 137, 256}, {196, 152, 32, 0}},
+            {{136, 136, 136, 256}, {196, 153, 33, 0}},
+            {{135, 135, 135, 256}, {197, 155, 34, 0}},
+            {{134, 134, 134, 256}, {197, 157, 34, 0}},
+            {{133, 133, 133, 256}, {197, 159, 35, 0}},
+            {{132, 132, 132, 256}, {198, 161, 36, 0}},
+            {{131, 131, 131, 256}, {198, 163, 37, 0}},
+            {{130, 130, 130, 256}, {198, 164, 37, 0}},
+            {{129, 129, 129, 256}, {199, 166, 38, 0}},
+            {{128, 128, 128, 256}, {199, 168, 39, 0}}
     };
+
+    private static final int MAX_FRAMES = 8;
 
     private final Calendar calendar;
 
-    int frameCounter = 0;
-    int maxFrames = 8;
-    int numClips = minObjects;
-    float svgScale = 1.0f;
-    boolean init = false;
-    int animCount =1;
+    private int frameCounter = 0;
+    private int numClips = minObjects;
+    private float svgScale = 1.0f;
+    private boolean init = false;
+    private int animCount = 1;
 
-    public Leave (final Context context, final Calendar calendar) {
+    Leave(final Context context, final Calendar calendar) {
         super(context, textureList, null);
         this.calendar = calendar;
     }
 
     private boolean get0703() {
         svgScale = textureManager.dipToPixels(1);
-        animCount = (int)((height / 280.0f) + 0.5f);
+        animCount = (int) ((height / 280.0f) + 0.5f);
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        return (currentMonth==3) && (currentDay==7);
+        return (currentMonth == 3) && (currentDay == 7);
     }
 
     private void createObject() {
         if (objects.objectsInUseCount() >= numClips) return;
         if (random.nextInt(5) > 0) return;
-        int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
-        object.setObjectScale(1.0f/svgScale);
+
+        final int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
+        final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
+        object.setObjectScale(1.0f / svgScale);
         resetObject(object);
     }
 
-    private void resetObject(Object object) {
-        int _x = random.nextInt(width);
-        int _yscale = random.nextInt(50) + 100;
+    private void resetObject(final Object object) {
+        final int _x = random.nextInt(width);
+        final int _yscale = random.nextInt(50) + 100;
         int _xscale = _yscale;
         if (random.nextInt(2) == 0) _xscale *= -1;
+
         object.resetViewMatrix();
         object.setColorTransform(AnimatedColorTransform);
         object.setViewColorTransform(colorTransform[_yscale - 100]);
         object.setViewScale(_xscale, _yscale);
-        int delta = (int)(100 + ((_yscale - 70) * -1.3f));
-        object.setViewPosition(_x + matrixTransform[4], (float) (height - delta - ((animCount * 280.0) * (_yscale/100.0f))) + (matrixTransform[5] * (_yscale/100.0f)));
+
+        final int delta = (int) (100 + ((_yscale - 70) * -1.3f));
+        object.setViewPosition(_x + matrixTransform[4], (float) (height - delta - ((animCount * 280.0) * (_yscale / 100.0f))) + (matrixTransform[5] * (_yscale / 100.0f)));
         object.index = animCount;
         object.frameCounter = 0;
         object.animCounter = 0;
@@ -431,8 +444,9 @@ public class Leave extends TextureObject {
 
 
     public void update(boolean createObject) {
-        frameCounter = (frameCounter+1) % maxFrames;
-        if (!init && createObject) numClips = get0703()?maxObjects:(minObjects + random.nextInt(maxObjects - 4));
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
+        if (!init && createObject)
+            numClips = get0703() ? maxObjects : (minObjects + random.nextInt(maxObjects - 4));
         init = createObject;
         if (createObject && (frameCounter == 2)) createObject();
 
@@ -444,20 +458,29 @@ public class Leave extends TextureObject {
             object.resetMatrix();
 
             if (object.remove) {
-                object.setViewTranslate(0, 285 * (object.getViewScaleY()/100.0f));
+                object.setViewTranslate(0, 285 * (object.getViewScaleY() / 100.0f));
                 object.remove = false;
             }
-            if (object.index > 0)
-                if (object.index % 2 == 0) object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(AnimateTextureList[1][AnimateTextureList[1].length-object.animCounter-1])), 1.0f);
-                else object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(AnimateTextureList[1][object.animCounter])), 1.0f);
-            else object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(AnimateTextureList[object.index][object.animCounter])), 1.0f);
+
+            if (object.index > 0) {
+                if (object.index % 2 == 0) {
+                    object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(AnimateTextureList[1][AnimateTextureList[1].length - object.animCounter - 1])), 1.0f);
+                } else {
+                    object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(AnimateTextureList[1][object.animCounter])), 1.0f);
+                }
+            } else {
+                object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(AnimateTextureList[object.index][object.animCounter])), 1.0f);
+            }
+
             object.setTransform(AnimatedTextureMatrix[object.index][object.frameCounter]);
-            object.frameCounter = (object.frameCounter+1)  % AnimatedTextureMatrix[object.index].length;
-            object.animCounter =  (object.animCounter+1)  % AnimateTextureList[object.index > 0 ? 1:0].length;
-            if (object.frameCounter == 0 ) {
+            object.frameCounter = (object.frameCounter + 1) % AnimatedTextureMatrix[object.index].length;
+            object.animCounter = (object.animCounter + 1) % AnimateTextureList[object.index > 0 ? 1 : 0].length;
+
+            if (object.frameCounter == 0) {
                 object.animCounter = 0;
                 if (--object.index > 0) object.remove = true;
             }
+
             if (object.index < 0) {
                 if (createObject) resetObject(object);
                 else iterator.remove();

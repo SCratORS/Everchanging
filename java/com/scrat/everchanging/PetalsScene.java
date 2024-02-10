@@ -1,25 +1,32 @@
 package com.scrat.everchanging;
 
-
 import android.content.Context;
 
-public class PetalsScene extends Scene {
+class PetalsScene extends Scene {
+
     private final Petal petal;
 
-    public PetalsScene(Context context) {
+    PetalsScene(final Context context) {
         super(ShortTypes.P);
         petal = new Petal(context);
     }
 
-    public void update(boolean createObject) {
+    public void update(final boolean createObject) {
         petal.update(createObject);
     }
 
-    public void setupPosition(int width, int height, float ratio,  int displayRotation) {
+    @Override
+    public void setupPosition(
+            final int width,
+            final int height,
+            final float ratio,
+            final int displayRotation
+    ) {
         super.createProjectMatrix(width, height, displayRotation);
         petal.setupPosition(width, height, ratio);
     }
 
+    @Override
     public void render() {
         super.render(petal);
     }

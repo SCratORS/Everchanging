@@ -3,24 +3,24 @@
     android:height="5dp"
     android:viewportWidth="5"
     android:viewportHeight="5">
-  <path
-      android:pathData="M3.4,1.65Q3.75,2 3.75,2.5L3.4,3.4Q3,3.75 2.5,3.75 2,3.75 1.65,3.4 1.25,3 1.25,2.5 1.25,2 1.65,1.65 2,1.25 2.5,1.25 3,1.25 3.4,1.65"
-      android:fillColor="#ffffff"
-      android:fillAlpha="0.2"
-      android:fillType="evenOdd"
-      android:strokeColor="#00000000"/>
-  <path
-      android:pathData="M3.05,2L3.25,2.5 3.05,3.05 2.5,3.25Q2.2,3.25 2,3.05L1.75,2.5 2,2 2.5,1.75 3.05,2"
-      android:fillColor="#ffffff"
-      android:fillAlpha="0.5019608"
-      android:fillType="evenOdd"
-      android:strokeColor="#00000000"/>
-  <path
-      android:pathData="M2.5,0L2.5,2.5 5,2.5M2.5,5L2.5,2.5 0,2.5"
-      android:strokeAlpha="0.7019608"
-      android:strokeLineJoin="round"
-      android:strokeWidth="0.3"
-      android:fillColor="#00000000"
-      android:strokeColor="#ffffff"
-      android:strokeLineCap="round"/>
+    <path
+        android:pathData="M3.4,1.65Q3.75,2 3.75,2.5L3.4,3.4Q3,3.75 2.5,3.75 2,3.75 1.65,3.4 1.25,3 1.25,2.5 1.25,2 1.65,1.65 2,1.25 2.5,1.25 3,1.25 3.4,1.65"
+        android:fillColor="#ffffff"
+        android:fillAlpha="0.2"
+        android:fillType="evenOdd"
+        android:strokeColor="#00000000" />
+    <path
+        android:pathData="M3.05,2L3.25,2.5 3.05,3.05 2.5,3.25Q2.2,3.25 2,3.05L1.75,2.5 2,2 2.5,1.75 3.05,2"
+        android:fillColor="#ffffff"
+        android:fillAlpha="0.5019608"
+        android:fillType="evenOdd"
+        android:strokeColor="#00000000" />
+    <path
+        android:pathData="M2.5,0L2.5,2.5 5,2.5M2.5,5L2.5,2.5 0,2.5"
+        android:strokeAlpha="0.7019608"
+        android:strokeLineJoin="round"
+        android:strokeWidth="0.3"
+        android:fillColor="#00000000"
+        android:strokeColor="#ffffff"
+        android:strokeLineCap="round" />
 </vector>

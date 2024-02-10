@@ -6,14 +6,14 @@ import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
-
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-public class Everchanging extends OpenGLES2WallpaperService{
+public final class Everchanging extends OpenGLES2WallpaperService {
+
     @Override
-    GLSurfaceView.Renderer getNewRenderer(Context context) {
+    GLSurfaceView.Renderer getNewRenderer(final Context context) {
         return new EverchangingRender(context);
     }
 }
@@ -24,6 +24,7 @@ abstract class OpenGLES2WallpaperService extends EverchangingWallpaperService {
     public Engine onCreateEngine() {
         return new OpenGLES2Engine();
     }
+
     class OpenGLES2Engine extends Everchanging.GLEngine {
 
         @Override
@@ -33,27 +34,31 @@ abstract class OpenGLES2WallpaperService extends EverchangingWallpaperService {
             assert activityManager != null;
             final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
             final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
-            if (supportsEs2)
-            {
+            if (supportsEs2) {
                 setEGLContextClientVersion();
                 setPreserveEGLContextOnPause();
                 setRenderer(getNewRenderer(getContext()));
             }
         }
     }
+
     abstract GLSurfaceView.Renderer getNewRenderer(Context context);
 }
 
 abstract class EverchangingWallpaperService extends WallpaperService {
+
     private GestureDetector gestureDetector;
+
     @Override
     public Engine onCreateEngine() {
         return new GLEngine();
     }
 
-    public class GLEngine extends Engine{
-        class WallpaperGLSurfaceView extends GLSurfaceView {
-            WallpaperGLSurfaceView(Context context) {
+    public class GLEngine extends Engine {
+
+        final class WallpaperGLSurfaceView extends GLSurfaceView {
+
+            WallpaperGLSurfaceView(final Context context) {
                 super(context);
             }
 
@@ -65,10 +70,9 @@ abstract class EverchangingWallpaperService extends WallpaperService {
             void onDestroy() {
                 super.onDetachedFromWindow();
             }
-
         }
 
-        Context getContext(){
+        Context getContext() {
             return EverchangingWallpaperService.this;
         }
 
@@ -78,16 +82,17 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         boolean paused = false;
         private final Handler handler = new Handler();
         private final Runnable mDrawRender = this::doDrawFrame;
-        private final int FPS = 20;  // кадров в секунду
+
+        private static final int FPS = 20;  // кадров в секунду
 
         @Override
-        public void onSurfaceCreated(SurfaceHolder surfaceHolder) {
+        public void onSurfaceCreated(final SurfaceHolder surfaceHolder) {
             super.onSurfaceCreated(surfaceHolder);
             glSurfaceView = new WallpaperGLSurfaceView(getContext());
         }
 
         @Override
-        public void onVisibilityChanged(boolean visible) {
+        public void onVisibilityChanged(final boolean visible) {
             super.onVisibilityChanged(visible);
             if (rendererHasBeenSet) {
                 if (visible) {
@@ -112,10 +117,11 @@ abstract class EverchangingWallpaperService extends WallpaperService {
                 paused = true;
                 glSurfaceView.onDestroy();
                 mRender.onDestroy();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
 
-        void setRenderer(GLSurfaceView.Renderer renderer) {
+        void setRenderer(final GLSurfaceView.Renderer renderer) {
             mRender = (EverchangingRender) renderer;
             glSurfaceView.setRenderer(renderer);
             glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
@@ -131,17 +137,18 @@ abstract class EverchangingWallpaperService extends WallpaperService {
         }
 
         @Override
-        public void onTouchEvent(MotionEvent event) {
+        public void onTouchEvent(final MotionEvent event) {
             super.onTouchEvent(event);
             if (gestureDetector != null) gestureDetector.onTouchEvent(event);
             mRender.onTouchEvent(event);
         }
 
-        private class GestureListener extends GestureDetector.SimpleOnGestureListener {}
+        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        }
 
-        void doDrawFrame(){
+        void doDrawFrame() {
             handler.removeCallbacks(mDrawRender);
-            handler.postDelayed(mDrawRender, 1000 / (paused?1:FPS));
+            handler.postDelayed(mDrawRender, 1000 / (paused ? 1 : FPS));
             glSurfaceView.requestRender();
         }
     }

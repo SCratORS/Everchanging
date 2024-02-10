@@ -2,11 +2,13 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-public class FairiesScene extends Scene implements Fairy.CreatorCallback, Fly.CrystalCreatorCallback {
+final class FairiesScene extends Scene implements Fairy.CreatorCallback, Fly.CrystalCreatorCallback {
+
     private final Fairy fairy;
     private final Fly fly;
     private final Crystal crystal;
-    public FairiesScene(Context context) {
+
+    FairiesScene(final Context context) {
         super(ShortTypes.F);
         fairy = new Fairy(context);
         fly = new Fly(context);
@@ -15,24 +17,32 @@ public class FairiesScene extends Scene implements Fairy.CreatorCallback, Fly.Cr
         fly.registerCallBack(this);
     }
 
-    public void update(boolean createObject) {
+    public void update(final boolean createObject) {
         fairy.update(createObject);
         fly.update();
         crystal.update(false);
     }
 
-    public void setupPosition(int width, int height, float ratio, int displayRotation) {
+    @Override
+    public void setupPosition(
+            final int width,
+            final int height,
+            final float ratio,
+            final int displayRotation
+    ) {
         super.createProjectMatrix(width, height, displayRotation);
         fairy.setupPosition(width, height, ratio);
         fly.setupPosition(width, height, ratio);
         crystal.setupPosition(width, height, ratio);
     }
 
+    @Override
     public void render() {
         super.render(fairy);
         super.render(crystal);
         super.render(fly);
     }
+
     @Override
     public void callingCreatorCallback(float[] transform, float[] translate, int xscale, int index) {
         fly.createObject(transform, translate, xscale, index);

@@ -1,9 +1,11 @@
 package com.scrat.everchanging;
+
 import android.content.Context;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
-public class Blick extends TextureObject  {
+final class Blick extends TextureObject {
+
     private final float[][] spritesStartTransform = {
             {0.3193f, 0.4591f, -0.006485f, 0.009308f, 73.9f, 159.45f},
             {0.1931f, -0.1931f, -0.4169f, -0.4169f, 136.15f, 322.8f},
@@ -24,32 +26,34 @@ public class Blick extends TextureObject  {
             {0.6f, 0.6f, 0.0000f, 0.0000f, 73.7f, 54.4f},
             {-0.9659f, 0.9659f, 0.2588f, 0.2588f, 221.45f, 118.4f}
     };
+
     private final float[][][] spritesStartColorTransform = {
             //redMultiTerm, greenMultiTerm, blueMultiTerm, alphaMultiTerm
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{184,184,184,256},{29,57,57,0}},
-            {{184,184,184,256},{0,71,71,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},
-            {{184,184,184,256},{29,57,57,0}},
-            {{184,184,184,256},{0,71,71,0}}
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{184, 184, 184, 256}, {29, 57, 57, 0}},
+            {{184, 184, 184, 256}, {0, 71, 71, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{184, 184, 184, 256}, {29, 57, 57, 0}},
+            {{184, 184, 184, 256}, {0, 71, 71, 0}}
     };
 
-    private final int[] spriteIndex = {0,0,0,0,1,1,1,1,1,0,0,0,0,1,1,1,1,1};
+    private final int[] spriteIndex = {0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1};
     private final float[][][] matrixTransform = {
             // scaleX, scaleY, rotateSkew0, rotateSkew1,translateX, translateY
-            {{0.08507f, 0.08507f, 0.08507f, -0.08507f, 232.9f, -91.05f},
+            {
+                    {0.08507f, 0.08507f, 0.08507f, -0.08507f, 232.9f, -91.05f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 236.3f, -89.85f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 239.35f, -89.45f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 243.1f, -88.5f},
@@ -495,8 +499,8 @@ public class Blick extends TextureObject  {
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 154.3f, 525.3f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 151.45f, 528.9f}
             },
-
-            {{0.08507f, 0.08507f, 0.08507f, -0.08507f, 226.65f, -72.25f},
+            {
+                    {0.08507f, 0.08507f, 0.08507f, -0.08507f, 226.65f, -72.25f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 225f, -69.55f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 223.3f, -66.95f},
                     {0.08507f, 0.08507f, 0.08507f, -0.08507f, 221.55f, -64.4f},
@@ -944,46 +948,46 @@ public class Blick extends TextureObject  {
             }
     };
 
-    private final float [][] animationObjectTransform = {
-            {1.0f, 1.0f},{0.0f, 0.08f},{0.0f, 0.46f},{0.0f, 1.0f},{0.0f, 0.46f},{0.0f, 0.08f},{1.0f, 0.08f},{1.0f, 0.46f},
+    private final float[][] animationObjectTransform = {
+            {1.0f, 1.0f}, {0.0f, 0.08f}, {0.0f, 0.46f}, {0.0f, 1.0f}, {0.0f, 0.46f}, {0.0f, 0.08f}, {1.0f, 0.08f}, {1.0f, 0.46f},
     };
 
-    static final String[][] textureList = {{"shape_3","shape_6"}};
+    private static final String[][] textureList = {{"shape_3", "shape_6"}};
 
     int index = 0;
 
-    Blick(Context context) {
+    Blick(final Context context) {
         super(context, textureList, null);
     }
 
-    public void createObject() {
+    void createObject() {
         if (objects.objectsInUseCount() > spritesStartTransform.length) return;
-        int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
-        float svgScale = textureManager.dipToPixels(1);
-        object.setObjectScale(1.0f/svgScale/ratio);
+
+        final int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
+        final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
+        final float svgScale = textureManager.dipToPixels(1);
+        object.setObjectScale(1.0f / svgScale / ratio);
 
         object.resetViewMatrix();
         object.setViewTransform(spritesStartTransform[index]);
         object.setColorTransform(spritesStartColorTransform[index]);
 
-        object.setViewScale( 100 *ratio,ratio*100);
+        object.setViewScale(100 * ratio, ratio * 100);
 
         object.animCounter = 0;
         object.frameCounter = 0;
         object.index = index;
-        index = (index+1) % spriteIndex.length;
+        index = (index + 1) % spriteIndex.length;
     }
 
-
-    void objectAnimate(Object object) {
+    void objectAnimate(final Object object) {
         object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][(int) animationObjectTransform[object.animCounter][0]])), 1.0f);
         object.setColorTransform(spritesStartColorTransform[object.index]);
         object.setScale(1f, animationObjectTransform[object.animCounter][1]);
-        object.animCounter = (object.animCounter+1) % animationObjectTransform.length;
+        object.animCounter = (object.animCounter + 1) % animationObjectTransform.length;
     }
 
-    public void update(boolean createObject) {
+    void update(final boolean createObject) {
         if (createObject) createObject();
 
         final ReusableIterator<Object> iterator = objects.iterator();
@@ -994,7 +998,7 @@ public class Blick extends TextureObject  {
             object.resetMatrix();
             objectAnimate(object);
             object.setTransform(matrixTransform[spriteIndex[object.index]][object.frameCounter]);
-            object.frameCounter = (object.frameCounter+1) % matrixTransform[spriteIndex[object.index]].length;
+            object.frameCounter = (object.frameCounter + 1) % matrixTransform[spriteIndex[object.index]].length;
             if (!createObject && (object.frameCounter == 0)) iterator.remove();
         }
 

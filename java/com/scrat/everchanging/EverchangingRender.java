@@ -2,16 +2,16 @@ package com.scrat.everchanging;
 
 import static com.scrat.everchanging.Scene.ShortTypes.B;
 import static com.scrat.everchanging.Scene.ShortTypes.BA;
+import static com.scrat.everchanging.Scene.ShortTypes.CB;
 import static com.scrat.everchanging.Scene.ShortTypes.D;
+import static com.scrat.everchanging.Scene.ShortTypes.E;
 import static com.scrat.everchanging.Scene.ShortTypes.F;
+import static com.scrat.everchanging.Scene.ShortTypes.FF;
 import static com.scrat.everchanging.Scene.ShortTypes.FW;
 import static com.scrat.everchanging.Scene.ShortTypes.H;
 import static com.scrat.everchanging.Scene.ShortTypes.L;
 import static com.scrat.everchanging.Scene.ShortTypes.P;
 import static com.scrat.everchanging.Scene.ShortTypes.R;
-import static com.scrat.everchanging.Scene.ShortTypes.CB;
-import static com.scrat.everchanging.Scene.ShortTypes.E;
-import static com.scrat.everchanging.Scene.ShortTypes.FF;
 import static com.scrat.everchanging.Scene.ShortTypes.S;
 import static com.scrat.everchanging.Scene.ShortTypes.V;
 
@@ -29,6 +29,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class EverchangingRender implements GLSurfaceView.Renderer {
+
+    // @formatter:off
 
     /*  TIME ANIMATION  */
     /*
@@ -114,6 +116,8 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         {10, 2, 9, 9, 8, 9, 8, 8, 9, 9, 9, 8, 8,  8, 9,  8, 8, 7, 8, 10, 3, 3, 10,  3,  3, 3, 3, 0, 0,  0,  9}
     };
 
+    // @formatter:on
+
     private static final int UPDATE_CALENDAR_DELAY_MILLIS = 40000;
 
     private final Calendar calendar = Calendar.getInstance();
@@ -135,7 +139,7 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
      */
     private long lastCalendarUpdateTimeMillis = SystemClock.uptimeMillis();
 
-    public EverchangingRender(Context context) {
+    EverchangingRender(Context context) {
         this.context = context;
     }
 
@@ -144,20 +148,19 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     }
 
     void onTouchEvent(MotionEvent motionEvent) {
-        final int pointerCount = motionEvent.getPointerCount()-1;
+        final int pointerCount = motionEvent.getPointerCount() - 1;
         posX = motionEvent.getX(pointerCount);
         posY = motionEvent.getY(pointerCount);
 
-        if(motionEvent.getAction() == 0){
+        if (motionEvent.getAction() == 0) {
             downTap = true;
-        }
-        else if (motionEvent.getAction() == 1) {
+        } else if (motionEvent.getAction() == 1) {
             downTap = false;
         }
     }
 
     @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+    public void onSurfaceCreated(final GL10 gl, final EGLConfig config) {
         GLES20.glClearColor(0f, 0f, 0f, 1f);
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
         GLES20.glEnable(GLES20.GL_BLEND);
@@ -185,75 +188,107 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     }
 
     @Override
-    public void onSurfaceChanged(GL10 gl, int width, int height) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+    public void onSurfaceChanged(final GL10 gl, final int width, final int height) {
+        final WindowManager windowManager = (WindowManager)
+                context.getSystemService(Context.WINDOW_SERVICE);
         assert windowManager != null;
-        int displayRotation = windowManager.getDefaultDisplay().getRotation();
-        float ratio = ((float) height / (float) width);
-        int surfaceWidth = 240;
-        int surfaceHeight = (int) (surfaceWidth * ratio);
+
+        final int displayRotation = windowManager.getDefaultDisplay().getRotation();
+        final float ratio = ((float) height / (float) width);
+        final int surfaceWidth = 240;
+        final int surfaceHeight = (int) (surfaceWidth * ratio);
         GLES20.glViewport(0, 0, width, height);
-        float scaleImageHeight = surfaceHeight / 320f;
+
+        final float scaleImageHeight = surfaceHeight / 320f;
         //todo setup position
         final int scenesSize = scenes.size();
         for (int i = 0; i < scenesSize; i++) {
-            final Scene scene = scenes.get(i);
-            switch (scene.sceneType) {
-                case BG: ((BackgroundScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;    /*complete 100% 640/480+ */
-                case CB: ((CrystalBlickScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;  /*complete 100% 640/480+ */
-                case FF: ((FireFliesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;     /*complete 100% 640/480+ */
-                case D: ((DandelionsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;     /*complete 100% 640/480+ */
-                case R: ((RainsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;          /*complete 100% 640/480+ */
-                case P: ((PetalsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;         /*complete 100% 640/480+ */
-                case S: ((SnowsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;          /*complete 100% 640/480+ */
-                case L: ((LeavesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;         /*complete 100% 640/480+ */
-                case FW: ((FireWorksScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;     /*complete 100% 640/480+ */
-                case E: ((EyesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;           /*complete 100% 640/480+ */
-                case B: ((ButterFliesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;    /*complete 100% 640/480+ */
-                case BA: ((BatsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;          /*complete 100% 640/480+ */
-                case H: ((HeartsScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;         /*complete 100% 640/480+ */
-                case V: ((ValentinesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;     /*complete 100% 640/480+ */
-                case F: ((FairiesScene) scene).setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation); break;        /*complete 99% 640/480+ надо добавить учитывание позиции генерации в зависимости от выбора анимации*/
-                case TB: ((TouchBlickScene) scene).setupPosition(surfaceWidth, surfaceHeight, 240.0f/width, displayRotation); break;
-            }
+            scenes.get(i)
+                    .setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation);
         }
     }
 
     private Scene.ShortTypes getAnim() {
-        int currentMonth = calendar.get(Calendar.MONTH);
-        int currentDay = calendar.get(Calendar.DAY_OF_MONTH)-1;
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentDayAnim = DayAnimation[currentMonth][currentDay];
+        final int currentMonth = calendar.get(Calendar.MONTH);
+        final int currentDay = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+        final int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int currentDayAnim = DayAnimation[currentMonth][currentDay];
         return TimeAnimation[currentDayAnim][currentHour];
-
     }
 
     void update() {
-            // todo update
-            Scene.ShortTypes currentScene = getAnim();
-            final int scenesSize = scenes.size();
-            for (int i = 0; i < scenesSize; i++) {
-                final Scene scene = scenes.get(i);
-                boolean createObject = scene.sceneType == currentScene;
-                switch (scene.sceneType) {
-                    case BG: ((BackgroundScene) scene).update(); break;
-                    case CB: ((CrystalBlickScene) scene).update(createObject); break;
-                    case FF: ((FireFliesScene) scene).update(createObject); break;
-                    case D: ((DandelionsScene) scene).update(createObject); break;
-                    case R: ((RainsScene) scene).update(createObject); break;
-                    case P: ((PetalsScene) scene).update(createObject); break;
-                    case S: ((SnowsScene) scene).update(createObject); break;
-                    case L: ((LeavesScene) scene).update(createObject); break;
-                    case FW: ((FireWorksScene) scene).update(createObject); break;
-                    case E: ((EyesScene) scene).update(createObject); break;
-                    case B: ((ButterFliesScene) scene).update(createObject); break;
-                    case BA: ((BatsScene) scene).update(createObject); break;
-                    case H: ((HeartsScene) scene).update(createObject); break;
-                    case V: ((ValentinesScene) scene).update(createObject); break;
-                    case F: ((FairiesScene) scene).update(createObject); break;
-                    case TB: ((TouchBlickScene) scene).update(downTap, posX, posY); break;
-                }
+        // todo update
+        final Scene.ShortTypes currentScene = getAnim();
+        final int scenesSize = scenes.size();
+        for (int i = 0; i < scenesSize; i++) {
+            final Scene scene = scenes.get(i);
+            final boolean createObject = scene.sceneType == currentScene;
+            switch (scene.sceneType) {
+                case BG:
+                    ((BackgroundScene) scene).update();
+                    break;
+
+                case CB:
+                    ((CrystalBlickScene) scene).update(createObject);
+                    break;
+
+                case FF:
+                    ((FireFliesScene) scene).update(createObject);
+                    break;
+
+                case D:
+                    ((DandelionsScene) scene).update(createObject);
+                    break;
+
+                case R:
+                    ((RainsScene) scene).update(createObject);
+                    break;
+
+                case P:
+                    ((PetalsScene) scene).update(createObject);
+                    break;
+
+                case S:
+                    ((SnowsScene) scene).update(createObject);
+                    break;
+
+                case L:
+                    ((LeavesScene) scene).update(createObject);
+                    break;
+
+                case FW:
+                    ((FireWorksScene) scene).update(createObject);
+                    break;
+
+                case E:
+                    ((EyesScene) scene).update(createObject);
+                    break;
+
+                case B:
+                    ((ButterFliesScene) scene).update(createObject);
+                    break;
+
+                case BA:
+                    ((BatsScene) scene).update(createObject);
+                    break;
+
+                case H:
+                    ((HeartsScene) scene).update(createObject);
+                    break;
+
+                case V:
+                    ((ValentinesScene) scene).update(createObject);
+                    break;
+
+                case F:
+                    ((FairiesScene) scene).update(createObject);
+                    break;
+
+                case TB:
+                    ((TouchBlickScene) scene).update(downTap, posX, posY);
+                    break;
             }
+        }
 
         if (SystemClock.uptimeMillis() >=
                 lastCalendarUpdateTimeMillis + UPDATE_CALENDAR_DELAY_MILLIS) {
@@ -269,37 +304,20 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
     void setPause(boolean p) {
         pause = p;
     }
-    void render(){
+
+    void render() {
         if (pause) return;
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         //todo draw
         final int scenesSize = scenes.size();
         for (int i = 0; i < scenesSize; i++) {
-            final Scene scene = scenes.get(i);
-            switch (scene.sceneType) {
-                case BG: ((BackgroundScene) scene).render(); break;
-                case E: ((EyesScene) scene).render(); break;
-                case CB: ((CrystalBlickScene) scene).render(); break;
-                case FF: ((FireFliesScene) scene).render(); break;
-                case D: ((DandelionsScene) scene).render(); break;
-                case R: ((RainsScene) scene).render(); break;
-                case P: ((PetalsScene) scene).render(); break;
-                case S: ((SnowsScene) scene).render(); break;
-                case L: ((LeavesScene) scene).render(); break;
-                case FW: ((FireWorksScene) scene).render(); break;
-                case B: ((ButterFliesScene) scene).render(); break;
-                case BA: ((BatsScene) scene).render(); break;
-                case H: ((HeartsScene) scene).render(); break;
-                case V: ((ValentinesScene) scene).render(); break;
-                case F: ((FairiesScene) scene).render(); break;
-                case TB: ((TouchBlickScene) scene).render(); break;
-            }
+            scenes.get(i).render();
         }
         GLES20.glFinish();
     }
 
     @Override
-    public void onDrawFrame(GL10 gl) {
+    public void onDrawFrame(final GL10 gl) {
         update();
         render();
     }

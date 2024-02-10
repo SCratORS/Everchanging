@@ -5,22 +5,25 @@ import android.opengl.Matrix;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
-public class Scene {
+public abstract class Scene {
 
     //    public enum Types       {DEFAULT, BACKGROUND, CRYSTALBLICK, FIREFLIES, DANDELIONS, RAIN, BUTTERFLIES, BATS, EYES, FAIRIES, FIREWORKS, HEARTS, LEAVES, PETALS, SNOW, VALENTINES};
-    public enum ShortTypes  {DF, BG, CB, FF, D, R, B, BA, E, F, FW, H, L, P, S, V, TB}
-    public ShortTypes sceneType;
-    int width;
-    int height;
+    public enum ShortTypes {DF, BG, CB, FF, D, R, B, BA, E, F, FW, H, L, P, S, V, TB}
 
-    private final float[] projectionMatrix = new float[16]; //Матрица проекции
-    private final float[] matrix = new float[16]; //финальная матрица
+    final ShortTypes sceneType;
 
-    Scene(ShortTypes type) {
+    private static final float[] projectionMatrix = new float[16]; //Матрица проекции
+    private static final float[] matrix = new float[16]; //финальная матрица
+
+    Scene(final ShortTypes type) {
         sceneType = type;
     }
 
-    void createProjectMatrix(int width, int height,  int displayRotation) {
+    public abstract void setupPosition(int width, int height, float ratio, int displayRotation);
+
+    public abstract void render();
+
+    protected final void createProjectMatrix(final int width, final int height, final int displayRotation) {
         /*
         Герерируем нулевую матрицу проекции на основе orthom - это без проекции дальности и прочего, у нас не 3D.
         orthom:             frustum:
@@ -29,19 +32,17 @@ public class Scene {
         глаз --> |    |     глаз--> |     |
                  |    |              \    |
          */
-        this.width = width;
-        this.height = height;
         Matrix.setIdentityM(projectionMatrix, 0);
         Matrix.orthoM(projectionMatrix, 0, 0, width, height, 0, 0, 1);
     }
 
-    public void render(TextureObject object) {
+    protected final void render(final TextureObject object) {
         if (object.objects.objectsInUseCount() == 0) return;
         //Выбираем номер текстуру (почему-то только с 0 работает)
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 
         GLES20.glEnableVertexAttribArray(object.mTexCordHandle);
-        GLES20.glVertexAttribPointer (object.mTexCordHandle, 2, GLES20.GL_FLOAT, false,	0, object.uvBuffer);
+        GLES20.glVertexAttribPointer(object.mTexCordHandle, 2, GLES20.GL_FLOAT, false, 0, object.uvBuffer);
         GLES20.glEnableVertexAttribArray(object.mPositionHandle);
 
         // Disabled because of SIGSEGV, https://github.com/SCratORS/Everchanging/issues/2
@@ -62,7 +63,7 @@ public class Scene {
 
             //Расчитываем феинальную матрицу. Для этого матрицу объекта умножам на
             //матрицу вида. Нам же надо получить объект относительно камеры, а не наоборот
-            Matrix.multiplyMM(matrix, 0, sceneMatrix, 0,subObject.calculateMatrix(), 0);
+            Matrix.multiplyMM(matrix, 0, sceneMatrix, 0, subObject.calculateMatrix(), 0);
             //И в конце проэцируем на матрицу проекции.
             Matrix.multiplyMM(matrix, 0, projectionMatrix, 0, matrix, 0);
 

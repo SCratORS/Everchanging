@@ -4,19 +4,23 @@ import android.content.Context;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
-public class Bat extends TextureObject {
-    static final String[][] textureList = {{"shape_49","shape_50","shape_51","shape_52"}};
-    static final float[][] texturePivot = {{26.15f, 79.05f},{46.15f, 59.1f},{67.15f, 37.2f},{41.65f, 27.5f}};
-    private final byte[] spriteTable = {0,1,2,3,2,1};
+final class Bat extends TextureObject {
+
+    private static final String[][] textureList = {{"shape_49", "shape_50", "shape_51", "shape_52"}};
+    private static final float[][] texturePivot = {{26.15f, 79.05f}, {46.15f, 59.1f}, {67.15f, 37.2f}, {41.65f, 27.5f}};
+
+    private final byte[] spriteTable = {0, 1, 2, 3, 2, 1};
     private final float[] startMatrix = {1.0000f, 1.0000f, 0.0000f, 0.0000f, -18.25f, 39.5f};
+
     private final float[][] animateMatrix = {
-        {1f, 0.9994f, 0.0000f, 0.0000f, 0f, 0f},
-        {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -6f},
-        {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -10f},
-        {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -15f},
-        {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -10.75f},
-        {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, 0f}
+            {1f, 0.9994f, 0.0000f, 0.0000f, 0f, 0f},
+            {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -6f},
+            {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -10f},
+            {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -15f},
+            {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, -10.75f},
+            {1.0000f, 1.0000f, 0.0000f, 0.0000f, 0f, 0f}
     };
+
     private final float[][] matrixTransform = {
             {0.05655f, 0.06366f, 0.0000f, 0.0000f, -748.7f, -282.4f},
             {0.05756f, 0.06465f, 0.0000f, 0.0000f, -747.6f, -281.9f},
@@ -119,14 +123,16 @@ public class Bat extends TextureObject {
             {3.431f, 3.432f, 0.0000f, 0.0000f, 2755.2f, 1152.7f}
     };
 
-    int maxFrames = 33;
-    int frameCounter = 0;
-    int numClips = 7;
-    public Bat(Context context) {
+    private static final int MAX_FRAMES = 33;
+    private static final int NUM_CLIPS = 7;
+
+    private int frameCounter = 0;
+
+    Bat(final Context context) {
         super(context, textureList, texturePivot);
     }
 
-    void resetObject(Object object) {
+    void resetObject(final Object object) {
         int _x = random.nextInt(50) + random.nextInt(600) - 300;
         int _y = random.nextInt(25) - 50;
         int _yscale = random.nextInt(10) + 10;
@@ -139,15 +145,20 @@ public class Bat extends TextureObject {
         object.animCounter = 0;
         object.index = 0;
     }
+
     void createObject() {
-        if (objects.objectsInUseCount() > numClips) return;
-        int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
-        Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
-        float svgScale = textureManager.dipToPixels(1);
-        object.setObjectScale(1.0f/svgScale);
-        int _x = random.nextInt(50) + random.nextInt(600) - 300;
-        int _y = random.nextInt(25) - 50;
-        int _yscale = random.nextInt(15) + 10;
+        if (objects.objectsInUseCount() > NUM_CLIPS) return;
+
+        final int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
+        final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
+
+        final float svgScale = textureManager.dipToPixels(1);
+        object.setObjectScale(1.0f / svgScale);
+
+        final int _x = random.nextInt(50) + random.nextInt(600) - 300;
+        final int _y = random.nextInt(25) - 50;
+        final int _yscale = random.nextInt(15) + 10;
+
         object.resetViewMatrix();
         object.setViewTransform(startMatrix);
         object.setViewScale(_yscale * ratio, _yscale * ratio);
@@ -157,9 +168,9 @@ public class Bat extends TextureObject {
         object.index = 0;
     }
 
-    public void update(boolean createObject) {
-        frameCounter = (frameCounter+1) % maxFrames;
-        if (createObject && (frameCounter==2)) createObject();
+    void update(final boolean createObject) {
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
+        if (createObject && (frameCounter == 2)) createObject();
 
         final ReusableIterator<Object> iterator = objects.iterator();
         iterator.acquire();
@@ -171,11 +182,11 @@ public class Bat extends TextureObject {
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][spriteTable[object.animCounter]])), 1.0f);
                 object.setTransform(animateMatrix[object.animCounter]);
                 object.setTransform(matrixTransform[object.frameCounter]);
-                object.animCounter = (object.animCounter+1) % spriteTable.length;
+                object.animCounter = (object.animCounter + 1) % spriteTable.length;
                 object.frameCounter++;
             } else {
                 if (createObject) resetObject(object);
-               else iterator.remove();
+                else iterator.remove();
             }
         }
 

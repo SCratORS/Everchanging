@@ -2,22 +2,31 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-public class ValentinesScene extends Scene {
+final class ValentinesScene extends Scene {
+
     private final Valentine valentine;
-    public ValentinesScene(Context context) {
+
+    ValentinesScene(final Context context) {
         super(ShortTypes.V);
         valentine = new Valentine(context);
     }
 
-    public void update(boolean createObject) {
+    public void update(final boolean createObject) {
         valentine.update(createObject);
     }
 
-    public void setupPosition(int width, int height, float ratio, int displayRotation) {
+    @Override
+    public void setupPosition(
+            final int width,
+            final int height,
+            final float ratio,
+            final int displayRotation
+    ) {
         super.createProjectMatrix(width, height, displayRotation);
         valentine.setupPosition(width, height, ratio);
     }
 
+    @Override
     public void render() {
         super.render(valentine);
     }

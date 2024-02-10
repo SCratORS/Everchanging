@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
-public class Valentine extends TextureObject {
-    static final String[][] textureList = {{"image_13","image_15","shape_278","shape_279"}};
+final class Valentine extends TextureObject {
+
+    private static final String[][] textureList = {{"image_13", "image_15", "shape_278", "shape_279"}};
+
     private final float[][] matrixTransform = {
             {0.85f, 0.85f, 0.0000f, 0.0000f, 0f, 0f},
             {0.8875f, 0.8875f, 0.0000f, 0.0000f, 0f, -2.5f},
@@ -30,24 +32,26 @@ public class Valentine extends TextureObject {
     };
 
     private final float[][][] colorTransform = {
-            {{256,256,256,256},{0,0,0,0}},{{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},{{256,256,256,256},{0,0,0,0}},
-            {{256,256,256,256},{0,0,0,0}},{{256,256,256,223},{0,0,0,0}},
-            {{256,256,256,207},{0,0,0,0}},{{256,256,256,184},{0,0,0,0}},
-            {{256,256,256,163},{0,0,0,0}},{{256,256,256,142},{0,0,0,0}},
-            {{256,256,256,123},{0,0,0,0}},{{256,256,256,105},{0,0,0,0}},
-            {{256,256,256,88},{0,0,0,0}},{{256,256,256,72},{0,0,0,0}},
-            {{256,256,256,57},{0,0,0,0}},{{256,256,256,43},{0,0,0,0}},
-            {{256,256,256,31},{0,0,0,0}},{{256,256,256,19},{0,0,0,0}},
-            {{256,256,256,9},{0,0,0,0}},{{256,256,256,0},{0,0,0,0}}
+            {{256, 256, 256, 256}, {0, 0, 0, 0}}, {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}}, {{256, 256, 256, 256}, {0, 0, 0, 0}},
+            {{256, 256, 256, 256}, {0, 0, 0, 0}}, {{256, 256, 256, 223}, {0, 0, 0, 0}},
+            {{256, 256, 256, 207}, {0, 0, 0, 0}}, {{256, 256, 256, 184}, {0, 0, 0, 0}},
+            {{256, 256, 256, 163}, {0, 0, 0, 0}}, {{256, 256, 256, 142}, {0, 0, 0, 0}},
+            {{256, 256, 256, 123}, {0, 0, 0, 0}}, {{256, 256, 256, 105}, {0, 0, 0, 0}},
+            {{256, 256, 256, 88}, {0, 0, 0, 0}}, {{256, 256, 256, 72}, {0, 0, 0, 0}},
+            {{256, 256, 256, 57}, {0, 0, 0, 0}}, {{256, 256, 256, 43}, {0, 0, 0, 0}},
+            {{256, 256, 256, 31}, {0, 0, 0, 0}}, {{256, 256, 256, 19}, {0, 0, 0, 0}},
+            {{256, 256, 256, 9}, {0, 0, 0, 0}}, {{256, 256, 256, 0}, {0, 0, 0, 0}}
     };
-    private final byte[] selectList = {0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,3};
+
+    private final byte[] selectList = {0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3};
+
     private final float[][] sizeTexture = {
             {30.0f, 31.5f},
             {20.0f, 21.0f}
     };
-    float svgScale = 1.0f;
-    public Valentine(Context context) {
+
+    Valentine(final Context context) {
         super(context, textureList, null);
     }
 
@@ -55,7 +59,9 @@ public class Valentine extends TextureObject {
         int index = random.nextInt(selectList.length);
         TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][selectList[index]]));
         Object object;
-        if (index<2) {
+
+        float svgScale;
+        if (index < 2) {
             texture.width = sizeTexture[index][0];
             texture.height = sizeTexture[index][1];
             svgScale = 1.0f;
@@ -72,11 +78,11 @@ public class Valentine extends TextureObject {
         object.resetViewMatrix();
         object.setViewScale(_scale, _scale);
         object.setViewRotate(_rotation);
-        object.setViewPosition(_x,  _y);
+        object.setViewPosition(_x, _y);
         object.frameCounter = 0;
     }
 
-    public void update(boolean createObject) {
+    void update(final boolean createObject) {
 
         if (createObject) createObject();
 

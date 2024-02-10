@@ -7,8 +7,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 
-
-public class Object {
+class Object {
 
     private final float[] modelMatrix = new float[16];      //Общая матрица модели
     private final float[] viewMatrix = new float[16];       //Общая матрица вида
@@ -129,7 +128,7 @@ public class Object {
             vertexBuffer.put(x_end);
             vertexBuffer.put(y_begin);
             vertexBuffer.put(0f);
-            
+
             vertexBuffer.position(0);
         }
     }
@@ -138,11 +137,14 @@ public class Object {
         this.scale = scale;
         Matrix.scaleM(scaleMatrix, 0, scale, scale, 0);
     }
-    float getRotation(){
+
+    float getRotation() {
         return rotation;
     }
 
-    float getViewScaleY() {return yscale;}
+    float getViewScaleY() {
+        return yscale;
+    }
 
     void setColorTransform(float[][] colorTransform) {
         ColorTransformValue = colorTransform;
@@ -171,9 +173,12 @@ public class Object {
 
     void setViewTransform(float[] transform) {
         viewTransformMatrix = transform;
-        rotateSkewViewMatrix[0] = transform[0];rotateSkewViewMatrix[1] = transform[2];
-        rotateSkewViewMatrix[4] = transform[3];rotateSkewViewMatrix[5] = transform[1];
-        rotateSkewViewMatrix[12] = transform[4];rotateSkewViewMatrix[13] = transform[5];
+        rotateSkewViewMatrix[0] = transform[0];
+        rotateSkewViewMatrix[1] = transform[2];
+        rotateSkewViewMatrix[4] = transform[3];
+        rotateSkewViewMatrix[5] = transform[1];
+        rotateSkewViewMatrix[12] = transform[4];
+        rotateSkewViewMatrix[13] = transform[5];
     }
 
     void setViewTranslate(float translateX, float translateY) {
@@ -202,11 +207,14 @@ public class Object {
 
     void setTransform(float[] transform) {
         transformMatrix = transform;
-        Arrays.fill(tmpTransformMatrix,0);
+        Arrays.fill(tmpTransformMatrix, 0);
         Matrix.setIdentityM(tmpTransformMatrix, 0);
-        tmpTransformMatrix[0] = transform[0];tmpTransformMatrix[1] = transform[2];
-        tmpTransformMatrix[4] = transform[3];tmpTransformMatrix[5] = transform[1];
-        tmpTransformMatrix[12] = transform[4];tmpTransformMatrix[13] = transform[5];
+        tmpTransformMatrix[0] = transform[0];
+        tmpTransformMatrix[1] = transform[2];
+        tmpTransformMatrix[4] = transform[3];
+        tmpTransformMatrix[5] = transform[1];
+        tmpTransformMatrix[12] = transform[4];
+        tmpTransformMatrix[13] = transform[5];
         Matrix.multiplyMM(rotateSkewMatrix, 0, tmpTransformMatrix, 0, rotateSkewMatrix, 0);
     }
 
@@ -230,6 +238,7 @@ public class Object {
 
     public void setupPosition() {
     }
+
     public float[] calculateMatrix() {
         //!!!Важна последовательность умножения!!!!
         //т.е. для примера 0 * 1 = 0, но 1 * 0 = 1

@@ -13,7 +13,7 @@ import android.opengl.GLUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-public class TextureManager {
+final class TextureManager {
 
     static class Texture {
         public float[] pivot = {0.0f, 0.0f};
@@ -26,12 +26,18 @@ public class TextureManager {
     private final Texture[] textures;
     private final Context context;
 
-    int[] texturesIDs;
-    public float dipToPixels(float dipValue){
+    private final int[] texturesIDs;
+
+    float dipToPixels(final float dipValue) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,  dipValue, metrics);
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
-    TextureManager(Context context, String[][] TexturesNameList, float[][] PivotList){
+
+    TextureManager(
+            final Context context,
+            final String[][] TexturesNameList,
+            final float[][] PivotList
+    ) {
         this.context = context;
         int texturesCount = 0;
 
@@ -42,7 +48,8 @@ public class TextureManager {
             final String[] textures = TexturesNameList[i];
             texturesCount += textures.length;
         }
-        String[] bothTextureNameList = new String[texturesCount];
+
+        final String[] bothTextureNameList = new String[texturesCount];
         int c = 0;
 
         // Optimization to avoid creating Iterator
@@ -74,17 +81,17 @@ public class TextureManager {
             @SuppressLint("DiscouragedApi") int drawableID = context.getResources().getIdentifier(textures[counter].textureName, "drawable", context.getPackageName());
             Bitmap picture = null;
             @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = context.getDrawable(drawableID);
-            BitmapFactory.Options options = new BitmapFactory.Options();
+            final BitmapFactory.Options options = new BitmapFactory.Options();
             if (drawable instanceof BitmapDrawable) {
                 picture = BitmapFactory.decodeResource(context.getResources(), drawableID, options);
                 textures[counter].width = picture.getWidth() / dipToPixels(1);
                 textures[counter].height = picture.getHeight() / dipToPixels(1);
             } else if (drawable instanceof VectorDrawable) {
                 picture = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(picture);
+                final Canvas canvas = new Canvas(picture);
                 drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                 drawable.draw(canvas);
-                textures[counter].width =  canvas.getWidth();
+                textures[counter].width = canvas.getWidth();
                 textures[counter].height = canvas.getHeight();
             }
             if (PivotList != null) {
@@ -107,11 +114,11 @@ public class TextureManager {
         }
     }
 
-    Texture getTexture(int index) {
+    Texture getTexture(final int index) {
         return textures[index];
     }
 
-    int getTextureIndex(String name){
+    int getTextureIndex(final String name) {
         final int texturesLength = textures.length;
         for (int i = 0; i < texturesLength; i++) {
             if (textures[i].textureName.equals(name)) return i;

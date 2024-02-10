@@ -6,21 +6,25 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 import java.util.ArrayList;
 
-public class Fairy extends TextureObject {
+final class Fairy extends TextureObject {
+
     interface CreatorCallback {
         void callingCreatorCallback(float[] transform, float[] translate, int xscale, int index);
     }
 
-    static final String[][] textureList = {{"image_15"}};
-    ArrayList<Creator> creatorObjects = new ArrayList<>();
-    ArrayList<Creator> removeCreatorObjects = new ArrayList<>();
+    private static final String[][] textureList = {{"image_15"}};
+
+    private final ArrayList<Creator> creatorObjects = new ArrayList<>();
+    private final ArrayList<Creator> removeCreatorObjects = new ArrayList<>();
+
     private final int[][] periodAnim = {
             {60, 115},
             {25, 130},
-            {155,200},
+            {155, 200},
             {20, 65}
     };
 
+    // @formatter:off
     private final float[][][][] matrixTransform =
     {
         {       //Index 1
@@ -246,38 +250,42 @@ public class Fairy extends TextureObject {
             }
         }
     };
+    // @formatter:on
 
-    boolean init = false;
-    int frameCounter = 0;
-    int maxFrames = 20;
-    int numClips = minObjects;
-    CreatorCallback creatorCallback;
+    private static final int MAX_FRAMES = 20;
 
+    private boolean init = false;
+    private int frameCounter = 0;
+    private int numClips = minObjects;
 
-    public void registerCallBack(CreatorCallback callback){
+    private CreatorCallback creatorCallback;
+
+    public void registerCallBack(final CreatorCallback callback) {
         this.creatorCallback = callback;
     }
-    public Fairy(Context context) {
+
+    Fairy(Context context) {
         super(context, textureList, null);
     }
-
 
     private void addCreator() {
         if (creatorObjects.size() >= numClips) return;
         if (random.nextInt(5) > 0) return;
-        Creator creator = new Creator();
+
+        final Creator creator = new Creator();
         creator.animIndex = random.nextInt(4);
         creator.frame = periodAnim[creator.animIndex][0];
         creator.maxFrame = periodAnim[creator.animIndex][1];
         creatorObjects.add(creator);
     }
 
-    private void createObject(int index) {
-        TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][0]));
+    private void createObject(final int index) {
+        final TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][0]));
         texture.width = 20.0f;
         texture.height = 21.0f;
-        int _x = random.nextInt(120) + 70;
-        int _y = random.nextInt(160) + 70;
+
+        final int _x = random.nextInt(120) + 70;
+        final int _y = random.nextInt(160) + 70;
         for (int i = 0; i < 7; i++) {
             final Object object = objects.obtain(texture, 1.0f);
             object.resetMatrix();
@@ -295,8 +303,8 @@ public class Fairy extends TextureObject {
             final Creator creator = creatorObjects.get(i);
             if (creator.frame == 0) createObject(creator.animIndex);
             if (creator.maxFrame == 0) removeCreatorObjects.add(creator);
-            creator.frame --;
-            creator.maxFrame --;
+            creator.frame--;
+            creator.maxFrame--;
         }
 
         final int removeCreatorObjectsSize = removeCreatorObjects.size();
@@ -307,7 +315,7 @@ public class Fairy extends TextureObject {
     }
 
     public void update(boolean createObject) {
-        frameCounter = (frameCounter+1) % maxFrames;
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
         if (!init && createObject) numClips = minObjects + random.nextInt(maxObjects - 4);
         init = createObject;
         if (createObject && (frameCounter == 2)) addCreator();
@@ -324,10 +332,10 @@ public class Fairy extends TextureObject {
                 object.setTransform(matrixTransform[object.index][object.frameCounter][object.animCounter]);
                 object.setColorTransform(ColorTransform[object.index][object.frameCounter][object.animCounter]);
                 if (object.animCounter == 6) {
-                    if  (   (object.index == 0 && object.frameCounter == 4) ||
+                    if ((object.index == 0 && object.frameCounter == 4) ||
                             (object.index == 1 && object.frameCounter == 1) ||
                             (object.index == 2 && object.frameCounter == 0) ||
-                            (object.index == 3 && object.frameCounter == 1) ) {
+                            (object.index == 3 && object.frameCounter == 1)) {
                         creatorCallback.callingCreatorCallback(object.viewTransformMatrix, object.ViewTranslate, random.nextInt(2), object.index);
                     }
                 }
