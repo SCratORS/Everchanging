@@ -151,7 +151,6 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         final int pointerCount = motionEvent.getPointerCount() - 1;
         posX = motionEvent.getX(pointerCount);
         posY = motionEvent.getY(pointerCount);
-
         if (motionEvent.getAction() == 0) {
             downTap = true;
         } else if (motionEvent.getAction() == 1) {
@@ -200,11 +199,12 @@ public class EverchangingRender implements GLSurfaceView.Renderer {
         GLES20.glViewport(0, 0, width, height);
 
         final float scaleImageHeight = surfaceHeight / 320f;
+        final float scaleImageWidth = 240f / width;
         //todo setup position
         final int scenesSize = scenes.size();
         for (int i = 0; i < scenesSize; i++) {
             scenes.get(i)
-                    .setupPosition(surfaceWidth, surfaceHeight, scaleImageHeight, displayRotation);
+                    .setupPosition(surfaceWidth, surfaceHeight, (i<scenesSize-1)?scaleImageHeight:scaleImageWidth, displayRotation);
         }
     }
 

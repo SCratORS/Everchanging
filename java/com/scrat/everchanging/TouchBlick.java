@@ -100,8 +100,7 @@ final class TouchBlick extends TextureObject {
     void createObject(final float posX, final float posY) {
         if (objects.objectsInUseCount() >= NUM_CLIPS) return;
         TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][selectList[0]]));
-        Object object = objects.obtain(texture, 1.0f);
-        resetObject(object, posX, posY);
+        resetObject(objects.obtain(texture, 1.0f), posX, posY);
     }
 
     void update(final boolean createObject, final float posX, final float posY) {
