@@ -12,6 +12,11 @@ class PetalsScene extends Scene {
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         return petal.objects.objectsInUseCount() != 0;
     }
