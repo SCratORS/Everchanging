@@ -5,26 +5,11 @@ import android.content.res.AssetManager;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public final class FloatArraysReader {
+public final class FloatArraysReader2d {
 
-    private final AssetManager assets;
-
-    public FloatArraysReader(final AssetManager assets) {
-        this.assets = assets;
-    }
-
-    public float[][][] read3d(final String... assetNames) {
-        final float[][][] output = new float[assetNames.length][][];
-        for (int i = 0; i < assetNames.length; i++) {
-            output[i] = read2d(assetNames[i]);
-        }
-
-        return output;
-    }
-
-    public float[][] read2d(final String assetName) {
+    public static float[][] read2d(final AssetManager assets, final String assetName) {
         try (DataInputStream dis = new DataInputStream(assets.open(assetName))) {
-            return read2dArrays(dis);
+            return read2d(dis);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,23 +37,12 @@ public final class FloatArraysReader {
      *
      * @param dis stream to read from
      */
-    private float[][] read2dArrays(final DataInputStream dis) throws IOException {
+    static float[][] read2d(final DataInputStream dis) throws IOException {
         // Create output with size of number of expected arrays
         final float[][] output = new float[dis.readInt()][];
 
         for (int i = 0; i < output.length; i++) {
-            output[i] = readNextArray(dis);
-        }
-
-        return output;
-    }
-
-    private float[] readNextArray(final DataInputStream dis) throws IOException {
-        // Create output with size of next array
-        final float[] output = new float[dis.readInt()];
-
-        for (int i = 0; i < output.length; i++) {
-            output[i] = dis.readFloat();
+            output[i] = FloatArraysReader1d.read1d(dis);
         }
 
         return output;

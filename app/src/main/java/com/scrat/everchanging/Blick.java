@@ -2,7 +2,7 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import com.scrat.everchanging.util.FloatArraysReader;
+import com.scrat.everchanging.util.FloatArraysReader3d;
 import com.scrat.everchanging.util.ReusableIterator;
 
 final class Blick extends TextureObject {
@@ -80,11 +80,7 @@ final class Blick extends TextureObject {
 
     Blick(final Context context) {
         super(context, textureList, null);
-        final FloatArraysReader floatArraysReader = new FloatArraysReader(context.getAssets());
-        matrixTransform = floatArraysReader.read3d(
-                "BlickMatrixTransform0",
-                "BlickMatrixTransform1"
-        );
+        matrixTransform = FloatArraysReader3d.read3d(context.getAssets(), "BlickMatrixTransform");
     }
 
     void createObject() {
