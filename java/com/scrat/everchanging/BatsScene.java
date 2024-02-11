@@ -12,6 +12,11 @@ final class BatsScene extends Scene {
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         return bat.objects.objectsInUseCount() != 0;
     }
