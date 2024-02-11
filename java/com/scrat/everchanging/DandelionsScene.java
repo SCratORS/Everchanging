@@ -14,6 +14,11 @@ final class DandelionsScene extends Scene {
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         return dandelion.objects.objectsInUseCount() != 0;
     }
