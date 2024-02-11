@@ -14,6 +14,11 @@ final class ButterFliesScene extends Scene {
     }
 
     @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
     public boolean hasObjectsInUse() {
         return butterflie.objects.objectsInUseCount() != 0;
     }
