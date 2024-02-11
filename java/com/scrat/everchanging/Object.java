@@ -40,6 +40,10 @@ class Object {
     public int animCounter = 0;
     public int index = 0;
 
+    // Because we increased frame rate x2 but did not increase number of textures for some objects,
+    // we need a way to control throttle for anim counter every second frame
+    public boolean animCounterSkip;
+
     public float xscale = 0;
     public float yscale = 0;
 
@@ -93,6 +97,7 @@ class Object {
 
         frameCounter = source.frameCounter;
         animCounter = source.animCounter;
+        animCounterSkip = source.animCounterSkip;
         index = source.index;
 
         xscale = source.xscale;

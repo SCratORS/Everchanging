@@ -13,6 +13,16 @@ final class DandelionsScene extends Scene {
         dandelion = new Dandelion(context, calendar);
     }
 
+    @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
+    public boolean hasObjectsInUse() {
+        return dandelion.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         dandelion.update(createObject);
     }

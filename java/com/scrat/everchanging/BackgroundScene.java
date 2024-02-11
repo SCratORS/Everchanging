@@ -22,6 +22,12 @@ final class BackgroundScene extends Scene {
         foreground = new Foreground(context);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        // Do not make background affect other scene FPS
+        return false;
+    }
+
     private void GetDateTime() {
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);

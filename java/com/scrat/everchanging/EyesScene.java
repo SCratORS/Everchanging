@@ -13,6 +13,11 @@ final class EyesScene extends Scene {
         eye = new Eye(context, calendar);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return eye.objects.objectsInUseCount() != 0;
+    }
+
     public void update(boolean createObject) {
         eye.update(createObject);
     }

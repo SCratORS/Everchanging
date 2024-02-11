@@ -13,6 +13,16 @@ final class FireFliesScene extends Scene {
         fireflie = new FireFlie(context, calendar);
     }
 
+    @Override
+    public boolean hasObjectsInUse() {
+        return fireflie.objects.objectsInUseCount() != 0;
+    }
+
+    @Override
+    public int getFps() {
+        return 40;
+    }
+
     public void update(final boolean createObject) {
         fireflie.update(createObject);
     }

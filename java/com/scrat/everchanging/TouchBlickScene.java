@@ -11,6 +11,17 @@ final class TouchBlickScene extends Scene {
         touchBlick = new TouchBlick(context);
     }
 
+    @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
+    public boolean hasObjectsInUse() {
+        // Always return false so that TouchBlick visibility does not affect other scenes FPS
+        return false;
+    }
+
     public void update(final boolean createObject, final float posX, final float posY) {
         touchBlick.update(createObject, posX, posY);
     }

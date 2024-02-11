@@ -8,11 +8,11 @@ final class Ripple extends TextureObject {
 
     private static final String[][] textureList = {{"shape_23", "shape_262"}};
 
-    private static final float SPEED_SCALE_X = 1.3f;
-    private static final float SPEED_SCALE_Y = 1.05f;
+    private static final float SPEED_SCALE_X = 1.15f;
+    private static final float SPEED_SCALE_Y = 1.025f;
 
     private final int startAplpha = 80;
-    private final int maxFrames = 6;
+    private final int maxFrames = 12;
     private final float deltaAlpha = (float) startAplpha / maxFrames;
     private final int typesAnim;
 

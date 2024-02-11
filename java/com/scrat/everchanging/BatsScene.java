@@ -11,6 +11,16 @@ final class BatsScene extends Scene {
         bat = new Bat(context);
     }
 
+    @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
+    public boolean hasObjectsInUse() {
+        return bat.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         bat.update(createObject);
     }

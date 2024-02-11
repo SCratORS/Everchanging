@@ -11,6 +11,16 @@ final class ValentinesScene extends Scene {
         valentine = new Valentine(context);
     }
 
+    @Override
+    public int getFps() {
+        return 40;
+    }
+
+    @Override
+    public boolean hasObjectsInUse() {
+        return valentine.objects.objectsInUseCount() != 0;
+    }
+
     public void update(final boolean createObject) {
         valentine.update(createObject);
     }
