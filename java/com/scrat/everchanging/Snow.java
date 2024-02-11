@@ -283,6 +283,7 @@ final class Snow extends TextureObject {
         object.setAplpha((int) (_yscale * 4.5f));
         object.frameCounter = 0;
         object.animCounter = 0;
+        object.animCounterSkip = false;
     }
 
     void update(final boolean createObject) {

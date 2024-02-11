@@ -112,6 +112,7 @@ final class Crystal extends TextureObject {
 
             crystalsEnd.frameCounter = 0;
             crystalsEnd.animCounter = 0;
+            crystalsEnd.animCounterSkip = false;
             crystalsEnd.resetViewMatrix();
             crystalsEnd.setViewTransform(transform);
             crystalsEnd.setViewRotate(_rotation);

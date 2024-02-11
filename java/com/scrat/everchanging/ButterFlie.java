@@ -91,6 +91,7 @@ final class ButterFlie extends TextureObject {
         object.setViewPosition(120, _y);
         object.setObjectScale(_yscale / svgScale);
         object.animCounter = 0;
+        object.animCounterSkip = false;
         object.frameCounter = 0;
     }
 

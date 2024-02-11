@@ -102,6 +102,7 @@ final class Blick extends TextureObject {
         object.setViewScale(100 * ratio, ratio * 100);
 
         object.animCounter = 0;
+        object.animCounterSkip = false;
         object.frameCounter = 0;
         object.index = index;
         index = (index + 1) % spriteIndex.length;

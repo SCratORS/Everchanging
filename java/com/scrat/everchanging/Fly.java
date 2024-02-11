@@ -119,6 +119,7 @@ public class Fly extends TextureObject {
         object.setViewTranslate(translate[0], translate[1]);
         object.frameCounter = 0;
         object.animCounter = 0;
+        object.animCounterSkip = false;
         object.index = index;
         object.setScale(xscale == 0 ? 1 : -1, 1);
     }
