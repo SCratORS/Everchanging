@@ -1,0 +1,27 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:drawable="@drawable/shape_23"
+    tools:ignore="MissingDefaultResource">
+    <target android:name="path">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="strokeAlpha"
+                android:duration="400"
+                android:valueFrom="0.5019608"
+                android:valueTo="0.0"
+                android:interpolator="@android:anim/linear_interpolator" />
+        </aapt:attr>
+    </target>
+    <target android:name="path">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="pathData"
+                android:duration="400"
+                android:valueFrom="M-391.05 465.95 Q-391.05 463.7 -385.5 462.1 -379.9 460.5 -372.0 460.5 -364.1 460.5 -358.55 462.1 -352.95 463.7 -352.95 465.95 -352.95 468.2 -358.55 469.8 -364.1 471.4 -372.0 471.4 -379.9 471.4 -385.5 469.8 -391.05 468.2 -391.05 465.95 -391.05 463.7 -385.5 462.1 -379.9 460.5 -372.0 460.5 -364.1 460.5 -358.55 462.1 -352.95 463.7 -352.95 465.95 -352.95 468.2 -358.55 469.8 -364.1 471.4 -372.0 471.4 -379.9 471.4 -385.5 469.8 -391.05 468.2 -391.05 465.95"
+                android:valueTo="M-440.95 465.95 Q-440.95 463.7 -420.85 462.1 -396.45 461.3 -372.0 460.5 -347.7 461.3 -323.35 462.1 -303.1 463.7 -303.05 465.95 -303.1 468.2 -323.35 469.8 -347.65 470.6 -372.0 471.4 -396.4 470.6 -420.85 469.8 -440.95 468.2 -440.95 465.95 -440.95 463.7 -420.85 462.1 -396.45 461.3 -372.0 460.5 -347.7 461.3 -323.35 462.1 -303.1 463.7 -303.05 465.95 -303.1 468.2 -323.35 469.8 -347.65 470.6 -372.0 471.4 -396.4 470.6 -420.85 469.8 -440.95 468.2 -440.95 465.95"
+                android:valueType="pathType"
+                android:interpolator="@android:anim/linear_interpolator" />
+        </aapt:attr>
+    </target>
+</animated-vector>
