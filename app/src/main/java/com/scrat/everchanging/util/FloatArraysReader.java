@@ -13,18 +13,18 @@ public final class FloatArraysReader {
         this.assets = assets;
     }
 
-    public float[][][] read(final String... assetNames) {
+    public float[][][] read3d(final String... assetNames) {
         final float[][][] output = new float[assetNames.length][][];
         for (int i = 0; i < assetNames.length; i++) {
-            output[i] = read(assetNames[i]);
+            output[i] = read2d(assetNames[i]);
         }
 
         return output;
     }
 
-    public float[][] read(final String assetName) {
+    public float[][] read2d(final String assetName) {
         try (DataInputStream dis = new DataInputStream(assets.open(assetName))) {
-            return readArrays(dis);
+            return read2dArrays(dis);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public final class FloatArraysReader {
      *
      * @param dis stream to read from
      */
-    private float[][] readArrays(final DataInputStream dis) throws IOException {
+    private float[][] read2dArrays(final DataInputStream dis) throws IOException {
         // Create output with size of number of expected arrays
         final float[][] output = new float[dis.readInt()][];
 

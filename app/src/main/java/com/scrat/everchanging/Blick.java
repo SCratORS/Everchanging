@@ -81,7 +81,7 @@ final class Blick extends TextureObject {
     Blick(final Context context) {
         super(context, textureList, null);
         final FloatArraysReader floatArraysReader = new FloatArraysReader(context.getAssets());
-        matrixTransform = floatArraysReader.read(
+        matrixTransform = floatArraysReader.read3d(
                 "BlickMatrixTransform0",
                 "BlickMatrixTransform1"
         );

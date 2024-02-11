@@ -50,7 +50,7 @@ final class ButterFlie extends TextureObject {
         super(context, textureList, null);
         this.calendar = calendar;
         final FloatArraysReader floatArraysReader = new FloatArraysReader(context.getAssets());
-        matrixTransform = floatArraysReader.read(
+        matrixTransform = floatArraysReader.read3d(
                 "ButterfliesMatrixTransform0",
                 "ButterfliesMatrixTransform1"
         );
