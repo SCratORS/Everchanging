@@ -175,19 +175,19 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
 
 
         scenes.add(new BackgroundScene(context, calendar));
-        scenes.add(new CrystalBlickScene(context));
-        scenes.add(new FireFliesScene(context, calendar));
-        scenes.add(new DandelionsScene(context, calendar));
-        scenes.add(new RainsScene(context, calendar));
-        scenes.add(new PetalsScene(context));
-        scenes.add(new SnowsScene(context, calendar));
-        scenes.add(new LeavesScene(context, calendar));
-        scenes.add(new ButterFliesScene(context, calendar));
         scenes.add(new BatsScene(context));
-        scenes.add(new HeartsScene(context, calendar));
-        scenes.add(new ValentinesScene(context));
+        scenes.add(new ButterFliesScene(context, calendar));
+        scenes.add(new CrystalBlickScene(context));
+        scenes.add(new DandelionsScene(context, calendar));
         scenes.add(new FairiesScene(context));
+        scenes.add(new FireFliesScene(context, calendar));
+        scenes.add(new HeartsScene(context, calendar));
+        scenes.add(new LeavesScene(context, calendar));
+        scenes.add(new PetalsScene(context));
+        scenes.add(new RainsScene(context, calendar));
+        scenes.add(new SnowsScene(context, calendar));
         scenes.add(new TouchBlickScene(context));
+        scenes.add(new ValentinesScene(context));
         // Scenes running at 20 fps must be last, because they rely on maxFps calculation
         scenes.add(new EyesScene(context, calendar));
         scenes.add(new FireWorksScene(context, calendar));
@@ -257,64 +257,64 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
                     ((BackgroundScene) scene).update();
                     break;
 
-                case CB:
-                    ((CrystalBlickScene) scene).update(createObject);
-                    break;
-
-                case FF:
-                    ((FireFliesScene) scene).update(createObject);
-                    break;
-
-                case D:
-                    ((DandelionsScene) scene).update(createObject);
-                    break;
-
-                case R:
-                    ((RainsScene) scene).update(createObject);
-                    break;
-
-                case P:
-                    ((PetalsScene) scene).update(createObject);
-                    break;
-
-                case S:
-                    ((SnowsScene) scene).update(createObject);
-                    break;
-
-                case L:
-                    ((LeavesScene) scene).update(createObject);
-                    break;
-
-                case FW:
-                    ((FireWorksScene) scene).update(createObject, lastSceneMaxFps);
-                    break;
-
-                case E:
-                    ((EyesScene) scene).update(createObject, lastSceneMaxFps);
+                case BA:
+                    ((BatsScene) scene).update(createObject);
                     break;
 
                 case B:
                     ((ButterFliesScene) scene).update(createObject);
                     break;
 
-                case BA:
-                    ((BatsScene) scene).update(createObject);
+                case CB:
+                    ((CrystalBlickScene) scene).update(createObject);
                     break;
 
-                case H:
-                    ((HeartsScene) scene).update(createObject);
+                case D:
+                    ((DandelionsScene) scene).update(createObject);
                     break;
 
-                case V:
-                    ((ValentinesScene) scene).update(createObject);
+                case E:
+                    ((EyesScene) scene).update(createObject, lastSceneMaxFps);
                     break;
 
                 case F:
                     ((FairiesScene) scene).update(createObject);
                     break;
 
+                case FF:
+                    ((FireFliesScene) scene).update(createObject);
+                    break;
+
+                case FW:
+                    ((FireWorksScene) scene).update(createObject, lastSceneMaxFps);
+                    break;
+
+                case H:
+                    ((HeartsScene) scene).update(createObject);
+                    break;
+
+                case L:
+                    ((LeavesScene) scene).update(createObject);
+                    break;
+
+                case P:
+                    ((PetalsScene) scene).update(createObject);
+                    break;
+
+                case R:
+                    ((RainsScene) scene).update(createObject);
+                    break;
+
+                case S:
+                    ((SnowsScene) scene).update(createObject);
+                    break;
+
                 case TB:
                     ((TouchBlickScene) scene).update(downTap, posX, posY);
+                    break;
+
+                case V:
+                    ((ValentinesScene) scene).update(createObject);
                     break;
             }
         }
