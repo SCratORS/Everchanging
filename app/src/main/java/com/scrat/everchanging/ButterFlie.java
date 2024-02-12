@@ -2,7 +2,7 @@ package com.scrat.everchanging;
 
 import android.content.Context;
 
-import com.scrat.everchanging.util.FloatArraysReader;
+import com.scrat.everchanging.util.FloatArraysReader3d;
 import com.scrat.everchanging.util.ReusableIterator;
 
 import java.util.Calendar;
@@ -46,14 +46,10 @@ final class ButterFlie extends TextureObject {
     private int frameCounter;
     private int numClips = minObjects;
 
-    ButterFlie(Context context, final Calendar calendar) {
+    ButterFlie(final Context context, final Calendar calendar) {
         super(context, textureList, null);
         this.calendar = calendar;
-        final FloatArraysReader floatArraysReader = new FloatArraysReader(context.getAssets());
-        matrixTransform = floatArraysReader.read3d(
-                "ButterfliesMatrixTransform0",
-                "ButterfliesMatrixTransform1"
-        );
+        matrixTransform = FloatArraysReader3d.read3d(context.getAssets(), "ButterfliesMatrixTransform");
     }
 
     private int ConvertRange(

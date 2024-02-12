@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 /**
+ * Added as an example of usage.
+ * <p>
  * Not an actual test, but is here so that we can easily run it from IDE.<br/><br/>
  * <p>
  * This will generate MatrixTransform for Crystal as binary.<br/>
@@ -58,6 +60,6 @@ public class CrystalMatrixTransformSerializer {
 
     @Test
     public void crystalMatrixTransform() throws IOException {
-        FloatArraySerializer.serialize2d(matrixTransform, "CrystalMatrixTransform");
+        FloatArraySerializer2D.serialize2d(matrixTransform, "CrystalMatrixTransform");
     }
 }
