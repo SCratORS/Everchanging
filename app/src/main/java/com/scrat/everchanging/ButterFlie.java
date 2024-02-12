@@ -110,10 +110,14 @@ final class ButterFlie extends TextureObject {
             final Object object = iterator.next();
             if (object.frameCounter < matrixTransform[object.index].length) {
                 object.resetMatrix();
-                object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter++ % textureList[0].length])), 1.0f);
+                object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter])), 1.0f);
                 object.setTransform(animationStartPosition);
                 object.setTransform(matrixTransform[object.index][object.frameCounter]);
                 object.frameCounter++;
+                /*
+                    If we have 40 FPS, then there is no point in coming up with a more complicated one.
+                 */
+                if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % textureList[0].length;
             } else iterator.remove();
         }
 
