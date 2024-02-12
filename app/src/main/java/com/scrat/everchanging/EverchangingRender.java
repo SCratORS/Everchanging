@@ -183,14 +183,15 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
         scenes.add(new PetalsScene(context));
         scenes.add(new SnowsScene(context, calendar));
         scenes.add(new LeavesScene(context, calendar));
-        scenes.add(new FireWorksScene(context, calendar));
-        scenes.add(new EyesScene(context, calendar));
         scenes.add(new ButterFliesScene(context, calendar));
         scenes.add(new BatsScene(context));
         scenes.add(new HeartsScene(context, calendar));
         scenes.add(new ValentinesScene(context));
         scenes.add(new FairiesScene(context));
         scenes.add(new TouchBlickScene(context));
+        // Scenes running at 20 fps must be last, because they rely on maxFps calculation
+        scenes.add(new EyesScene(context, calendar));
+        scenes.add(new FireWorksScene(context, calendar));
 
         GLES20.glReleaseShaderCompiler();
     }
@@ -276,11 +277,11 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
                     break;
 
                 case FW:
-                    ((FireWorksScene) scene).update(createObject);
+                    ((FireWorksScene) scene).update(createObject, lastSceneMaxFps);
                     break;
 
                 case E:
-                    ((EyesScene) scene).update(createObject);
+                    ((EyesScene) scene).update(createObject, lastSceneMaxFps);
                     break;
 
                 case B:

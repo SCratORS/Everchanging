@@ -18,8 +18,8 @@ final class EyesScene extends Scene {
         return eye.objects.objectsInUseCount() != 0;
     }
 
-    public void update(boolean createObject) {
-        eye.update(createObject);
+    public void update(final boolean createObject, final int actualFps) {
+        eye.update(createObject, getFps() * 2 == actualFps);
     }
 
     @Override
