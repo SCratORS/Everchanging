@@ -447,7 +447,7 @@ final class Dandelion extends TextureObject {
 
     // @formatter:on
 
-    private static final int MAX_FRAMES = 7;
+    private static final int MAX_FRAMES = 14;
 
     private final float[] animationStartPosition = {0.15f, 0.15f, 0.0000f, 0.0000f, 38.55f, 24.85f};
 
@@ -482,7 +482,6 @@ final class Dandelion extends TextureObject {
         object.setViewPosition(_x, _y);
         object.setColorTransform(animationStartColor[object.index]);
         object.animCounter = 0;
-        object.animCounterSkip = false;
         object.frameCounter = 0;
     }
 
@@ -510,13 +509,8 @@ final class Dandelion extends TextureObject {
             object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter])), 1.0f);
             object.setTransform(animationStartPosition);
             object.setTransform(matrixTransform[object.frameCounter]);
+            if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % textureList[0].length;
             object.frameCounter = (object.frameCounter + 1) % matrixTransform.length;
-
-            if (!object.animCounterSkip) {
-                object.animCounter = (object.animCounter + 1) % textureList[0].length;
-            }
-            object.animCounterSkip = !object.animCounterSkip;
-
             if (!createObject && (object.frameCounter == 0)) iterator.remove();
         }
 

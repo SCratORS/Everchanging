@@ -230,7 +230,7 @@ final class Snow extends TextureObject {
 
     // @formatter:on
 
-    private static final int MAX_FRAMES = 8;
+    private static final int MAX_FRAMES = 16;
 
     private final Calendar calendar;
 
@@ -283,7 +283,6 @@ final class Snow extends TextureObject {
         object.setAplpha((int) (_yscale * 4.5f));
         object.frameCounter = 0;
         object.animCounter = 0;
-        object.animCounterSkip = false;
     }
 
     void update(final boolean createObject) {

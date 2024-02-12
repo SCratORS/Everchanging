@@ -33,7 +33,7 @@ final class Rain extends TextureObject {
 
     private static final String[][] textureList = {{"shape_22"}};
 
-    private static final int MAX_FRAMES = 2;
+    private static final int MAX_FRAMES = 4;
     private static final float SPEED = 320.0f / 7.0f / 2;
 
     private final Calendar calendar;

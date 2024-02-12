@@ -354,7 +354,6 @@ public class Fly extends TextureObject {
         object.setViewTranslate(translate[0], translate[1]);
         object.frameCounter = 0;
         object.animCounter = 0;
-        object.animCounterSkip = false;
         object.index = index;
         object.setScale(xscale == 0 ? 1 : -1, 1);
     }
@@ -374,12 +373,8 @@ public class Fly extends TextureObject {
                 object.setScale(scale, 1);
                 object.setTransform(matrixTransform[object.index][object.frameCounter]);
                 object.setColorTransform(colorTransform);
+                if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % 2;
                 object.frameCounter++;
-
-                if (!object.animCounterSkip) {
-                    object.animCounter = (object.animCounter + 1) % 2;
-                }
-                object.animCounterSkip = !object.animCounterSkip;
             } else {
                 creatorCallback.callingCrystallEndCallback(object.transformMatrix, object.ViewTranslate);
                 iterator.remove();

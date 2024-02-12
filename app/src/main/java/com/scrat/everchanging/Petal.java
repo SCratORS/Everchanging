@@ -678,7 +678,7 @@ final class Petal extends TextureObject {
     };
     // @formatter:on
 
-    private static final int MAX_FRAMES = 16;
+    private static final int MAX_FRAMES = 32;
 
     private final ArrayList<Creator> creatingFramesCounter = new ArrayList<>();
 

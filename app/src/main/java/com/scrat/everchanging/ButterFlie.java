@@ -35,7 +35,7 @@ final class ButterFlie extends TextureObject {
             {{192, 192, 192, 256}, {254, 8, 0, 0}}
     };
 
-    private static final int MAX_FRAMES = 10;
+    private static final int MAX_FRAMES = 20;
 
     private final float[] animationStartPosition = {1.0f, 1.0f, 0.0000f, 0.0000f, 3.40f, -3.60f};
 

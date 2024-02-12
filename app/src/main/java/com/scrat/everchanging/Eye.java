@@ -80,7 +80,6 @@ final class Eye extends TextureObject {
                 break;
         }
         object.animCounter = 0;
-        object.animCounterSkip = false;
 
         final int _yscale = random.nextInt(75) + 50;
         int _xscale = _yscale;

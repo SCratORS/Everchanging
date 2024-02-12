@@ -733,7 +733,7 @@ final class Leave extends TextureObject {
             {{128, 128, 128, 256}, {199, 168, 39, 0}}
     };
 
-    private static final int MAX_FRAMES = 16;
+    private static final int MAX_FRAMES = 32;
 
     private final Calendar calendar;
 
@@ -782,7 +782,6 @@ final class Leave extends TextureObject {
         object.index = animCount;
         object.frameCounter = 0;
         object.animCounter = 0;
-        object.animCounterSkip = false;
         object.remove = false;
     }
 
@@ -816,16 +815,13 @@ final class Leave extends TextureObject {
             }
 
             object.setTransform(AnimatedTextureMatrix[object.index][object.frameCounter]);
-            object.frameCounter = (object.frameCounter + 1) % AnimatedTextureMatrix[object.index].length;
 
-            if (!object.animCounterSkip) {
-                object.animCounter = (object.animCounter + 1) % AnimateTextureList[object.index > 0 ? 1 : 0].length;
-            }
-            object.animCounterSkip = !object.animCounterSkip;
+            if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % AnimateTextureList[object.index > 0 ? 1 : 0].length;
+
+            object.frameCounter = (object.frameCounter + 1) % AnimatedTextureMatrix[object.index].length;
 
             if (object.frameCounter == 0) {
                 object.animCounter = 0;
-                object.animCounterSkip = false;
                 if (--object.index > 0) object.remove = true;
             }
 

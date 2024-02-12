@@ -221,7 +221,7 @@ final class Bat extends TextureObject {
             {    3.4310f,     3.4320f,     0.0000f,     0.0000f,  2755.2000f,  1152.7000f},
     };
 
-    private static final int MAX_FRAMES = 33;
+    private static final int MAX_FRAMES = 66;
     private static final int NUM_CLIPS = 7;
 
     private int frameCounter;
@@ -263,7 +263,6 @@ final class Bat extends TextureObject {
         object.setViewPosition(_x, _y * ratio);
         object.frameCounter = 0;
         object.animCounter = 0;
-        object.animCounterSkip = false;
         object.index = 0;
     }
 
@@ -281,10 +280,7 @@ final class Bat extends TextureObject {
                 object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][spriteTable[object.animCounter]])), 1.0f);
                 object.setTransform(animateMatrix[object.animCounter]);
                 object.setTransform(matrixTransform[object.frameCounter]);
-                if (!object.animCounterSkip) {
-                    object.animCounter = (object.animCounter + 1) % spriteTable.length;
-                }
-                object.animCounterSkip = !object.animCounterSkip;
+                if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % spriteTable.length;
                 object.frameCounter++;
             } else {
                 if (createObject) resetObject(object);
