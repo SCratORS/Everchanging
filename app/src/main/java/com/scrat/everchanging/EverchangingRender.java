@@ -2,7 +2,6 @@ package com.scrat.everchanging;
 
 import static com.scrat.everchanging.Scene.ShortTypes.B;
 import static com.scrat.everchanging.Scene.ShortTypes.BA;
-import static com.scrat.everchanging.Scene.ShortTypes.BG;
 import static com.scrat.everchanging.Scene.ShortTypes.CB;
 import static com.scrat.everchanging.Scene.ShortTypes.D;
 import static com.scrat.everchanging.Scene.ShortTypes.E;
@@ -212,12 +211,22 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
 
         final int scenesSize = scenes.size();
         for (int i = 0; i < scenesSize; i++) {
-            scenes.get(i).setupPosition(
-                    surfaceWidth,
-                    surfaceHeight,
-                    (i < scenesSize - 1) ? scaleImageHeight : scaleImageWidth,
-                    displayRotation
-            );
+            final Scene scene = scenes.get(i);
+            if (scene.sceneType == Scene.ShortTypes.TB) {
+                scene.setupPosition(
+                        surfaceWidth,
+                        surfaceHeight,
+                        scaleImageWidth,
+                        displayRotation
+                );
+            } else {
+                scene.setupPosition(
+                        surfaceWidth,
+                        surfaceHeight,
+                        scaleImageHeight,
+                        displayRotation
+                );
+            }
         }
     }
 
