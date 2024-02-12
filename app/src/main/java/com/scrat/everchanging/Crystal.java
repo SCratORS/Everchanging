@@ -88,7 +88,7 @@ final class Crystal extends TextureObject {
 
     private static final String[][] textureList = {{"image_13", "image_15"}};
 
-    private static final int MAX_FRAMES = 2;
+    private static final int MAX_FRAMES = 4;
 
     private int frameCounter = 0;
 

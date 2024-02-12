@@ -272,7 +272,7 @@ public class FireFlie extends TextureObject {
     };
     // @formatter:on
 
-    private static final int MAX_FRAMES = 6;
+    private static final int MAX_FRAMES = 12;
 
     private int numClips = minObjects;
     private int frameCounter = 0;

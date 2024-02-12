@@ -95,6 +95,7 @@ public final class Everchanging extends WallpaperService {
             if (rendererHasBeenSet) {
                 this.visible = visible;
                 if (visible) {
+                    mRender.forceUpdateCalendar();
                     glSurfaceView.onResume();
                     gestureDetector = new GestureDetector(getContext(), new GestureListener());
                     frameScheduler.scheduleNextFrame(0); // запускаем рендеринг
