@@ -84,22 +84,24 @@ final class ObjectPool {
      * <p>
      * Calling {@link #remove()} will mark object as unused and keep in the pool.
      */
-    class UsedObjectsIterator extends ReusableIterator<Object> {
+    private final class UsedObjectsIterator extends ReusableIterator<Object> {
 
         private int i;
         private int limit;
+        private int usedObjectsReturnedSoFar;
 
         @Override
         public void reset() {
             throwIfNotLocked();
             i = 0;
             limit = usedObjectCount;
+            usedObjectsReturnedSoFar = 0;
         }
 
         @Override
         public boolean hasNext() {
             throwIfNotLocked();
-            return i < limit;
+            return usedObjectsReturnedSoFar < limit;
         }
 
         @Override
@@ -108,7 +110,13 @@ final class ObjectPool {
             while (!all.get(i).used) {
                 i++;
             }
-            return all.get(i++);
+
+            final Object object = all.get(i++);
+            if (!object.used) {
+                throw new IllegalStateException("Obtained unused object. This should not happen.");
+            }
+            usedObjectsReturnedSoFar++;
+            return object;
         }
 
         /**
@@ -117,7 +125,8 @@ final class ObjectPool {
         @Override
         public void remove() {
             throwIfNotLocked();
-            all.get(--i).used = false;
+            all.get(i - 1).used = false;
+            usedObjectsReturnedSoFar--;
             usedObjectCount--;
             limit--;
         }
