@@ -173,24 +173,22 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 
-
-        scenes.add(new BackgroundScene(context, calendar));
-        scenes.add(new BatsScene(context));
-        scenes.add(new ButterFliesScene(context, calendar));
-        scenes.add(new CrystalBlickScene(context));
-        scenes.add(new DandelionsScene(context, calendar));
-        scenes.add(new FairiesScene(context));
-        scenes.add(new FireFliesScene(context, calendar));
-        scenes.add(new HeartsScene(context, calendar));
-        scenes.add(new LeavesScene(context, calendar));
-        scenes.add(new PetalsScene(context));
-        scenes.add(new RainsScene(context, calendar));
-        scenes.add(new SnowsScene(context, calendar));
-        scenes.add(new TouchBlickScene(context));
-        scenes.add(new ValentinesScene(context));
-        // Scenes running at 20 fps must be last, because they rely on maxFps calculation
-        scenes.add(new EyesScene(context, calendar));
-        scenes.add(new FireWorksScene(context, calendar));
+        scenes.add(new BackgroundScene(context, calendar));   /* Only background. */
+        scenes.add(new EyesScene(context, calendar));         /* Second background. 20 FPS Scene */
+        scenes.add(new CrystalBlickScene(context));           /* Fone background */
+        scenes.add(new ValentinesScene(context));             /* Fone background */
+        scenes.add(new BatsScene(context));                   /* Maybe fone background */
+        scenes.add(new HeartsScene(context, calendar));       /* Weather events (like as Rain, Snow) are slightly behind */
+        scenes.add(new RainsScene(context, calendar));        /* -- */
+        scenes.add(new SnowsScene(context, calendar));        /* -- */
+        scenes.add(new FairiesScene(context));                /* Front animations. The order is not important */
+        scenes.add(new ButterFliesScene(context, calendar));  /* -- */
+        scenes.add(new DandelionsScene(context, calendar));   /* -- */
+        scenes.add(new FireFliesScene(context, calendar));    /* -- */
+        scenes.add(new LeavesScene(context, calendar));       /* -- */
+        scenes.add(new PetalsScene(context));                 /* -- */
+        scenes.add(new FireWorksScene(context, calendar));    /* -- and towards the end */
+        scenes.add(new TouchBlickScene(context));             /* Always on top */
 
         GLES20.glReleaseShaderCompiler();
     }
