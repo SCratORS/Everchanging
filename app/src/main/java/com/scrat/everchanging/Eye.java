@@ -21,6 +21,7 @@ final class Eye extends TextureObject {
 
     private int numClips;
     private int frameCounter = 0;
+    private int internalCounter;
 
     private final float scale = 0.25f;
     private boolean init = false;
@@ -118,7 +119,12 @@ final class Eye extends TextureObject {
         object.setViewPosition(_x, height - 320 + _y);
     }
 
-    void update(final boolean createObject) {
+    void update(final boolean createObject, final boolean skipEverySecondFrame) {
+        internalCounter++;
+        if (skipEverySecondFrame && internalCounter % 2 == 0) {
+            return;
+        }
+
         frameCounter = (frameCounter + 1) % MAX_FRAMES;
         if (!init && createObject) numClips = get0601() ? 10 : (random.nextInt(5) + 5);
         init = createObject;

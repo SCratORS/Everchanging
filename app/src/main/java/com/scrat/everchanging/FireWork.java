@@ -27,11 +27,13 @@ public class FireWork extends TextureObject {
             {{0, 0, 0, 256}, {221, 66, 0, 0}}
     };
 
-    int numClips = minObjects;
-    float svgScale = 1.0f;
-    int frameCounter = 0;
-    boolean init = false;
-    int maxFrames = 5;
+    private static final int MAX_FRAMES = 5;
+
+    private int numClips = minObjects;
+    private float svgScale = 1.0f;
+    private int frameCounter;
+    private int internalCounter;
+    private boolean init;
 
     private final Calendar calendar;
 
@@ -86,8 +88,13 @@ public class FireWork extends TextureObject {
         object.index = random.nextInt(5);
     }
 
-    public void update(boolean createObject) {
-        frameCounter = (frameCounter + 1) % maxFrames;
+    public void update(final boolean createObject, final boolean skipEverySecondFrame) {
+        internalCounter++;
+        if (skipEverySecondFrame && internalCounter % 2 == 0) {
+            return;
+        }
+
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
         if (!init && createObject)
             numClips = (get010104() ? maxObjects : (minObjects + random.nextInt(maxObjects - 4)));
         init = createObject;

@@ -29,8 +29,8 @@ final class FireWorksScene extends Scene {
         firework.setupPosition(width, height, ratio);
     }
 
-    public void update(boolean createObject) {
-        firework.update(createObject);
+    public void update(final boolean createObject,final int actualFps) {
+        firework.update(createObject, getFps() * 2 == actualFps);
     }
 
     @Override
