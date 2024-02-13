@@ -107,7 +107,7 @@ final class Blick extends TextureObject {
         object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][(int) animationObjectTransform[object.animCounter][0]])), 1.0f);
         object.setColorTransform(spritesStartColorTransform[object.index]);
         object.setScale(1f, animationObjectTransform[object.animCounter][1]);
-        if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % animationObjectTransform.length;
+        object.animCounter = (object.animCounter + 1) % animationObjectTransform.length;
 
     }
 
