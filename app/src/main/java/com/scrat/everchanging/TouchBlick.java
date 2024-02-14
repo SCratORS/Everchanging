@@ -6,7 +6,11 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 final class TouchBlick extends TextureObject {
 
-    private static final String[][] textureList = {{"image_13", "image_15", "shape_278"}};
+    private static final int[][] textureList = {{
+            R.drawable.image_13,
+            R.drawable.image_15,
+            R.drawable.shape_278
+    }};
 
     // @formatter:off
     private static final float[][] matrixAnimationTransform = {
@@ -91,8 +95,6 @@ final class TouchBlick extends TextureObject {
 
     private static final int NUM_CLIPS = 20;
 
-    private float svgScale = 1.0f;
-
     TouchBlick(final Context context) {
         super(context, textureList, null);
     }
@@ -102,6 +104,7 @@ final class TouchBlick extends TextureObject {
         final TextureManager.Texture texture = textureManager.getTexture(
                 textureManager.getTextureIndex(textureList[0][selectList[index]]));
 
+        final float svgScale;
         if (index < 2) {
             texture.width = sizeTexture[index][0];
             texture.height = sizeTexture[index][1];

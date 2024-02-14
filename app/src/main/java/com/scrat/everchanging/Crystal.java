@@ -86,7 +86,7 @@ final class Crystal extends TextureObject {
             {1.3f, 27.4f}
     };
 
-    private static final String[][] textureList = {{"image_13", "image_15"}};
+    private static final int[][] textureList = {{R.drawable.image_13, R.drawable.image_15}};
 
     private static final int MAX_FRAMES = 4;
 

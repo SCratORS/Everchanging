@@ -65,7 +65,7 @@ class TextureObject {
     public final TextureManager textureManager;
     final Random random = new Random();
 
-    TextureObject(final Context context, final String[][] textureList, final float[][] pivotList) {
+    TextureObject(final Context context, final int[][] textureList, final float[][] pivotList) {
         textureManager = new TextureManager(context, textureList, pivotList);
         final int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vs_Image);
         final int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fs_Image);

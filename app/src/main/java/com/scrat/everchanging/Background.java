@@ -197,12 +197,12 @@ final class Background extends TextureObject {
             }
     };
 
-    private static final String[][] textureList = {{
-            "image_290", //Green
-            "image_311", //Violet
-            "image_323", //Orange
-            "image_334", //Yellow
-            "image_301", //Red
+    private static final int[][] textureList = {{
+            R.drawable.image_290, //Green
+            R.drawable.image_311, //Violet
+            R.drawable.image_323, //Orange
+            R.drawable.image_334, //Yellow
+            R.drawable.image_301 //Red
     }};
 
     private static final float SCALE = 0.25f;

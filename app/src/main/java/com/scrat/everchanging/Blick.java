@@ -74,7 +74,10 @@ final class Blick extends TextureObject {
             {1f, 0.46f},
     };
 
-    private static final String[][] textureList = {{"shape_3", "shape_6"}};
+    private static final int[][] textureList = {{
+            R.drawable.shape_3,
+            R.drawable.shape_6
+    }};
 
     private int index = 0;
 

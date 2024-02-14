@@ -6,7 +6,12 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 final class Valentine extends TextureObject {
 
-    private static final String[][] textureList = {{"image_13", "image_15", "shape_278", "shape_279"}};
+    private static final int[][] textureList = {{
+            R.drawable.image_13,
+            R.drawable.image_15,
+            R.drawable.shape_278,
+            R.drawable.shape_279
+    }};
 
     // @formatter:off
     private final float[][] matrixTransform = {

@@ -1,6 +1,5 @@
 package com.scrat.everchanging;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,7 +18,7 @@ final class TextureManager {
         public float width;
         public float height;
         public int textureID;
-        public String textureName;
+        public int textureResId;
     }
 
     private final Texture[] textures;
@@ -34,32 +33,32 @@ final class TextureManager {
 
     TextureManager(
             final Context context,
-            final String[][] TexturesNameList,
+            final int[][] textureResIdsList,
             final float[][] PivotList
     ) {
         this.context = context;
         int texturesCount = 0;
 
-        final int texturesNameListLength = TexturesNameList.length;
+        final int textureResIdsListLength = textureResIdsList.length;
         // Optimization to avoid creating Iterator
         //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < texturesNameListLength; i++) {
-            final String[] textures = TexturesNameList[i];
+        for (int i = 0; i < textureResIdsListLength; i++) {
+            final int[] textures = textureResIdsList[i];
             texturesCount += textures.length;
         }
 
-        final String[] bothTextureNameList = new String[texturesCount];
+        final int[] bothTextureResIdsList = new int[texturesCount];
         int c = 0;
 
         // Optimization to avoid creating Iterator
         //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < texturesNameListLength; i++) {
-            final String[] strings = TexturesNameList[i];
-            final int stringsLength = strings.length;
+        for (int i = 0; i < textureResIdsListLength; i++) {
+            final int[] sublist = textureResIdsList[i];
+            final int sublistLength = sublist.length;
             // Optimization to avoid creating Iterator
             //noinspection ForLoopReplaceableByForEach
-            for (int s = 0; s < stringsLength; s++) {
-                bothTextureNameList[c++] = strings[s];
+            for (int s = 0; s < sublistLength; s++) {
+                bothTextureResIdsList[c++] = sublist[s];
             }
         }
 
@@ -76,10 +75,10 @@ final class TextureManager {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
             textures[counter] = new Texture();
             textures[counter].textureID = textureID;
-            textures[counter].textureName = bothTextureNameList[counter];
-            @SuppressLint("DiscouragedApi") int drawableID = context.getResources().getIdentifier(textures[counter].textureName, "drawable", context.getPackageName());
+            textures[counter].textureResId = bothTextureResIdsList[counter];
+
             final Bitmap picture;
-            final Drawable drawable = context.getDrawable(drawableID);
+            final Drawable drawable = context.getDrawable(textures[counter].textureResId);
             if (drawable instanceof BitmapDrawable) {
                 picture = ((BitmapDrawable) drawable).getBitmap();
                 textures[counter].width = picture.getWidth();
@@ -115,10 +114,10 @@ final class TextureManager {
         return textures[index];
     }
 
-    int getTextureIndex(final String name) {
+    int getTextureIndex(final int resId) {
         final int texturesLength = textures.length;
         for (int i = 0; i < texturesLength; i++) {
-            if (textures[i].textureName.equals(name)) return i;
+            if (textures[i].textureResId == resId) return i;
         }
         return -1;
     }

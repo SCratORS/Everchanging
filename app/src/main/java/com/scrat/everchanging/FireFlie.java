@@ -280,7 +280,7 @@ public class FireFlie extends TextureObject {
 
     private final Calendar calendar;
 
-    private static final String[][] textureList = {{"image_168", "image_170"}};
+    private static final int[][] textureList = {{R.drawable.image_168, R.drawable.image_170}};
     private static final float[][] pivotList = {{7.5f, 7.5f}, {7.5f, 7.5f}};
 
     FireFlie(final Context context, final Calendar calendar) {

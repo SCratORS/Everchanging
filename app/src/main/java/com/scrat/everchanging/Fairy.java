@@ -12,7 +12,7 @@ final class Fairy extends TextureObject {
         void callingCreatorCallback(float[] transform, float[] translate, int xscale, int index);
     }
 
-    private static final String[][] textureList = {{"image_15"}};
+    private static final int[][] textureList = {{R.drawable.image_15}};
 
     private final ArrayList<Creator> creatorObjects = new ArrayList<>();
     private final ArrayList<Creator> removeCreatorObjects = new ArrayList<>();
