@@ -3,7 +3,6 @@ package com.scrat.everchanging;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -79,13 +78,12 @@ final class TextureManager {
             textures[counter].textureID = textureID;
             textures[counter].textureName = bothTextureNameList[counter];
             @SuppressLint("DiscouragedApi") int drawableID = context.getResources().getIdentifier(textures[counter].textureName, "drawable", context.getPackageName());
-            Bitmap picture = null;
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = context.getDrawable(drawableID);
-            final BitmapFactory.Options options = new BitmapFactory.Options();
+            final Bitmap picture;
+            final Drawable drawable = context.getDrawable(drawableID);
             if (drawable instanceof BitmapDrawable) {
-                picture = BitmapFactory.decodeResource(context.getResources(), drawableID, options);
-                textures[counter].width = picture.getWidth() / dipToPixels(1);
-                textures[counter].height = picture.getHeight() / dipToPixels(1);
+                picture = ((BitmapDrawable) drawable).getBitmap();
+                textures[counter].width = picture.getWidth();
+                textures[counter].height = picture.getHeight();
             } else if (drawable instanceof VectorDrawable) {
                 picture = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                 final Canvas canvas = new Canvas(picture);
@@ -93,6 +91,8 @@ final class TextureManager {
                 drawable.draw(canvas);
                 textures[counter].width = canvas.getWidth();
                 textures[counter].height = canvas.getHeight();
+            } else {
+                throw new RuntimeException("Unexpected Drawable type: " + drawable);
             }
             if (PivotList != null) {
                 textures[counter].pivot[0] = dipToPixels(PivotList[counter][0]);
@@ -102,14 +102,11 @@ final class TextureManager {
                 textures[counter].pivot[1] = textures[counter].height * 0.5f;
             }
 
-            if (picture != null) {
-                GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, picture, 0);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
-                picture.recycle();
-            }
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, picture, 0);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
             counter++;
         }
     }
