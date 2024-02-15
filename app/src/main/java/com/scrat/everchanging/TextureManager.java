@@ -81,8 +81,8 @@ final class TextureManager {
             final Drawable drawable = context.getDrawable(textures[counter].textureResId);
             if (drawable instanceof BitmapDrawable) {
                 picture = ((BitmapDrawable) drawable).getBitmap();
-                textures[counter].width = picture.getWidth();
-                textures[counter].height = picture.getHeight();
+                textures[counter].width = picture.getWidth() / dipToPixels(1);
+                textures[counter].height = picture.getHeight() / dipToPixels(1);
             } else if (drawable instanceof VectorDrawable) {
                 picture = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                 final Canvas canvas = new Canvas(picture);
