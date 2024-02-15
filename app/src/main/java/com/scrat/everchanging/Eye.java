@@ -26,12 +26,11 @@ final class Eye extends TextureObject {
     private final float scale = 0.25f;
     private boolean init = false;
 
-    private static final String[][] textureList = {
-            {
-                    "image_1", "image_2", "image_3", "image_4", "image_5", "image_6",
-                    "image_7", "image_8", "image_9", "image_10", "image_11", "image_12"
-            }
-    };
+    private static final int[][] textureList = {{
+            R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4,
+            R.drawable.image_5, R.drawable.image_6, R.drawable.image_7, R.drawable.image_8,
+            R.drawable.image_9, R.drawable.image_10, R.drawable.image_11, R.drawable.image_12
+    }};
 
     private final Calendar calendar;
 

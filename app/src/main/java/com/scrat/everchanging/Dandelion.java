@@ -408,14 +408,20 @@ final class Dandelion extends TextureObject {
             {   0.1500f,    0.1500f,    0.0000f,    0.0000f,  968.8500f, -513.5500f},
     };
 
-    static private final String[][] textureList = {
+    private static final int[][] textureList = {
             {
-                    "shape_107", "shape_108", "shape_109", "shape_110", "shape_111", "shape_112",
-                    "shape_113", "shape_114", "shape_115", "shape_116", "shape_117", "shape_118",
-                    "shape_119", "shape_120", "shape_121", "shape_122", "shape_123", "shape_124",
-                    "shape_125", "shape_126", "shape_127", "shape_128", "shape_129", "shape_130",
-                    "shape_131", "shape_132", "shape_133", "shape_134", "shape_135", "shape_136",
-                    "shape_137", "shape_138", "shape_139", "shape_140", "shape_141", "shape_142"
+                    R.drawable.shape_107, R.drawable.shape_108, R.drawable.shape_109,
+                    R.drawable.shape_110, R.drawable.shape_111, R.drawable.shape_112,
+                    R.drawable.shape_113, R.drawable.shape_114, R.drawable.shape_115,
+                    R.drawable.shape_116, R.drawable.shape_117, R.drawable.shape_118,
+                    R.drawable.shape_119, R.drawable.shape_120, R.drawable.shape_121,
+                    R.drawable.shape_122, R.drawable.shape_123, R.drawable.shape_124,
+                    R.drawable.shape_125, R.drawable.shape_126, R.drawable.shape_127,
+                    R.drawable.shape_128, R.drawable.shape_129, R.drawable.shape_130,
+                    R.drawable.shape_131, R.drawable.shape_132, R.drawable.shape_133,
+                    R.drawable.shape_134, R.drawable.shape_135, R.drawable.shape_136,
+                    R.drawable.shape_137, R.drawable.shape_138, R.drawable.shape_139,
+                    R.drawable.shape_140, R.drawable.shape_141, R.drawable.shape_142
             }
     };
 
@@ -509,7 +515,8 @@ final class Dandelion extends TextureObject {
             object.setTexture(textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter])), 1.0f);
             object.setTransform(animationStartPosition);
             object.setTransform(matrixTransform[object.frameCounter]);
-            if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % textureList[0].length;
+            if (object.frameCounter % 2 == 0)
+                object.animCounter = (object.animCounter + 1) % textureList[0].length;
             object.frameCounter = (object.frameCounter + 1) % matrixTransform.length;
             if (!createObject && (object.frameCounter == 0)) iterator.remove();
         }

@@ -6,7 +6,10 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 final class Ripple extends TextureObject {
 
-    private static final String[][] textureList = {{"shape_23", "shape_262"}};
+    private static final int[][] textureList = {{
+            R.drawable.shape_23,
+            R.drawable.shape_262
+    }};
 
     private static final float SPEED_SCALE_X = 1.15f;
     private static final float SPEED_SCALE_Y = 1.025f;

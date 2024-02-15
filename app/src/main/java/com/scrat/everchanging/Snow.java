@@ -8,18 +8,22 @@ import java.util.Calendar;
 
 final class Snow extends TextureObject {
 
-    private static final String[][] textureList = {
-            {
-                    "shape_29", "shape_30", "shape_31", "shape_32", "shape_33", "shape_34",
-                    "shape_35", "shape_36", "shape_37", "shape_38", "shape_7", "shape_39",
-                    "shape_40", "shape_41", "shape_42", "shape_43", "shape_44", "shape_5"
-            }
+    private static final int[][] textureList = {{
+            R.drawable.shape_29, R.drawable.shape_30, R.drawable.shape_31, R.drawable.shape_32,
+            R.drawable.shape_33, R.drawable.shape_34, R.drawable.shape_35, R.drawable.shape_36,
+            R.drawable.shape_37, R.drawable.shape_38, R.drawable.shape_7, R.drawable.shape_39,
+            R.drawable.shape_40, R.drawable.shape_41, R.drawable.shape_42, R.drawable.shape_43,
+            R.drawable.shape_44, R.drawable.shape_5
+    }
     };
 
-    private final String[] AnimateTextureFrames = {
-            "shape_29", "shape_29", "shape_29", "shape_29", "shape_29", "shape_29", "shape_30", "shape_31",
-            "shape_32", "shape_33", "shape_34", "shape_35", "shape_36", "shape_37", "shape_38", "shape_7",
-            "shape_39", "shape_40", "shape_41", "shape_42", "shape_43", "shape_44", "shape_5"
+    private static final int[] AnimateTextureFrames = {
+            R.drawable.shape_29, R.drawable.shape_29, R.drawable.shape_29, R.drawable.shape_29,
+            R.drawable.shape_29, R.drawable.shape_29, R.drawable.shape_30, R.drawable.shape_31,
+            R.drawable.shape_32, R.drawable.shape_33, R.drawable.shape_34, R.drawable.shape_35,
+            R.drawable.shape_36, R.drawable.shape_37, R.drawable.shape_38, R.drawable.shape_7,
+            R.drawable.shape_39, R.drawable.shape_40, R.drawable.shape_41, R.drawable.shape_42,
+            R.drawable.shape_43, R.drawable.shape_44, R.drawable.shape_5
     };
 
     // @formatter:off

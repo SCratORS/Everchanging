@@ -1,9 +1,7 @@
 package com.scrat.everchanging;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,7 +18,7 @@ final class TextureManager {
         public float width;
         public float height;
         public int textureID;
-        public String textureName;
+        public int textureResId;
     }
 
     private final Texture[] textures;
@@ -35,32 +33,32 @@ final class TextureManager {
 
     TextureManager(
             final Context context,
-            final String[][] TexturesNameList,
+            final int[][] textureResIdsList,
             final float[][] PivotList
     ) {
         this.context = context;
         int texturesCount = 0;
 
-        final int texturesNameListLength = TexturesNameList.length;
+        final int textureResIdsListLength = textureResIdsList.length;
         // Optimization to avoid creating Iterator
         //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < texturesNameListLength; i++) {
-            final String[] textures = TexturesNameList[i];
+        for (int i = 0; i < textureResIdsListLength; i++) {
+            final int[] textures = textureResIdsList[i];
             texturesCount += textures.length;
         }
 
-        final String[] bothTextureNameList = new String[texturesCount];
+        final int[] bothTextureResIdsList = new int[texturesCount];
         int c = 0;
 
         // Optimization to avoid creating Iterator
         //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < texturesNameListLength; i++) {
-            final String[] strings = TexturesNameList[i];
-            final int stringsLength = strings.length;
+        for (int i = 0; i < textureResIdsListLength; i++) {
+            final int[] sublist = textureResIdsList[i];
+            final int sublistLength = sublist.length;
             // Optimization to avoid creating Iterator
             //noinspection ForLoopReplaceableByForEach
-            for (int s = 0; s < stringsLength; s++) {
-                bothTextureNameList[c++] = strings[s];
+            for (int s = 0; s < sublistLength; s++) {
+                bothTextureResIdsList[c++] = sublist[s];
             }
         }
 
@@ -77,15 +75,14 @@ final class TextureManager {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
             textures[counter] = new Texture();
             textures[counter].textureID = textureID;
-            textures[counter].textureName = bothTextureNameList[counter];
-            @SuppressLint("DiscouragedApi") int drawableID = context.getResources().getIdentifier(textures[counter].textureName, "drawable", context.getPackageName());
-            Bitmap picture = null;
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = context.getDrawable(drawableID);
-            final BitmapFactory.Options options = new BitmapFactory.Options();
+            textures[counter].textureResId = bothTextureResIdsList[counter];
+
+            final Bitmap picture;
+            final Drawable drawable = context.getDrawable(textures[counter].textureResId);
             if (drawable instanceof BitmapDrawable) {
-                picture = BitmapFactory.decodeResource(context.getResources(), drawableID, options);
-                textures[counter].width = picture.getWidth() / dipToPixels(1);
-                textures[counter].height = picture.getHeight() / dipToPixels(1);
+                picture = ((BitmapDrawable) drawable).getBitmap();
+                textures[counter].width = picture.getWidth();
+                textures[counter].height = picture.getHeight();
             } else if (drawable instanceof VectorDrawable) {
                 picture = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
                 final Canvas canvas = new Canvas(picture);
@@ -93,6 +90,8 @@ final class TextureManager {
                 drawable.draw(canvas);
                 textures[counter].width = canvas.getWidth();
                 textures[counter].height = canvas.getHeight();
+            } else {
+                throw new RuntimeException("Unexpected Drawable type: " + drawable);
             }
             if (PivotList != null) {
                 textures[counter].pivot[0] = dipToPixels(PivotList[counter][0]);
@@ -102,14 +101,11 @@ final class TextureManager {
                 textures[counter].pivot[1] = textures[counter].height * 0.5f;
             }
 
-            if (picture != null) {
-                GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, picture, 0);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-                GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
-                picture.recycle();
-            }
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, picture, 0);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
             counter++;
         }
     }
@@ -118,10 +114,10 @@ final class TextureManager {
         return textures[index];
     }
 
-    int getTextureIndex(final String name) {
+    int getTextureIndex(final int resId) {
         final int texturesLength = textures.length;
         for (int i = 0; i < texturesLength; i++) {
-            if (textures[i].textureName.equals(name)) return i;
+            if (textures[i].textureResId == resId) return i;
         }
         return -1;
     }

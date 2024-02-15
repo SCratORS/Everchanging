@@ -263,15 +263,15 @@ final class Foreground extends TextureObject {
             }
     };
 
-    static final String[][] textureList = {
-            {"image_287", "image_285"},                           //Green
-            {"image_308", "image_306", "image_307", "image_305"}, //Violet
-            {"image_318", "image_320", "image_316", "image_319"}, //Orange
-            {"image_330", "image_331", "image_328"},              //Yellow
-            {"image_359", "image_358", "image_355", "image_357"}, //Red New year
-            {"image_298", "image_297", "image_295"},              //Red China New Year
-            {"image_341", "image_339"},                           //Red valentines day
-            {"image_349", "image_347"}                            //Violet halloween
+    private static final int[][] textureList = {
+            {R.drawable.image_287, R.drawable.image_285},                                             //Green
+            {R.drawable.image_308, R.drawable.image_306, R.drawable.image_307, R.drawable.image_305}, //Violet
+            {R.drawable.image_318, R.drawable.image_320, R.drawable.image_316, R.drawable.image_319}, //Orange
+            {R.drawable.image_330, R.drawable.image_331, R.drawable.image_328},                       //Yellow
+            {R.drawable.image_359, R.drawable.image_358, R.drawable.image_355, R.drawable.image_357}, //Red New year
+            {R.drawable.image_298, R.drawable.image_297, R.drawable.image_295},                       //Red China New Year
+            {R.drawable.image_341, R.drawable.image_339},                                             //Red valentines day
+            {R.drawable.image_349, R.drawable.image_347}                                              //Violet halloween
     };
 
     private final int[][][] offsetValues = {

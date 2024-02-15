@@ -8,13 +8,12 @@ import java.util.ArrayList;
 
 final class Petal extends TextureObject {
 
-    private static final String[][] textureList = {
-            {
-                    "shape_225", "shape_226", "shape_227", "shape_228", "shape_229", "shape_230",
-                    "shape_232", "shape_233", "shape_234", "shape_235", "shape_236", "shape_237",
-                    "shape_238", "shape_239", "shape_240", "shape_241"
-            }
-    };
+    private static final int[][] textureList = {{
+            R.drawable.shape_225, R.drawable.shape_226, R.drawable.shape_227, R.drawable.shape_228,
+            R.drawable.shape_229, R.drawable.shape_230, R.drawable.shape_232, R.drawable.shape_233,
+            R.drawable.shape_234, R.drawable.shape_235, R.drawable.shape_236, R.drawable.shape_237,
+            R.drawable.shape_238, R.drawable.shape_239, R.drawable.shape_240, R.drawable.shape_241
+    }};
 
     private static final float[][] pivotList = {
             {23.45f, 13.55f}, {24.75f, 8.9f}, {24.25f, 3.55f}, {23.5f, 8.65f}, {24.75f, 8.9f},
@@ -440,31 +439,78 @@ final class Petal extends TextureObject {
             }
     };
 
-    private final String[][] spritesAnimation = {
+    private static final int[][] spritesAnimation = {
             {
-                    "shape_225", "shape_226", "shape_227", "shape_228", "shape_228", "shape_227", "shape_229", "shape_230", "shape_230", "shape_230",
-                    "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_225", "shape_226", "shape_227",
-                    "shape_228", "shape_228", "shape_227", "shape_229", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230",
-                    "shape_230", "shape_230", "shape_230", "shape_230", "shape_225", "shape_226", "shape_227", "shape_228", "shape_228", "shape_227",
-                    "shape_229", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230", "shape_230",
-                    "shape_230", "shape_225", "shape_226", "shape_227", "shape_228", "shape_228", "shape_227", "shape_229", "shape_230", "shape_230",
-                    "shape_230"
+                    R.drawable.shape_225, R.drawable.shape_226, R.drawable.shape_227,
+                    R.drawable.shape_228, R.drawable.shape_228, R.drawable.shape_227,
+                    R.drawable.shape_229, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_225,
+                    R.drawable.shape_226, R.drawable.shape_227, R.drawable.shape_228,
+                    R.drawable.shape_228, R.drawable.shape_227, R.drawable.shape_229,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_225, R.drawable.shape_226,
+                    R.drawable.shape_227, R.drawable.shape_228, R.drawable.shape_228,
+                    R.drawable.shape_227, R.drawable.shape_229, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_225, R.drawable.shape_226, R.drawable.shape_227,
+                    R.drawable.shape_228, R.drawable.shape_228, R.drawable.shape_227,
+                    R.drawable.shape_229, R.drawable.shape_230, R.drawable.shape_230,
+                    R.drawable.shape_230
             },
             {
-                    "shape_225", "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238",
-                    "shape_239", "shape_240", "shape_241", "shape_225", "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235",
-                    "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241", "shape_225", "shape_232", "shape_233", "shape_227",
-                    "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241", "shape_225",
-                    "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241", "shape_225",
-                    "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238", "shape_239",
-                    "shape_240", "shape_241", "shape_225", "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235", "shape_236",
-                    "shape_237", "shape_238", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241",
-                    "shape_225", "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238",
-                    "shape_239", "shape_240", "shape_241", "shape_225", "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235",
-                    "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241", "shape_225", "shape_228", "shape_234", "shape_235",
-                    "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241", "shape_225", "shape_232", "shape_233", "shape_227",
-                    "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238", "shape_239", "shape_240", "shape_241", "shape_225",
-                    "shape_232", "shape_233", "shape_227", "shape_228", "shape_234", "shape_235", "shape_236", "shape_237", "shape_238", "shape_239"
+                    R.drawable.shape_225, R.drawable.shape_232, R.drawable.shape_233,
+                    R.drawable.shape_227, R.drawable.shape_228, R.drawable.shape_234,
+                    R.drawable.shape_235, R.drawable.shape_236, R.drawable.shape_237,
+                    R.drawable.shape_238, R.drawable.shape_239, R.drawable.shape_240,
+                    R.drawable.shape_241, R.drawable.shape_225, R.drawable.shape_232,
+                    R.drawable.shape_233, R.drawable.shape_227, R.drawable.shape_228,
+                    R.drawable.shape_234, R.drawable.shape_235, R.drawable.shape_236,
+                    R.drawable.shape_237, R.drawable.shape_238, R.drawable.shape_239,
+                    R.drawable.shape_240, R.drawable.shape_241, R.drawable.shape_225,
+                    R.drawable.shape_232, R.drawable.shape_233, R.drawable.shape_227,
+                    R.drawable.shape_228, R.drawable.shape_234, R.drawable.shape_235,
+                    R.drawable.shape_236, R.drawable.shape_237, R.drawable.shape_238,
+                    R.drawable.shape_239, R.drawable.shape_240, R.drawable.shape_241,
+                    R.drawable.shape_225, R.drawable.shape_228, R.drawable.shape_234,
+                    R.drawable.shape_235, R.drawable.shape_236, R.drawable.shape_237,
+                    R.drawable.shape_238, R.drawable.shape_239, R.drawable.shape_240,
+                    R.drawable.shape_241, R.drawable.shape_225, R.drawable.shape_232,
+                    R.drawable.shape_233, R.drawable.shape_227, R.drawable.shape_228,
+                    R.drawable.shape_234, R.drawable.shape_235, R.drawable.shape_236,
+                    R.drawable.shape_237, R.drawable.shape_238, R.drawable.shape_239,
+                    R.drawable.shape_240, R.drawable.shape_241, R.drawable.shape_225,
+                    R.drawable.shape_232, R.drawable.shape_233, R.drawable.shape_227,
+                    R.drawable.shape_228, R.drawable.shape_234, R.drawable.shape_235,
+                    R.drawable.shape_236, R.drawable.shape_237, R.drawable.shape_238,
+                    R.drawable.shape_234, R.drawable.shape_235, R.drawable.shape_236,
+                    R.drawable.shape_237, R.drawable.shape_238, R.drawable.shape_239,
+                    R.drawable.shape_240, R.drawable.shape_241, R.drawable.shape_225,
+                    R.drawable.shape_232, R.drawable.shape_233, R.drawable.shape_227,
+                    R.drawable.shape_228, R.drawable.shape_234, R.drawable.shape_235,
+                    R.drawable.shape_236, R.drawable.shape_237, R.drawable.shape_238,
+                    R.drawable.shape_239, R.drawable.shape_240, R.drawable.shape_241,
+                    R.drawable.shape_225, R.drawable.shape_232, R.drawable.shape_233,
+                    R.drawable.shape_227, R.drawable.shape_228, R.drawable.shape_234,
+                    R.drawable.shape_235, R.drawable.shape_236, R.drawable.shape_237,
+                    R.drawable.shape_238, R.drawable.shape_239, R.drawable.shape_240,
+                    R.drawable.shape_241, R.drawable.shape_225, R.drawable.shape_228,
+                    R.drawable.shape_234, R.drawable.shape_235, R.drawable.shape_236,
+                    R.drawable.shape_237, R.drawable.shape_238, R.drawable.shape_239,
+                    R.drawable.shape_240, R.drawable.shape_241, R.drawable.shape_225,
+                    R.drawable.shape_232, R.drawable.shape_233, R.drawable.shape_227,
+                    R.drawable.shape_228, R.drawable.shape_234, R.drawable.shape_235,
+                    R.drawable.shape_236, R.drawable.shape_237, R.drawable.shape_238,
+                    R.drawable.shape_239, R.drawable.shape_240, R.drawable.shape_241,
+                    R.drawable.shape_225, R.drawable.shape_232, R.drawable.shape_233,
+                    R.drawable.shape_227, R.drawable.shape_228, R.drawable.shape_234,
+                    R.drawable.shape_235, R.drawable.shape_236, R.drawable.shape_237,
+                    R.drawable.shape_238, R.drawable.shape_239
             }
     };
 

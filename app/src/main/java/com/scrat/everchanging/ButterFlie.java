@@ -9,19 +9,19 @@ import java.util.Calendar;
 
 final class ButterFlie extends TextureObject {
 
-    private static final String[][] textureList = {{
-            "shape_147",
-            "shape_148",
-            "shape_149",
-            "shape_150",
-            "shape_151",
-            "shape_152",
-            "shape_153",
-            "shape_154",
-            "shape_155",
-            "shape_156",
-            "shape_157",
-            "shape_158"
+    private static final int[][] textureList = {{
+            R.drawable.shape_147,
+            R.drawable.shape_148,
+            R.drawable.shape_149,
+            R.drawable.shape_150,
+            R.drawable.shape_151,
+            R.drawable.shape_152,
+            R.drawable.shape_153,
+            R.drawable.shape_154,
+            R.drawable.shape_155,
+            R.drawable.shape_156,
+            R.drawable.shape_157,
+            R.drawable.shape_158
     }};
 
     private final float[][][] matrixTransform;

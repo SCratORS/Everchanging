@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
-public class Fly extends TextureObject {
+final class Fly extends TextureObject {
 
     interface CrystalCreatorCallback {
         void callingCrystallCreatorCallback(float[] transform, float[] translate);
@@ -339,9 +339,9 @@ public class Fly extends TextureObject {
 
     private final float[][] colorTransform = {{256, 256, 256, 256}, {0, 0, 0, 0}};
 
-    static final String[][] textureList = {{"image_271", "image_273"}};
+    private static final int[][] textureList = {{R.drawable.image_271, R.drawable.image_273}};
 
-    public Fly(Context context) {
+    Fly(final Context context) {
         super(context, textureList, null);
     }
 

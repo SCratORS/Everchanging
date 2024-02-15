@@ -6,12 +6,21 @@ import com.scrat.everchanging.util.ReusableIterator;
 
 import java.util.Calendar;
 
-public class FireWork extends TextureObject {
-    static private final String[][] textureList = {{
-            "shape_180", "shape_181", "shape_182", "shape_183", "shape_184", "shape_185", "shape_186", "shape_187", "shape_188", "shape_189",
-            "shape_190", "shape_191", "shape_192", "shape_193", "shape_194", "shape_195", "shape_196", "shape_197", "shape_198", "shape_199",
-            "shape_200", "shape_201", "shape_202", "shape_203", "shape_204", "shape_205", "shape_206", "shape_207", "shape_208", "shape_209",
-            "shape_210", "shape_211", "shape_212", "shape_213", "shape_214", "shape_215", "shape_216", "shape_217"}};
+final class FireWork extends TextureObject {
+
+    private static final int[][] textureList = {{
+            R.drawable.shape_180, R.drawable.shape_181, R.drawable.shape_182, R.drawable.shape_183,
+            R.drawable.shape_184, R.drawable.shape_185, R.drawable.shape_186, R.drawable.shape_187,
+            R.drawable.shape_188, R.drawable.shape_189, R.drawable.shape_190, R.drawable.shape_191,
+            R.drawable.shape_192, R.drawable.shape_193, R.drawable.shape_194, R.drawable.shape_195,
+            R.drawable.shape_196, R.drawable.shape_197, R.drawable.shape_198, R.drawable.shape_199,
+            R.drawable.shape_200, R.drawable.shape_201, R.drawable.shape_202, R.drawable.shape_203,
+            R.drawable.shape_204, R.drawable.shape_205, R.drawable.shape_206, R.drawable.shape_207,
+            R.drawable.shape_208, R.drawable.shape_209, R.drawable.shape_210, R.drawable.shape_211,
+            R.drawable.shape_212, R.drawable.shape_213, R.drawable.shape_214, R.drawable.shape_215,
+            R.drawable.shape_216, R.drawable.shape_217
+    }};
+
     private final byte[] spriteTable = {
             0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8,
             9, 10, 11, 12, 13, 14, 15, 16, 17, 18,

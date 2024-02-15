@@ -8,40 +8,74 @@ import java.util.Calendar;
 
 final class Leave extends TextureObject {
 
-    private static final String[][] textureList = {{
-            "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64", "shape_65",
-            "shape_66", "shape_67", "shape_68", "shape_69", "shape_70", "shape_71", "shape_72",
-            "shape_73", "shape_74", "shape_75", "shape_76", "shape_77", "shape_78", "shape_79",
-            "shape_80", "shape_81", "shape_82", "shape_83", "shape_84", "shape_85", "shape_86",
-            "shape_87", "shape_88", "shape_89", "shape_90", "shape_91", "shape_92", "shape_93",
-            "shape_94", "shape_95", "shape_96", "shape_97", "shape_99", "shape_100", "shape_101",
-            "shape_102", "shape_103", "shape_280", "shape_281", "shape_282", "shape_283",
-            "shape_284", "shape_285", "shape_286", "shape_287", "shape_288", "shape_289",
-            "shape_290", "shape_291", "shape_292", "shape_293", "shape_294", "shape_295",
-            "shape_296"}};
+    private static final int[][] textureList = {{
+            R.drawable.shape_59, R.drawable.shape_60, R.drawable.shape_61, R.drawable.shape_62,
+            R.drawable.shape_63, R.drawable.shape_64, R.drawable.shape_65, R.drawable.shape_66,
+            R.drawable.shape_67, R.drawable.shape_68, R.drawable.shape_69, R.drawable.shape_70,
+            R.drawable.shape_71, R.drawable.shape_72, R.drawable.shape_73, R.drawable.shape_74,
+            R.drawable.shape_75, R.drawable.shape_76, R.drawable.shape_77, R.drawable.shape_78,
+            R.drawable.shape_79, R.drawable.shape_80, R.drawable.shape_81, R.drawable.shape_82,
+            R.drawable.shape_83, R.drawable.shape_84, R.drawable.shape_85, R.drawable.shape_86,
+            R.drawable.shape_87, R.drawable.shape_88, R.drawable.shape_89, R.drawable.shape_90,
+            R.drawable.shape_91, R.drawable.shape_92, R.drawable.shape_93, R.drawable.shape_94,
+            R.drawable.shape_95, R.drawable.shape_96, R.drawable.shape_97, R.drawable.shape_99,
+            R.drawable.shape_100, R.drawable.shape_101, R.drawable.shape_102, R.drawable.shape_103,
+            R.drawable.shape_280, R.drawable.shape_281, R.drawable.shape_282, R.drawable.shape_283,
+            R.drawable.shape_284, R.drawable.shape_285, R.drawable.shape_286, R.drawable.shape_287,
+            R.drawable.shape_288, R.drawable.shape_289, R.drawable.shape_290, R.drawable.shape_291,
+            R.drawable.shape_292, R.drawable.shape_293, R.drawable.shape_294, R.drawable.shape_295,
+            R.drawable.shape_296
+    }};
 
-    private static final String[][] AnimateTextureList = {
+    private static final int[][] AnimateTextureList = {
             {
-                    "shape_280", "shape_281", "shape_282", "shape_283", "shape_284", "shape_285",
-                    "shape_286", "shape_287", "shape_288", "shape_289", "shape_290", "shape_291",
-                    "shape_292", "shape_293", "shape_294", "shape_295", "shape_296", "shape_99",
-                    "shape_100", "shape_101", "shape_102", "shape_103"
+                    R.drawable.shape_280, R.drawable.shape_281, R.drawable.shape_282,
+                    R.drawable.shape_283, R.drawable.shape_284, R.drawable.shape_285,
+                    R.drawable.shape_286, R.drawable.shape_287, R.drawable.shape_288,
+                    R.drawable.shape_289, R.drawable.shape_290, R.drawable.shape_291,
+                    R.drawable.shape_292, R.drawable.shape_293, R.drawable.shape_294,
+                    R.drawable.shape_295, R.drawable.shape_296, R.drawable.shape_99,
+                    R.drawable.shape_100, R.drawable.shape_101, R.drawable.shape_102,
+                    R.drawable.shape_103
             },
             {
-                    "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64", "shape_65", "shape_66",
-                    "shape_67", "shape_68", "shape_69", "shape_70", "shape_71", "shape_72", "shape_73", "shape_74",
-                    "shape_75", "shape_76", "shape_77", "shape_77", "shape_77", "shape_77", "shape_77", "shape_77",
-                    "shape_77", "shape_77", "shape_77", "shape_77", "shape_77", "shape_77", "shape_78", "shape_79",
-                    "shape_80", "shape_81", "shape_82", "shape_83", "shape_84", "shape_85", "shape_86", "shape_87",
-                    "shape_88", "shape_89", "shape_90", "shape_91", "shape_92", "shape_93", "shape_94", "shape_95",
-                    "shape_96", "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64", "shape_65",
-                    "shape_66", "shape_67", "shape_68", "shape_69", "shape_70", "shape_71", "shape_72", "shape_73",
-                    "shape_74", "shape_75", "shape_76", "shape_77", "shape_77", "shape_77", "shape_77", "shape_77",
-                    "shape_77", "shape_77", "shape_77", "shape_77", "shape_77", "shape_77", "shape_77", "shape_78",
-                    "shape_79", "shape_80", "shape_81", "shape_82", "shape_83", "shape_84", "shape_85", "shape_86",
-                    "shape_87", "shape_88", "shape_89", "shape_90", "shape_91", "shape_92", "shape_93", "shape_94",
-                    "shape_95", "shape_96", "shape_59", "shape_60", "shape_61", "shape_62", "shape_63", "shape_64",
-                    "shape_65", "shape_66", "shape_67", "shape_68", "shape_69", "shape_70"
+                    R.drawable.shape_59, R.drawable.shape_60, R.drawable.shape_61,
+                    R.drawable.shape_62, R.drawable.shape_63, R.drawable.shape_64,
+                    R.drawable.shape_65, R.drawable.shape_66, R.drawable.shape_67,
+                    R.drawable.shape_68, R.drawable.shape_69, R.drawable.shape_70,
+                    R.drawable.shape_71, R.drawable.shape_72, R.drawable.shape_73,
+                    R.drawable.shape_74, R.drawable.shape_75, R.drawable.shape_76,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_78, R.drawable.shape_79, R.drawable.shape_80,
+                    R.drawable.shape_81, R.drawable.shape_82, R.drawable.shape_83,
+                    R.drawable.shape_84, R.drawable.shape_85, R.drawable.shape_86,
+                    R.drawable.shape_87, R.drawable.shape_88, R.drawable.shape_89,
+                    R.drawable.shape_90, R.drawable.shape_91, R.drawable.shape_92,
+                    R.drawable.shape_93, R.drawable.shape_94, R.drawable.shape_95,
+                    R.drawable.shape_96, R.drawable.shape_59, R.drawable.shape_60,
+                    R.drawable.shape_61, R.drawable.shape_62, R.drawable.shape_63,
+                    R.drawable.shape_64, R.drawable.shape_65, R.drawable.shape_66,
+                    R.drawable.shape_67, R.drawable.shape_68, R.drawable.shape_69,
+                    R.drawable.shape_70, R.drawable.shape_71, R.drawable.shape_72,
+                    R.drawable.shape_73, R.drawable.shape_74, R.drawable.shape_75,
+                    R.drawable.shape_76, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_77, R.drawable.shape_77,
+                    R.drawable.shape_77, R.drawable.shape_78, R.drawable.shape_79,
+                    R.drawable.shape_80, R.drawable.shape_81, R.drawable.shape_82,
+                    R.drawable.shape_83, R.drawable.shape_84, R.drawable.shape_85,
+                    R.drawable.shape_86, R.drawable.shape_87, R.drawable.shape_88,
+                    R.drawable.shape_89, R.drawable.shape_90, R.drawable.shape_91,
+                    R.drawable.shape_92, R.drawable.shape_93, R.drawable.shape_94,
+                    R.drawable.shape_95, R.drawable.shape_96, R.drawable.shape_59,
+                    R.drawable.shape_60, R.drawable.shape_61, R.drawable.shape_62,
+                    R.drawable.shape_63, R.drawable.shape_64, R.drawable.shape_65,
+                    R.drawable.shape_66, R.drawable.shape_67, R.drawable.shape_68,
+                    R.drawable.shape_69, R.drawable.shape_70
             }
     };
 
@@ -816,7 +850,8 @@ final class Leave extends TextureObject {
 
             object.setTransform(AnimatedTextureMatrix[object.index][object.frameCounter]);
 
-            if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % AnimateTextureList[object.index > 0 ? 1 : 0].length;
+            if (object.frameCounter % 2 == 0)
+                object.animCounter = (object.animCounter + 1) % AnimateTextureList[object.index > 0 ? 1 : 0].length;
 
             object.frameCounter = (object.frameCounter + 1) % AnimatedTextureMatrix[object.index].length;
 
