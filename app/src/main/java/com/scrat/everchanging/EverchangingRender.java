@@ -146,6 +146,9 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
 
     private int lastSceneMaxFps = Scene.MINIMUM_FPS;
 
+    private int lastSurfaceWidth;
+    private int lastSurfaceHeight;
+
     EverchangingRender(final Context context, final FrameScheduler frameScheduler) {
         this.context = context;
         this.frameScheduler = frameScheduler;
@@ -195,6 +198,21 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(final GL10 gl, final int width, final int height) {
+        boolean dimensionsChanged = false;
+        if (lastSurfaceWidth != 0 && lastSurfaceHeight != 0) {
+            if (lastSurfaceWidth != width || lastSurfaceHeight != height) {
+                dimensionsChanged = true;
+            }
+        }
+
+        lastSurfaceWidth = width;
+        lastSurfaceHeight = height;
+
+        if (dimensionsChanged) {
+            scenes.clear();
+            onSurfaceCreated(gl, null);
+        }
+
         final WindowManager windowManager = (WindowManager)
                 context.getSystemService(Context.WINDOW_SERVICE);
         assert windowManager != null;
