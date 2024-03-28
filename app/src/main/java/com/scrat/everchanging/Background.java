@@ -1,6 +1,7 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
@@ -205,12 +206,16 @@ final class Background extends TextureObject {
             R.drawable.image_301 //Red
     }};
 
-    private static final float SCALE = 0.25f;
+    private final float scale;
 
     private int currentSeason = -1;
 
     Background(final Context context) {
         super(context, textureList, null);
+
+        final TypedValue outValue = new TypedValue();
+        context.getResources().getValue(R.dimen.background_scale, outValue, true);
+        scale = outValue.getFloat();
     }
 
     void createObject(final int season) {
@@ -223,17 +228,17 @@ final class Background extends TextureObject {
             iterator.acquire();
 
             while (iterator.hasNext()) {
-                iterator.next().setTexture(texture, SCALE);
+                iterator.next().setTexture(texture, scale);
             }
 
             iterator.release();
         } else {
-            final Object object = objects.obtain(texture, SCALE);
+            final Object object = objects.obtain(texture, scale);
             object.setObjectScale(1.0f);
             object.resetMatrix();
             object.resetViewMatrix();
             object.setScale(ratio, ratio); //Масштабируем по высоте, иначе не красиво.
-            object.setTranslate(width - (object.texture.width) * SCALE * 0.5f * ratio, (object.texture.height) * SCALE * 0.5f * ratio);
+            object.setTranslate(width - (object.texture.width) * scale * 0.5f * ratio, (object.texture.height) * scale * 0.5f * ratio);
         }
     }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="background_scale" format="float" type="dimen">0.25</item>
+
+</resources>
