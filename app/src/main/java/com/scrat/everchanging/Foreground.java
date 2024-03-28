@@ -1,6 +1,7 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
@@ -264,33 +265,26 @@ final class Foreground extends TextureObject {
     };
 
     private static final int[][] textureList = {
-            {R.drawable.image_287, R.drawable.image_285},                                             //Green
-            {R.drawable.image_308, R.drawable.image_306, R.drawable.image_307, R.drawable.image_305}, //Violet
-            {R.drawable.image_318, R.drawable.image_320, R.drawable.image_316, R.drawable.image_319}, //Orange
-            {R.drawable.image_330, R.drawable.image_331, R.drawable.image_328},                       //Yellow
-            {R.drawable.image_359, R.drawable.image_358, R.drawable.image_355, R.drawable.image_357}, //Red New year
-            {R.drawable.image_298, R.drawable.image_297, R.drawable.image_295},                       //Red China New Year
-            {R.drawable.image_341, R.drawable.image_339},                                             //Red valentines day
-            {R.drawable.image_349, R.drawable.image_347}                                              //Violet halloween
+            {R.drawable.image_merged_285_287},         //Green
+            {R.drawable.image_merged_305_306_307_308}, //Violet
+            {R.drawable.image_merged_316_318_319_320}, //Orange
+            {R.drawable.image_merged_328_330_331},     //Yellow
+            {R.drawable.image_merged_355_357_358_359}, //Red New year
+            {R.drawable.image_merged_295_297_298},     //Red China New Year
+            {R.drawable.image_merged_339_341},         //Red valentines day
+            {R.drawable.image_merged_347_349}          //Violet halloween
     };
 
-    private final int[][][] offsetValues = {
-            {{0, 0, 0}, {0, 6, 0}},
-            {{0, 10, 0}, {0, 0, 0}, {0, 7, 1}, {0, 135, 0}},
-            {{0, 16, 0}, {0, 0, 0}, {0, 51, 1}, {-16, 6, 0}},
-            {{0, 26, 0}, {0, 0, 0}, {0, 12, 0}},
-            {{0, 15, 0}, {0, 0, 0}, {0, 51, 1}, {-25, 0, 0}},
-            {{0, 26, 0}, {0, 0, 0}, {0, 10, 0}},
-            {{0, 0, 0}, {0, 6, 0}},
-            {{0, 0, 0}, {0, 38, 0}},
-    };
-
-    private static final float SCALE = 0.25f;
+    private final float scale;
 
     private int current = -1;
 
     Foreground(final Context context) {
         super(context, textureList, null);
+
+        final TypedValue outValue = new TypedValue();
+        context.getResources().getValue(R.dimen.foreground_scale, outValue, true);
+        scale = outValue.getFloat();
     }
 
     void update(final int foregroundIndex, final int timesOfDay) {
@@ -315,7 +309,7 @@ final class Foreground extends TextureObject {
         final int textureListCurrentLength = textureList[current].length;
         for (int i = 0; i < textureListCurrentLength; i++) {
             int textureIndex = textureManager.getTextureIndex(textureList[current][i]);
-            Object object = objects.obtain(textureManager.getTexture(textureIndex), SCALE);
+            Object object = objects.obtain(textureManager.getTexture(textureIndex), scale);
             object.resetViewMatrix();
             object.setObjectScale(1.0f);
         }
@@ -324,20 +318,17 @@ final class Foreground extends TextureObject {
 
     private void setObjectsPosition() {
         float deltaHeight = height;
-        int index = 0;
 
         final ReusableIterator<Object> iterator = objects.iterator();
         iterator.acquire();
 
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            float spriteWidth = object.texture.width * SCALE;
-            float spriteHeight = object.texture.height * SCALE;
-            float y = deltaHeight - spriteHeight + offsetValues[current][index][0];
-            if (offsetValues[current][index][2] == 0) deltaHeight = deltaHeight - spriteHeight;
+            float spriteWidth = object.texture.width * scale;
+            float spriteHeight = object.texture.height * scale;
+            float y = deltaHeight - spriteHeight;
             object.resetMatrix();
-            object.setTranslate(offsetValues[current][index][1] + spriteWidth * 0.5f, y + spriteHeight * 0.5f);
-            index++;
+            object.setTranslate(spriteWidth * 0.5f, y + spriteHeight * 0.5f);
         }
 
         iterator.release();
