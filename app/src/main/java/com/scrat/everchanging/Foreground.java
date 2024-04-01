@@ -1,6 +1,7 @@
 package com.scrat.everchanging;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.scrat.everchanging.util.ReusableIterator;
 
@@ -264,33 +265,37 @@ final class Foreground extends TextureObject {
     };
 
     private static final int[][] textureList = {
-            {R.drawable.image_287, R.drawable.image_285},                                             //Green
-            {R.drawable.image_308, R.drawable.image_306, R.drawable.image_307, R.drawable.image_305}, //Violet
-            {R.drawable.image_318, R.drawable.image_320, R.drawable.image_316, R.drawable.image_319}, //Orange
-            {R.drawable.image_330, R.drawable.image_331, R.drawable.image_328},                       //Yellow
-            {R.drawable.image_359, R.drawable.image_358, R.drawable.image_355, R.drawable.image_357}, //Red New year
-            {R.drawable.image_298, R.drawable.image_297, R.drawable.image_295},                       //Red China New Year
-            {R.drawable.image_341, R.drawable.image_339},                                             //Red valentines day
-            {R.drawable.image_349, R.drawable.image_347}                                              //Violet halloween
+            {R.drawable.image_287, R.drawable.image_285, R.drawable.image_287_continuation},                                             //Green
+            {R.drawable.image_308, R.drawable.image_306, R.drawable.image_307, R.drawable.image_305, R.drawable.image_306_continuation}, //Violet
+            {R.drawable.image_318, R.drawable.image_320, R.drawable.image_316, R.drawable.image_319, R.drawable.image_320_continuation}, //Orange
+            {R.drawable.image_330, R.drawable.image_331, R.drawable.image_328, R.drawable.image_331_continuation},                       //Yellow
+            {R.drawable.image_359, R.drawable.image_358, R.drawable.image_355, R.drawable.image_357, R.drawable.image_358_continuation}, //Red New year
+            {R.drawable.image_298, R.drawable.image_297, R.drawable.image_295, R.drawable.image_297_continuation},                       //Red China New Year
+            {R.drawable.image_341, R.drawable.image_339, R.drawable.image_341_continuation},                                             //Red valentines day
+            {R.drawable.image_349, R.drawable.image_347, R.drawable.image_349_continuation}                                              //Violet halloween
     };
 
-    private final int[][][] offsetValues = {
-            {{0, 0, 0}, {0, 6, 0}},
-            {{0, 10, 0}, {0, 0, 0}, {0, 7, 1}, {0, 135, 0}},
-            {{0, 16, 0}, {0, 0, 0}, {0, 51, 1}, {-16, 6, 0}},
-            {{0, 26, 0}, {0, 0, 0}, {0, 12, 0}},
-            {{0, 15, 0}, {0, 0, 0}, {0, 51, 1}, {-25, 0, 0}},
-            {{0, 26, 0}, {0, 0, 0}, {0, 10, 0}},
-            {{0, 0, 0}, {0, 6, 0}},
-            {{0, 0, 0}, {0, 38, 0}},
+    private final float[][][] offsetValues = {
+            {{0, 0, 0}, {0, 6, 0}, {89.5f, 230, 0}},
+            {{0, 10, 0}, {0, 0, 0}, {0, 7, 1}, {0, 135, 0}, {36.5f, 230, 0}},
+            {{0, 16, 0}, {0, 0, 0}, {0, 51, 1}, {-16, 6, 0}, {90, 230, 0}},
+            {{0, 26, 0}, {0, 0, 0}, {0, 12, 0}, {81.5f, 225, 0}},
+            {{0, 15, 0}, {0, 0, 0}, {0, 51, 1}, {-25, 0, 0}, {80, 225, 0}},
+            {{0, 26, 0}, {0, 0, 0}, {0, 10, 0}, {82, 200, 0}},
+            {{0, 0, 0}, {0, 6, 0}, {89.5f, 230, 0}},
+            {{0, 0, 0}, {0, 38, 0}, {84, 225, 0}},
     };
 
-    private static final float SCALE = 0.25f;
+    private final float scale;
 
     private int current = -1;
 
     Foreground(final Context context) {
         super(context, textureList, null);
+
+        final TypedValue outValue = new TypedValue();
+        context.getResources().getValue(R.dimen.foreground_scale, outValue, true);
+        scale = outValue.getFloat();
     }
 
     void update(final int foregroundIndex, final int timesOfDay) {
@@ -312,10 +317,14 @@ final class Foreground extends TextureObject {
     }
 
     private void createObjects() {
-        final int textureListCurrentLength = textureList[current].length;
+        int textureListCurrentLength = textureList[current].length;
+        if (!isWideScreen()) {
+            // Last texture is only for wide screens
+            textureListCurrentLength--;
+        }
         for (int i = 0; i < textureListCurrentLength; i++) {
             int textureIndex = textureManager.getTextureIndex(textureList[current][i]);
-            Object object = objects.obtain(textureManager.getTexture(textureIndex), SCALE);
+            Object object = objects.obtain(textureManager.getTexture(textureIndex), scale);
             object.resetViewMatrix();
             object.setObjectScale(1.0f);
         }
@@ -324,6 +333,7 @@ final class Foreground extends TextureObject {
 
     private void setObjectsPosition() {
         float deltaHeight = height;
+        final int numOfCurrentTextures = textureList[current].length;
         int index = 0;
 
         final ReusableIterator<Object> iterator = objects.iterator();
@@ -331,15 +341,44 @@ final class Foreground extends TextureObject {
 
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            float spriteWidth = object.texture.width * SCALE;
-            float spriteHeight = object.texture.height * SCALE;
-            float y = deltaHeight - spriteHeight + offsetValues[current][index][0];
-            if (offsetValues[current][index][2] == 0) deltaHeight = deltaHeight - spriteHeight;
+            float spriteWidth = object.texture.width * scale;
+            float spriteHeight = object.texture.height * scale;
             object.resetMatrix();
-            object.setTranslate(offsetValues[current][index][1] + spriteWidth * 0.5f, y + spriteHeight * 0.5f);
+
+            final float y = deltaHeight - spriteHeight + offsetValues[current][index][0];
+
+            object.setTranslate(
+                    getOffsetValueX(current, index) + spriteWidth * 0.5f,
+                    y + spriteHeight * 0.5f
+            );
+
+            final boolean appendTextureVertically = index < numOfCurrentTextures - 1;
+            if (appendTextureVertically) {
+                if (offsetValues[current][index][2] == 0) {
+                    deltaHeight = deltaHeight - spriteHeight;
+                }
+            }
+
             index++;
         }
 
         iterator.release();
+    }
+
+    private boolean isWideScreen() {
+        return scale == 0.125f;
+    }
+
+    private float getOffsetValueX(final int current, final int index) {
+        final float offsetValue = offsetValues[current][index][1];
+        if (scale == 0.125f) {
+            return offsetValue / 2f;
+        }
+
+        if (scale == 0.25f) {
+            return offsetValue;
+        }
+
+        throw new IllegalArgumentException("Unhandled scale: " + scale);
     }
 }
