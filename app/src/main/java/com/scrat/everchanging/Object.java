@@ -29,6 +29,7 @@ class Object {
     public boolean used;
 
     public float scale = 1.0f;
+    private float textureScale = 1f;
 
     public FloatBuffer vertexBuffer; //Буффер описания размеров прямоугольника
     public TextureManager.Texture texture;
@@ -61,11 +62,13 @@ class Object {
         vertexBuffer = objectVerticesBuffer.asFloatBuffer();
         resetMatrix();
 
+        textureScale = scale;
         if (texture != null) setTexture(texture, scale);
     }
 
     Object(TextureManager.Texture texture, float scale) {
         this();
+        textureScale = scale;
         if (texture != null) setTexture(texture, scale);
     }
 
@@ -110,8 +113,9 @@ class Object {
     }
 
     void setTexture(TextureManager.Texture texture, float scale) {
-        if (this.texture != texture) {
+        if (this.texture != texture || textureScale != scale) {
             this.texture = texture;
+            this.textureScale = scale;
             final float x_width = texture.width * scale;
             final float y_height = texture.height * scale;
             final float x_begin = (0 - texture.pivot[0]) * scale;

@@ -110,6 +110,10 @@ final class TextureManager {
         }
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     Texture getTexture(final int index) {
         return textures[index];
     }
