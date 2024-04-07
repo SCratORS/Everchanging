@@ -286,13 +286,16 @@ final class Foreground extends TextureObject {
             {{0, 0, 0}, {0, 38, 0}, {84, 225, 0}},
     };
 
-    private final float scale;
+    private float scale;
 
     private int current = -1;
 
     Foreground(final Context context) {
         super(context, textureList, null);
+        readScale(context);
+    }
 
+    private void readScale(final Context context) {
         final TypedValue outValue = new TypedValue();
         context.getResources().getValue(R.dimen.foreground_scale, outValue, true);
         scale = outValue.getFloat();
@@ -316,6 +319,18 @@ final class Foreground extends TextureObject {
         iterator.release();
     }
 
+    @Override
+    public void setupPosition(final int width, final int height, final float ratio) {
+        super.setupPosition(width, height, ratio);
+        readScale(textureManager.getContext());
+
+        if (current != -1) {
+            objects.markAllAsUnused();
+            resetMatrix();
+            createObjects();
+        }
+    }
+
     private void createObjects() {
         int textureListCurrentLength = textureList[current].length;
         if (!isWideScreen()) {
@@ -325,6 +340,7 @@ final class Foreground extends TextureObject {
         for (int i = 0; i < textureListCurrentLength; i++) {
             int textureIndex = textureManager.getTextureIndex(textureList[current][i]);
             Object object = objects.obtain(textureManager.getTexture(textureIndex), scale);
+            object.resetMatrix();
             object.resetViewMatrix();
             object.setObjectScale(1.0f);
         }
@@ -343,7 +359,6 @@ final class Foreground extends TextureObject {
             final Object object = iterator.next();
             float spriteWidth = object.texture.width * scale;
             float spriteHeight = object.texture.height * scale;
-            object.resetMatrix();
 
             final float y = deltaHeight - spriteHeight + offsetValues[current][index][0];
 

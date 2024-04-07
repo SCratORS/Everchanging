@@ -206,13 +206,16 @@ final class Background extends TextureObject {
             R.drawable.image_301 //Red
     }};
 
-    private final float scale;
+    private float scale;
 
     private int currentSeason = -1;
 
     Background(final Context context) {
         super(context, textureList, null);
+        readScale(context);
+    }
 
+    private void readScale(final Context context) {
         final TypedValue outValue = new TypedValue();
         context.getResources().getValue(R.dimen.background_scale, outValue, true);
         scale = outValue.getFloat();
@@ -234,12 +237,16 @@ final class Background extends TextureObject {
             iterator.release();
         } else {
             final Object object = objects.obtain(texture, scale);
-            object.setObjectScale(1.0f);
-            object.resetMatrix();
-            object.resetViewMatrix();
-            object.setScale(ratio, ratio); //Масштабируем по высоте, иначе не красиво.
-            object.setTranslate(width - (object.texture.width) * scale * 0.5f * ratio, (object.texture.height) * scale * 0.5f * ratio);
+            setObjectScaleAndTranslation(object);
         }
+    }
+
+    private void setObjectScaleAndTranslation(final Object object) {
+        object.setObjectScale(1.0f);
+        object.resetMatrix();
+        object.resetViewMatrix();
+        object.setScale(ratio, ratio); //Масштабируем по высоте, иначе не красиво.
+        object.setTranslate(width - (object.texture.width) * scale * 0.5f * ratio, (object.texture.height) * scale * 0.5f * ratio);
     }
 
     void update(final int season, final int timesOfDay) {
@@ -254,5 +261,22 @@ final class Background extends TextureObject {
         }
 
         iterator.release();
+    }
+
+    @Override
+    public void setupPosition(final int width, final int height, final float ratio) {
+        super.setupPosition(width, height, ratio);
+        readScale(textureManager.getContext());
+        if (objects.objectsInUseCount() != 0) {
+            final ReusableIterator<Object> iterator = objects.iterator();
+            iterator.acquire();
+
+            while (iterator.hasNext()) {
+                final Object object = iterator.next();
+                setObjectScaleAndTranslation(object);
+            }
+
+            iterator.release();
+        }
     }
 }
