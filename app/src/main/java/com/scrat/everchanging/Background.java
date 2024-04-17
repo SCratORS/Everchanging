@@ -242,6 +242,7 @@ final class Background extends TextureObject {
     }
 
     private void setObjectScaleAndTranslation(final Object object) {
+        object.setTexture(object.texture, scale);
         object.setObjectScale(1.0f);
         object.resetMatrix();
         object.resetViewMatrix();
