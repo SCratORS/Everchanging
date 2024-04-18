@@ -155,6 +155,10 @@ final class EverchangingRender implements GLSurfaceView.Renderer {
         scenes.clear();
     }
 
+    void onTouchEvent(boolean value) {
+        downTap = value;
+    }
+
     void onTouchEvent(final MotionEvent motionEvent) {
         final int pointerCount = motionEvent.getPointerCount() - 1;
         posX = motionEvent.getX(pointerCount);
