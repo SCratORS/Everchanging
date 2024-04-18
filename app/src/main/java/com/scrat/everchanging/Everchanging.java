@@ -102,6 +102,7 @@ public final class Everchanging extends WallpaperService {
                 } else {
                     glSurfaceView.onPause();
                     gestureDetector = null;
+                    mRender.onTouchEvent(false);
                 }
                 mRender.setVisible(visible);
             }
