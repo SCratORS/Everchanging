@@ -275,18 +275,19 @@ final class Foreground extends TextureObject {
             {R.drawable.image_349, R.drawable.image_347, R.drawable.image_349_continuation}                                              //Violet halloween
     };
 
-    private final float[][][] offsetValues = {
-            {{0, 0, 0}, {0, 6, 0}, {89.5f, 230, 0}},
-            {{0, 10, 0}, {0, 0, 0}, {0, 7, 1}, {0, 135, 0}, {36.5f, 230, 0}},
-            {{0, 16, 0}, {0, 0, 0}, {0, 51, 1}, {-16, 6, 0}, {90, 230, 0}},
-            {{0, 26, 0}, {0, 0, 0}, {0, 12, 0}, {81.5f, 225, 0}},
-            {{0, 15, 0}, {0, 0, 0}, {0, 51, 1}, {-25, 0, 0}, {80, 225, 0}},
-            {{0, 26, 0}, {0, 0, 0}, {0, 10, 0}, {82, 200, 0}},
-            {{0, 0, 0}, {0, 6, 0}, {89.5f, 230, 0}},
-            {{0, 0, 0}, {0, 38, 0}, {84, 225, 0}},
+    private final int[][][] offsetValues = {
+            {{0, 0, 0}, {0, 6, 0}, {179, 230, 0}},
+            {{0, 10, 0}, {0, 0, 0}, {0, 7, 1}, {0, 135, 0}, {73, 230, 0}},
+            {{0, 16, 0}, {0, 0, 0}, {0, 51, 1}, {-16, 6, 0}, {180, 230, 0}},
+            {{0, 26, 0}, {0, 0, 0}, {0, 12, 0}, {163, 225, 0}},
+            {{0, 15, 0}, {0, 0, 0}, {0, 51, 1}, {-25, 0, 0}, {160, 225, 0}},
+            {{0, 26, 0}, {0, 0, 0}, {0, 10, 0}, {164, 200, 0}},
+            {{0, 0, 0}, {0, 6, 0}, {179, 230, 0}},
+            {{0, 0, 0}, {0, 38, 0}, {168, 225, 0}},
     };
 
     private float scale;
+    private float offsetValueMultiplier;
 
     private int current = -1;
 
@@ -299,6 +300,7 @@ final class Foreground extends TextureObject {
         final TypedValue outValue = new TypedValue();
         context.getResources().getValue(R.dimen.foreground_scale, outValue, true);
         scale = outValue.getFloat();
+        offsetValueMultiplier = getOffsetValueMultiplier();
     }
 
     void update(final int foregroundIndex, final int timesOfDay) {
@@ -360,10 +362,10 @@ final class Foreground extends TextureObject {
             float spriteWidth = object.texture.width * scale;
             float spriteHeight = object.texture.height * scale;
 
-            final float y = deltaHeight - spriteHeight + offsetValues[current][index][0];
+            final float y = deltaHeight - spriteHeight + offsetValues[current][index][0] * offsetValueMultiplier;
 
             object.setTranslate(
-                    getOffsetValueX(current, index) + spriteWidth * 0.5f,
+                    offsetValues[current][index][1] * offsetValueMultiplier + spriteWidth * 0.5f,
                     y + spriteHeight * 0.5f
             );
 
@@ -384,14 +386,13 @@ final class Foreground extends TextureObject {
         return scale == 0.125f;
     }
 
-    private float getOffsetValueX(final int current, final int index) {
-        final float offsetValue = offsetValues[current][index][1];
+    private float getOffsetValueMultiplier() {
         if (scale == 0.125f) {
-            return offsetValue / 2f;
+            return 0.5f;
         }
 
         if (scale == 0.25f) {
-            return offsetValue;
+            return 1;
         }
 
         throw new IllegalArgumentException("Unhandled scale: " + scale);
