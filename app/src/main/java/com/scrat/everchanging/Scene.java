@@ -54,7 +54,7 @@ public abstract class Scene {
         GLES20.glEnableVertexAttribArray(object.mPositionHandle);
 
         // Disabled because of SIGSEGV, https://github.com/SCratORS/Everchanging/issues/2
-        //GLES20.glUniform1i (object.mTexture, GLES20.GL_TEXTURE0);
+       // GLES20.glUniform1i (object.mTexture, GLES20.GL_TEXTURE0);
         float[] sceneMatrix = object.calculateMatrix();
 
         final ReusableIterator<Object> iterator = object.objects.iterator();
@@ -83,9 +83,9 @@ public abstract class Scene {
             // 2. Трансформация цвета такая вот
             GLES20.glUniform4fv(object.mViewMultiTermHandle, 1, subObject.ViewColorTransformValue[0], 0);
             GLES20.glUniform4fv(object.mViewAddTermHandle, 1, subObject.ViewColorTransformValue[1], 0);
-
             GLES20.glUniform4fv(object.mMultiTermHandle, 1, subObject.ColorTransformValue[0], 0);
             GLES20.glUniform4fv(object.mAddTermHandle, 1, subObject.ColorTransformValue[1], 0);
+
             // 3. Дополнительно общая прозрачность такая вот
             GLES20.glUniform1f(object.mAlpha, subObject.alpha);
             // 4. Skew (это типа раятяжение) такой-то.

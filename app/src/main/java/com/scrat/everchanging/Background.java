@@ -229,11 +229,9 @@ final class Background extends TextureObject {
         if (objects.objectsInUseCount() != 0) {
             final ReusableIterator<Object> iterator = objects.iterator();
             iterator.acquire();
-
             while (iterator.hasNext()) {
                 iterator.next().setTexture(texture, scale);
             }
-
             iterator.release();
         } else {
             final Object object = objects.obtain(texture, scale);

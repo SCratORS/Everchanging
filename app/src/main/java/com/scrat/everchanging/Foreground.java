@@ -313,11 +313,9 @@ final class Foreground extends TextureObject {
 
         final ReusableIterator<Object> iterator = objects.iterator();
         iterator.acquire();
-
         while (iterator.hasNext()) {
             iterator.next().setColorTransform(colorTransformValues[current][timesOfDay]);
         }
-
         iterator.release();
     }
 
