@@ -12,30 +12,31 @@ import java.util.Random;
 
 class TextureObject {
     private static final String vs_Image =
-            "uniform mat4 uMVPMatrix;" +
-                    "attribute vec4 vPosition;" +
-                    "attribute vec2 a_texCord;" +
-                    "varying vec2 v_texCord;" +
-                    "void main() {" +
-                    "  v_texCord = a_texCord;" +
-                    "  gl_Position = uMVPMatrix * vPosition;" +
-                    "}";
+        "uniform mat4 uMVPMatrix;" +
+        "attribute vec4 vPosition;" +
+        "attribute vec2 a_texCord;" +
+        "varying vec2 v_texCord;" +
+        "void main() {" +
+        "  gl_Position = uMVPMatrix * vPosition;" +
+        "  v_texCord = a_texCord;" +
+        "}";
 
     private static final String fs_Image =
-            "precision mediump float;" +
-                    "varying vec2 v_texCord;" +
-                    "uniform sampler2D s_texture;" +
-                    "uniform vec4 MultiTerm;" +
-                    "uniform vec4 AddTerm;" +
-                    "uniform vec4 ViewMultiTerm;" +
-                    "uniform vec4 ViewAddTerm;" +
-                    "uniform float alpha;" +
-                    "void main() {" +
-                    "  vec4 textureColor = texture2D(s_texture, v_texCord);" +
-                    "  textureColor = clamp(((((textureColor * MultiTerm + AddTerm) / 256.0) * ViewMultiTerm + ViewAddTerm) / 256.0) , 0.0, 1.0);" +
-                    "  textureColor.a = textureColor.a * alpha;" +
-                    "  gl_FragColor = textureColor;" +
-                    "}";
+        "precision mediump float;" +
+        "varying vec2 v_texCord;" +
+        "uniform sampler2D s_texture;" +
+        "uniform vec4 MultiTerm;" +
+        "uniform vec4 AddTerm;" +
+        "uniform vec4 ViewMultiTerm;" +
+        "uniform vec4 ViewAddTerm;" +
+        "uniform float alpha;" +
+        "void main() {" +
+        "  vec4 textureColor = texture2D(s_texture, v_texCord);" +
+        "  textureColor = clamp((textureColor * MultiTerm + AddTerm) / 256.0, 0.0, 1.0) * clamp((ViewMultiTerm + ViewAddTerm) / 256.0, 0.0, 1.0);" +
+//      "  textureColor = clamp(((((textureColor * MultiTerm + AddTerm) / 256.0) * ViewMultiTerm + ViewAddTerm) / 256.0) , 0.0, 1.0);" +
+        "  textureColor.a = textureColor.a * alpha;" +
+        "  gl_FragColor = textureColor;" +
+        "}";
 
     public final ObjectPool objects = new ObjectPool();
 
@@ -55,6 +56,7 @@ class TextureObject {
     public final int mAddTermHandle;
     public final int mViewMultiTermHandle;
     public final int mViewAddTermHandle;
+
     public final int mTexture;
     public final int mMVPMatrixHandle;
     public final int mPositionHandle;
@@ -79,6 +81,7 @@ class TextureObject {
         mAddTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "AddTerm");
         mViewMultiTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "ViewMultiTerm");
         mViewAddTermHandle = GLES20.glGetUniformLocation(mProgramHandle, "ViewAddTerm");
+
         mAlpha = GLES20.glGetUniformLocation(mProgramHandle, "alpha");
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgramHandle, "uMVPMatrix");
         mTexture = GLES20.glGetUniformLocation(mProgramHandle, "s_texture");
