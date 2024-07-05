@@ -22,7 +22,7 @@ class TextureObject {
         "}";
 
     private static final String fs_Image =
-        "precision mediump float;" +
+        "precision highp float;" +
         "varying vec2 v_texCord;" +
         "uniform sampler2D s_texture;" +
         "uniform vec4 MultiTerm;" +
@@ -32,8 +32,7 @@ class TextureObject {
         "uniform float alpha;" +
         "void main() {" +
         "  vec4 textureColor = texture2D(s_texture, v_texCord);" +
-        "  textureColor = clamp((textureColor * MultiTerm + AddTerm) / 256.0, 0.0, 1.0) * clamp((ViewMultiTerm + ViewAddTerm) / 256.0, 0.0, 1.0);" +
-//      "  textureColor = clamp(((((textureColor * MultiTerm + AddTerm) / 256.0) * ViewMultiTerm + ViewAddTerm) / 256.0) , 0.0, 1.0);" +
+        "  textureColor = clamp(((((textureColor * MultiTerm + AddTerm) / 256.0) * ViewMultiTerm + ViewAddTerm) / 256.0) , 0.0, 1.0);" +
         "  textureColor.a = textureColor.a * alpha;" +
         "  gl_FragColor = textureColor;" +
         "}";
