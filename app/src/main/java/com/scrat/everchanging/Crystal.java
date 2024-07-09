@@ -80,10 +80,10 @@ final class Crystal extends TextureObject {
     };
 
     private final float[][] endPosition = {
-            {-7.3f, 19.9f},
-            {0.3f, 12.4f},
-            {7.8f, 19.9f},
-            {1.3f, 27.4f}
+            {-7.3f, 9.9f},
+            {0.3f, 2.4f},
+            {7.8f, 9.9f},
+            {1.3f, 7.4f}
     };
 
     private static final int[][] textureList = {{R.drawable.image_13, R.drawable.image_15}};

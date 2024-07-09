@@ -12,6 +12,9 @@ final class FireWorksScene extends Scene {
         super(ShortTypes.FW);
         firework = new FireWork(context, calendar);
     }
+    public int getFps() {
+        return 20;
+    }
 
     @Override
     public boolean hasObjectsInUse() {

@@ -79,7 +79,11 @@ final class Blick extends TextureObject {
             R.drawable.shape_6
     }};
 
-    private int index = 0;
+    private static final int MAX_FRAMES = 48;
+//    private int index = 0;
+    private int numClips = minObjects;
+    private boolean init = false;
+    private int frameCounter = 0;
 
     Blick(final Context context) {
         super(context, textureList, null);
@@ -87,23 +91,21 @@ final class Blick extends TextureObject {
     }
 
     void createObject() {
-        if (objects.objectsInUseCount() > spritesStartTransform.length) return;
-
+        if (objects.objectsInUseCount() > numClips) return;
         final int textureIndex = textureManager.getTextureIndex(textureList[0][0]);
         final Object object = objects.obtain(textureManager.getTexture(textureIndex), 1.0f);
         final float svgScale = textureManager.dipToPixels(1);
+        final int index = random.nextInt(spritesStartTransform.length);
         object.setObjectScale(1.0f / svgScale / ratio);
-
         object.resetViewMatrix();
         object.setViewTransform(spritesStartTransform[index]);
         object.setColorTransform(spritesStartColorTransform[index]);
-
         object.setViewScale(100 * ratio, ratio * 100);
 
         object.animCounter = 0;
         object.frameCounter = 0;
         object.index = index;
-        index = (index + 1) % spriteIndex.length;
+        //index = (index + 1) % spriteIndex.length;
     }
 
     void objectAnimate(final Object object) {
@@ -111,11 +113,17 @@ final class Blick extends TextureObject {
         object.setColorTransform(spritesStartColorTransform[object.index]);
         object.setScale(1f, animationObjectTransform[object.animCounter][1]);
         object.animCounter = (object.animCounter + 1) % animationObjectTransform.length;
-
     }
 
     void update(final boolean createObject) {
-        if (createObject) createObject();
+//        if (createObject) createObject();
+
+        frameCounter = (frameCounter + 1) % MAX_FRAMES;
+        if (!init && createObject)
+            numClips =  15 + random.nextInt(maxObjects - 15);
+        init = createObject;
+        if (createObject && frameCounter == 2) createObject();
+
 
         final ReusableIterator<Object> iterator = objects.iterator();
         iterator.acquire();
