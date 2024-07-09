@@ -355,6 +355,7 @@ final class Fly extends TextureObject {
         object.frameCounter = 0;
         object.animCounter = 0;
         object.index = index;
+        object.animCounterSkip = false;
         object.setScale(xscale == 0 ? 1 : -1, 1);
     }
 
@@ -364,23 +365,25 @@ final class Fly extends TextureObject {
 
         while (iterator.hasNext()) {
             final Object object = iterator.next();
-            if (object.frameCounter < matrixTransform[object.index].length) {
-                creatorCallback.callingCrystallCreatorCallback(object.transformMatrix, object.ViewTranslate);
-                TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter]));
-                object.setTexture(texture, 0.25f);
-                float scale = object.x_scalefactor;
-                object.resetMatrix();
-                object.setScale(scale, 1);
-                object.setTransform(matrixTransform[object.index][object.frameCounter]);
-                object.setColorTransform(colorTransform);
-                if (object.frameCounter % 2 == 0) object.animCounter = (object.animCounter + 1) % 2;
-                object.frameCounter++;
-            } else {
-                creatorCallback.callingCrystallEndCallback(object.transformMatrix, object.ViewTranslate);
-                iterator.remove();
-            }
-        }
 
+                if (object.frameCounter < matrixTransform[object.index].length) {
+                        creatorCallback.callingCrystallCreatorCallback(object.transformMatrix, object.ViewTranslate);
+                        TextureManager.Texture texture = textureManager.getTexture(textureManager.getTextureIndex(textureList[0][object.animCounter]));
+                        object.setTexture(texture, 0.25f);
+                        float scale = object.x_scalefactor;
+                        object.resetMatrix();
+                        object.setScale(scale, 1);
+                        object.setTransform(matrixTransform[object.index][object.frameCounter]);
+                        object.setColorTransform(colorTransform);
+                        if (object.frameCounter % 3 == 0)
+                            object.animCounter = (object.animCounter + 1) % 2;
+                        object.frameCounter++;
+                } else {
+                    creatorCallback.callingCrystallEndCallback(object.transformMatrix, object.ViewTranslate);
+                    iterator.remove();
+                }
+
+        }
         iterator.release();
     }
 
